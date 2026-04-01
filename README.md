@@ -7,7 +7,7 @@
 - **Statistic cards:** a card layout (`st-stat-card`) with numeric value, label, and delta styling.  
 - **Layout helpers:** a full-height container (`st-container`) and a mock phone frame (`st-phone`).
 
-st-core is implemented entirely in CSS/FSCSS, following the same **FSCSS plugin logic** as libraries like the [Circle Progress component]{7†L1-L9}. No JavaScript is required for the charts or cards; all behavior comes from FSCSS directives and CSS variables【7†L1-L9】.
+st-core is implemented entirely in CSS/FSCSS, following the same **FSCSS plugin logic** as libraries like the [Circle Progress component](https://github.com/Figsh/Circle-progress.fscss). No JavaScript is required for the charts or cards; all behavior comes from FSCSS directives and CSS variables【7†L1-L9】.
 
 ## Installation
 
