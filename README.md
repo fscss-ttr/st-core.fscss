@@ -63,7 +63,7 @@ In your HTML/CSS, define the chart dimensions and provide data:
   overflow: hidden;
 
   /* Set the data points (y-values in %) */
-  @st-chart-points(20, 35, 33, 30, 48, 35, 66, 37);
+  @st-chart-points(20, 35, 33, 30, 48, 35, 66, 37)
 }
 ```
 
@@ -73,7 +73,7 @@ You can also adjust the stroke width of the line:
 
 ```scss
 .chart-line {
-  @st-chart-line-width(2px);
+  @st-chart-line-width(2px)
 }
 ```
 
@@ -129,12 +129,12 @@ This creates a colored bar fill up to `50%` width inside its container.
   overflow: hidden;
 
   /* Define 8 data points (y-values) */
-  @st-chart-points(20, 35, 33, 30, 48, 35, 66, 37);
+  @st-chart-points(20, 35, 33, 30, 48, 35, 66, 37)
 }
 
 /* Customize line thickness */
 .chart-line {
-  @st-chart-line-width(2px);
+  @st-chart-line-width(2px)
 }
 
 /* Style for the data point */
@@ -174,7 +174,7 @@ This creates a colored bar fill up to `50%` width inside its container.
 </div>
 ```
 
-In this example, `@st-chart-points` provides the data. The line and fill are drawn automatically from those values, and the dot is positioned at (84%, 66%). All colors and sizes come from the design tokens defined by `@st-root()`【12†L89-L92】.
+In this example, `@st-chart-points` provides the data. The line and fill are drawn automatically from those values, and the dot is positioned at (84%, 66%). All colors and sizes come from the design tokens defined by `@st-root()`.
 
 ## License
 
