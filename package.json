@@ -15,7 +15,16 @@
   "file": {
     "usage": {
       "directive": "st-core",
-      "helpers": []
+      "helpers": [
+        "@st-root()",
+        "@st-container()",
+        "@st-chart-fill()",
+        "@st-chart-line()",
+        "@st-chart-dot()",
+        "@st-chart-points()",
+        "@st-chart-line-width()",
+        "@st-stat-card()"
+      ]
     },
     "modules": [
       "./st-core.fscss"
