@@ -16,9 +16,13 @@ Include FSCSS v1.1.24 or higher, then import **st-core** via `@import`:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" defer></script>
 ```
-
+This (better) 
 ```scss
-@import(exec(*) from st-core)
+@import(exec(_init st-core))
+```
+Or this 
+```scss
+@import((*) from st-core)
 ```
 
 The library supports FSCSS **1.1.24+**. Once imported, you can use the st-core plugins and variables in your CSS.
