@@ -1,1 +1,38 @@
-{} 
+{
+  "name": "camelcase_css",
+  "version": "1.0.0",
+  "description": "A lightweight fscss-based library for statistical dashboard ui and components",
+  "extension": "fscss",
+  "fscss_version": "^1.1.24",
+  "blocked_methods": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fscss-ttr/st-core.fscss"
+  },
+  "bugs": {
+    "url": "https://github.com/fscss-ttr/st-core.fscss/issues"
+  },
+  "file": {
+    "usage": {
+      "directive": "st-core",
+      "helpers": []
+    },
+    "modules": [
+      "./st-core.fscss"
+    ],
+    "remote": "./st-core.fscss"
+  },
+  "author": {
+    "name": "fscss-ttr"
+  },
+  "keywords": [
+    "fscss",
+    "css",
+    "lightweight",
+    "fscss-based",
+    "dashboard-ui",
+    "utility",
+    "statistics"
+  ],
+  "license": "MIT"
+}
