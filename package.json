@@ -14,16 +14,16 @@
   },
   "file": {
     "usage": {
-      "directive": "st-core",
+      "directive": "st-*",
       "helpers": [
-        "@st-root()",
-        "@st-container()",
-        "@st-chart-fill()",
-        "@st-chart-line()",
-        "@st-chart-dot()",
-        "@st-chart-points()",
-        "@st-chart-line-width()",
-        "@st-stat-card()"
+        "st-root",
+        "st-container",
+        "st-chart-fill",
+        "st-chart-line",
+        "st-chart-dot",
+        "st-chart-points",
+        "st-chart-line-width",
+        "st-stat-card"
       ]
     },
     "modules": [
