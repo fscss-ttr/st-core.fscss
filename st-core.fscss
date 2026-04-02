@@ -208,8 +208,8 @@ font-weight: 600;
 @use(st) .st-stat-delta.up { color: var(--st-green); }
 @use(st) .st-stat-delta.down { color: var(--st-red); }
 `}
-@define st-chart-axis-x(ts:.st-chart-axis-x){`
-@use(ts){
+@define st-chart-axis-x(st:.st-chart-axis-x){`
+@use(st){
 display: flex;
 justify-content: space-between;
 width: 100%;
