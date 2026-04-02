@@ -80,7 +80,7 @@
 @define st-container(st:body){` @use(st){ min-height: 100vh; background: var(--st-bg); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; color: var(--st-text); padding: var(--st-pad); } `}
 
 @define st-phone(st:.st-phone){`
-.@use(st){
+@use(st){
 width: 360px;
 background: var(--st-surface);
 border-radius: var(--st-radius-xl);
