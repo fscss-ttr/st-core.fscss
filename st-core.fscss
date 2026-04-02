@@ -43,8 +43,9 @@
 --st-chart-line-width: 1.5px;
 }
 `}
-
+/* normalize input */
 @define st-chart(p1: 88, p2: 59, p3: 70, p4: 35, p5: 58, p6: 22, p7: 42, p8: 55){
+/* extract N from -N */
 --l-st-p1: num(@use(p1) - 101) @ext(1,3:num1);
 --l-st-p2: num(@use(p2) - 101) @ext(1,3:num2);
 --l-st-p3: num(@use(p3) - 101) @ext(1,3:num3);
@@ -53,6 +54,7 @@
 --l-st-p6: num(@use(p6) - 101) @ext(1,3:num6);
 --l-st-p7: num(@use(p7) - 101) @ext(1,3:num7);
 --l-st-p8: num(@use(p8) - 101) @ext(1,3:num8);
+/* Use extracted N */
 --st-p1: @ext.num1%;
 --st-p2: @ext.num2%;
 --st-p3: @ext.num3%;
@@ -253,4 +255,3 @@ color: var(--st-muted);
 );
 opacity:.2;
 }`}
-
