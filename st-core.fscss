@@ -1,4 +1,4 @@
-@define st-root(root:root){`
+  @define st-root(root:root){`
 :@use(root){
 /* colors */
 --st-bg: #0e0d14;
@@ -43,9 +43,8 @@
 --st-chart-line-width: 1.5px;
 }
 `}
-/* normalize inputs */
+
 @define st-chart(p1: 88, p2: 59, p3: 70, p4: 35, p5: 58, p6: 22, p7: 42, p8: 55){
-/*Extracts N from -N */
 --l-st-p1: num(@use(p1) - 101) @ext(1,3:num1);
 --l-st-p2: num(@use(p2) - 101) @ext(1,3:num2);
 --l-st-p3: num(@use(p3) - 101) @ext(1,3:num3);
@@ -54,7 +53,6 @@
 --l-st-p6: num(@use(p6) - 101) @ext(1,3:num6);
 --l-st-p7: num(@use(p7) - 101) @ext(1,3:num7);
 --l-st-p8: num(@use(p8) - 101) @ext(1,3:num8);
-/* overwrite variables with those extracted numbers*/
 --st-p1: @ext.num1%;
 --st-p2: @ext.num2%;
 --st-p3: @ext.num3%;
@@ -66,15 +64,15 @@
 }
 
 @define st-chart-points(p1: 0, p2: 0, p3: 0, p4: 0, p5: 0, p6: 0, p7: 0, p8: 0){
-/* overwrite ext values in comments */
-/* --l-st-p1: num(@use(p1) - 101) @ext(1,3:num1);
+/* overwrite ext values */
+--l-st-p1: num(@use(p1) - 101) @ext(1,3:num1);
 --l-st-p2: num(@use(p2) - 101) @ext(1,3:num2);
 --l-st-p3: num(@use(p3) - 101) @ext(1,3:num3);
 --l-st-p4: num(@use(p4) - 101) @ext(1,3:num4);
 --l-st-p5: num(@use(p5) - 101) @ext(1,3:num5);
 --l-st-p6: num(@use(p6) - 101) @ext(1,3:num6);
 --l-st-p7: num(@use(p7) - 101) @ext(1,3:num7);
---l-st-p8: num(@use(p8) - 101) @ext(1,3:num8); */
+--l-st-p8: num(@use(p8) - 101) @ext(1,3:num8); 
 }
 
 @define st-container(st:body){` @use(st){ min-height: 100vh; background: var(--st-bg); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; color: var(--st-text); padding: var(--st-pad); } `}
@@ -208,6 +206,7 @@ font-weight: 600;
 @use(st) .st-stat-delta.up { color: var(--st-green); }
 @use(st) .st-stat-delta.down { color: var(--st-red); }
 `}
+
 @define st-chart-axis-x(st:.st-chart-axis-x){`
 @use(st){
 display: flex;
@@ -254,3 +253,4 @@ color: var(--st-muted);
 );
 opacity:.2;
 }`}
+
