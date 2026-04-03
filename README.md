@@ -60,14 +60,15 @@ Everything is driven by FSCSS mixins (`@st-*`) and CSS custom properties. You ca
 ---
 
 ## 2. Installation
-
+> We are using FSCSS runtime in this demo. 
+  
 **Add the FSCSS runtime** to your HTML (use `async` or `defer`):
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
 ```
 
-**Import st-core** in your `<style>` block. Two ways:
+**Import st-core** in your `<style>` block, since we are using cdn in this example. Two ways:
 
 ```css
 /* Import everything */
