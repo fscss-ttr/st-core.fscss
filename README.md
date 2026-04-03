@@ -1,4 +1,4 @@
-# guide_to_st-core.fscss
+# guide to st-core.fscss
 
 > **st-core.fscss** — Lightweight FSCSS-based UI library for statistical dashboards and components.  
 > MIT Licensed · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)  
@@ -461,79 +461,135 @@ A minimal but complete dashboard page:
 <style>
 @import((*) from st-core)
 
-/* ── Init ── */
+/* ================= INIT ================= */
+
 @st-root()
 @st-container(body)
 
-/* ── Stat card ── */
-@st-stat-card(.card)
+/* ================= COMPONENTS ================= */
 
-/* ── Chart components ── */
 @st-chart-fill(.chart-fill)
 @st-chart-line(.chart-line)
-@st-chart-dot(.chart-dot, 57, 42)
-@st-chart-grid(.chart-grid, 8, 7)
-@st-chart-axis-x(.x-axis)
+@st-chart-dot(.chart-dot, 70, 60)
 
-/* ── Chart container ── */
-.chart {
-  position: relative;
+/* ================= CHART ================= */
+
+.chart{
   width: 100%;
   height: 200px;
-  border-radius: 16px;
+  border-radius: 25px;
+  position: relative;
   overflow: hidden;
+
   background: var(--st-surface);
 
-  /* inject data */
-  @st-chart-points(20, 35, 33, 30, 48, 35, 66, 37)
+  /*  DATA (main power) */
+  @st-chart-points(20,25,21,37,30,60,27,50)
+}
+@st-phone(.wrapper)
+/* ================= LINE ================= */
+
+.chart-line{
+  /* controlled via helper */
+  @st-chart-line-width(2px);
+
+  /* optional override */
+  filter: drop-shadow(0 0 8px var(--st-accent));
 }
 
-/* ── Line stroke width ── */
-.chart-line {
-  @st-chart-line-width(2px)
+/* ================= FILL ================= */
+
+.chart-fill{
+  /* enhance fill visibility */
+  opacity: .85;
 }
 
-/* ── Dot tooltip ── */
-.chart-dot::after {
+/* ================= DOT ================= */
+
+.chart-dot{
+  position: relative;
+  overflow: visible;
+
+  /*  local customization */
+  --st-accent: #c4a8ff; /* overrides root accent just for dot */
+}
+
+/* tooltip */
+.chart-dot:after{
   content: attr(data-point);
   background: var(--st-accent);
-  color: var(--st-bg);
-  font-size: 11px;
+  padding: 6px 8px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 5px 9px;
+  color: #fff;
   border-radius: var(--st-radius-sm);
   position: absolute;
-  top: -38px; left: -20px;
+  top: -40px;
+  left: -22px;
   white-space: nowrap;
 }
-.chart-dot::before {
+
+/* arrow */
+.chart-dot:before{
   content: '';
-  width: 8px; height: 8px;
+  width: 10px;
+  height: 10px;
   background: var(--st-accent);
   transform: rotate(45deg);
   position: absolute;
-  top: -16px; left: 2px;
+  top: -18px;
+  left: 2px;
 }
+
+/* ================= EXTRA (USING st-core IDEA) ================= */
+
+
+@st-stat-card(.stat-card)
+@st-chart-axis-x(.x-axis)
+@st-chart-axis-y(.y-axis)
+
+
+
+@st-chart-grid(.chart-grid, 10, 7)
 </style>
-
-<div class="card">
-  <div class="st-stat-label">Weekly Revenue</div>
-  <div class="st-stat-value">$12,480</div>
-  <div class="st-stat-delta up">▲ +8.3%</div>
-</div>
-
+<div class="wrapper">
+    <div class="stat-card">
+    <div class="st-stat-label">TOTAL EXPENSES</div>
+    <div class="st-stat-value">$1,326.03</div>
+    <div class="st-stat-delta up">+5.1% vs last week</div>
+  </div>
 <div class="chart">
   <div class="chart-fill"></div>
   <div class="chart-line"></div>
-  <div class="chart-dot" data-point="$1,920"></div>
+  <div class="chart-dot" data-point="$405.67"></div>
   <div class="chart-grid"></div>
-</div>
-
-<div class="x-axis">
-  <span>Mon</span><span>Tue</span><span>Wed</span>
-  <span>Thu</span><span>Fri</span><span>Sat</span>
-  <span>Sun</span><span>Mon</span>
-</div>
+   <div class="y-axis">
+   <span>0</span>
+   <span>10</span>
+   <span>20</span>
+   <span>30</span>
+   <span>40</span>
+   <span>50</span>
+   <span>60</span>
+   <span>70</span>
+   <span>80</span>
+   <span>90</span>
+   <span>100</span>
+ </div>
+  </div>
+        <div class="x-axis days">
+      <span>Sun</span>
+      <span>Mon</span>
+      <span>Tue</span>
+      <span>Wed</span>
+      <span>Thu</span>
+      <span>Fri</span>
+      <span>Sat</span>
+      <span>Sun</span>
+    </div>
+   
+  </div>
+  
 ```
 
 ---
