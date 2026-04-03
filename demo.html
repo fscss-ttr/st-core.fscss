@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>st-core.fscss — Live Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<style>
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── FSCSS STYLES ─── */
+@import((*) from st-core)
+@st-root()
+
+body {
+  background: var(--st-bg);
+  font-family: 'Syne', sans-serif;
+  color: var(--st-text);
+  min-height: 100vh;
+}
+
+/* ─── PAGE LAYOUT ─── */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ─── HEADER ─── */
+.header {
+  margin-bottom: 56px;
+}
+.header-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--st-accent);
+  margin-bottom: 12px;
+}
+.header-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--st-text);
+}
+.header-title span {
+  color: var(--st-accent);
+}
+.header-sub {
+  margin-top: 16px;
+  font-size: 15px;
+  color: var(--st-muted);
+  max-width: 540px;
+  line-height: 1.65;
+}
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--st-accent-dim);
+  border-left: 2px solid var(--st-accent-dim);
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+/* ─── SECTION ─── */
+.demo-section {
+  margin-bottom: 64px;
+}
+
+/* ─── STAT GRID ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@st-stat-card(.stat-card)
+
+/* ─── CHART WRAPPER ─── */
+.chart-wrap {
+  background: var(--st-card);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-lg);
+  padding: 20px 20px 0;
+}
+
+.chart-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.chart-label {
+  font-size: 12px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+}
+.chart-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--st-muted);
+}
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.dot-fill { width: 8px; height: 8px; border-radius: 50%; background: var(--st-accent); opacity: .45; }
+.dot-line { width: 8px; height: 8px; border-radius: 50%; background: var(--st-accent); }
+
+/* ─── CHART ─── */
+.chart {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--st-surface);
+}
+
+@st-chart-fill(.chart-fill)
+@st-chart-line(.chart-line)
+@st-chart-dot(.chart-dot, 71, 80)
+@st-chart-grid(.chart-grid, 8, 7)
+@st-chart-axis-x(.x-axis)
+@st-chart-axis-y(.y-axis)
+
+.chart-fill { opacity: .7; }
+
+.chart-line {
+  @st-chart-line-width(2px)
+  filter: drop-shadow(0 0 8px var(--st-accent));
+}
+
+.chart-dot {
+  --st-accent: var(--st-accent-2);
+  z-index: 10;
+}
+.chart-dot::after {
+  content: attr(data-point);
+  background: var(--st-accent);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  color: var(--st-bg);
+  border-radius: var(--st-radius-sm);
+  position: absolute;
+  top: -31px;
+  left: -22px;
+  white-space: nowrap;
+  letter-spacing: .04em;
+}
+.chart-dot::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--st-accent);
+  transform: rotate(45deg);
+  position: absolute;
+  top: -14px;
+  left: 1px;
+}
+
+/* ─── X AXIS ─── */
+@st-chart-axis-x(.x-axis)
+.x-axis {
+  padding: 10px var(--st-pad);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+}
+
+/* ─── Y AXIS ─── */
+.y-axis {
+  padding: 8px 6px;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ─── CAT BARS ─── */
+.cat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-row-label {
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  min-width: 80px;
+  font-family: 'Space Mono', monospace;
+}
+
+.cat-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--st-surface);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--st-border);
+}
+
+@st-cat-bar-fill(.cat-bar-fill, 0)
+
+.cat-bar-pct {
+  font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  color: var(--st-accent-2);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ─── INDIVIDUAL BAR OVERRIDES ─── */
+.cat-bar-fill.b1 { --st-cat-bar-fill-range: 82%; }
+.cat-bar-fill.b2 { --st-cat-bar-fill-range: 61%; }
+.cat-bar-fill.b3 { --st-cat-bar-fill-range: 45%; }
+.cat-bar-fill.b4 { --st-cat-bar-fill-range: 29%; }
+.cat-bar-fill.b5 { --st-cat-bar-fill-range: 17%; }
+
+/* ─── PHONE CARD ─── */
+@st-phone(.phone-card)
+
+.phone-card {
+  width: 100%;
+  max-width: 360px;
+}
+
+/* ─── PHONE INNER ─── */
+.phone-inner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.phone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.phone-balance {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--st-text);
+  line-height: 1;
+}
+.phone-balance-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--st-muted);
+  margin-bottom: 4px;
+  font-family: 'Space Mono', monospace;
+}
+
+.phone-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--st-green);
+  background: rgba(79,255,176,.1);
+  border: 1px solid rgba(79,255,176,.2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+}
+
+.phone-chart {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--st-bg);
+}
+
+/* ─── PHONE STAT ROW ─── */
+.phone-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.phone-stat {
+  background: var(--st-bg);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-md);
+  padding: 12px 14px;
+}
+.phone-stat-label {
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 4px;
+}
+.phone-stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--st-text);
+}
+.phone-stat-val.up { color: var(--st-green); }
+.phone-stat-val.dn { color: var(--st-red); }
+
+/* ─── CODE BADGE ─── */
+.code-snippet {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-md);
+  padding: 16px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--st-muted);
+  overflow-x: auto;
+}
+.code-snippet .kw { color: var(--st-accent); }
+.code-snippet .val { color: var(--st-accent-2); }
+.code-snippet .cm { color: #3a3459; }
+
+/* ─── DIVIDER ─── */
+.divider {
+  height: 1px;
+  background: var(--st-border);
+  margin: 48px 0;
+}
+
+/* ─── TWO COL ─── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .two-col { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <p class="header-eyebrow">Figsh Digital · FSCSS Plugin</p>
+    <h1 class="header-title">st-core<span>.fscss</span></h1>
+    <p class="header-sub">A trading / statistics UI plugin for FSCSS. All components below are driven purely by <code style="color:var(--st-accent-2);font-size:13px">@st-*</code> mixins — no custom CSS, no JS, no SVG.</p>
+  </header>
+
+  <!-- STAT CARDS -->
+  <section class="demo-section">
+    <p class="section-label">@st-stat-card</p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="st-stat-label">Portfolio Value</div>
+        <div class="st-stat-value">$84,201</div>
+        <div class="st-stat-delta up">▲ +12.4% this month</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-stat-label">Daily P&L</div>
+        <div class="st-stat-value">+$1,840</div>
+        <div class="st-stat-delta up">▲ +2.2% today</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-stat-label">Drawdown</div>
+        <div class="st-stat-value">−3.1%</div>
+        <div class="st-stat-delta down">▼ −0.4% vs avg</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-stat-label">Win Rate</div>
+        <div class="st-stat-value">68%</div>
+        <div class="st-stat-delta up">▲ +5pt streak</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL CHART -->
+  <section class="demo-section">
+    <p class="section-label">@st-chart-fill · @st-chart-line · @st-chart-dot · @st-chart-grid</p>
+    <div class="chart-wrap">
+      <div class="chart-title-row">
+        <span class="chart-label">Weekly Equity Curve</span>
+        <div class="chart-legend">
+          <span><i class="dot-fill"></i> Fill</span>
+          <span><i class="dot-line"></i> Line</span>
+        </div>
+      </div>
+      <div class="chart">
+        <div class="chart-fill"></div>
+        <div class="chart-line"></div>
+        <div class="chart-dot" data-point="$405.67"></div>
+        <div class="chart-grid"></div>
+        <div class="y-axis">
+          <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+        </div>
+      </div>
+      <div class="x-axis">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span><span>Mon</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CAT BARS + PHONE -->
+  <div class="two-col">
+
+    <!-- CATEGORY BARS -->
+    <section class="demo-section">
+      <p class="section-label">@st-cat-bar-fill</p>
+      <div class="cat-bars">
+        <div class="cat-row">
+          <span class="cat-row-label">Equities</span>
+          <div class="cat-bar-track"><div class="cat-bar-fill b1"></div></div>
+          <span class="cat-bar-pct">82%</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-row-label">Crypto</span>
+          <div class="cat-bar-track"><div class="cat-bar-fill b2"></div></div>
+          <span class="cat-bar-pct">61%</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-row-label">Forex</span>
+          <div class="cat-bar-track"><div class="cat-bar-fill b3"></div></div>
+          <span class="cat-bar-pct">45%</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-row-label">Futures</span>
+          <div class="cat-bar-track"><div class="cat-bar-fill b4"></div></div>
+          <span class="cat-bar-pct">29%</span>
+        </div>
+        <div class="cat-row">
+          <span class="cat-row-label">Options</span>
+          <div class="cat-bar-track"><div class="cat-bar-fill b5"></div></div>
+          <span class="cat-bar-pct">17%</span>
+        </div>
+      </div>
+
+      <div style="margin-top:32px">
+        <p class="section-label">FSCSS snippet</p>
+        <div class="code-snippet">
+<span class="kw">@st-cat-bar-fill</span>(<span class="val">.cat-bar-fill</span>, <span class="val">0</span>)<br>
+<span class="cm">/* then override per bar: */</span><br>
+.b1 { <span class="kw">--st-cat-bar-fill-range</span>: <span class="val">82%</span>; }<br>
+.b2 { <span class="kw">--st-cat-bar-fill-range</span>: <span class="val">61%</span>; }
+        </div>
+      </div>
+    </section>
+
+    <!-- PHONE CARD -->
+    <section class="demo-section">
+      <p class="section-label">@st-phone</p>
+      <div class="phone-card">
+        <div class="phone-inner">
+          <div class="phone-header">
+            <div>
+              <div class="phone-balance-label">Net Balance</div>
+              <div class="phone-balance">$84,201.40</div>
+            </div>
+            <span class="phone-tag">+12.4%</span>
+          </div>
+
+          <div class="phone-chart">
+            <div class="chart-fill"></div>
+            <div class="chart-line"></div>
+            <div class="chart-grid"></div>
+          </div>
+
+          <div class="phone-stat-row">
+            <div class="phone-stat">
+              <div class="phone-stat-label">Today's Gain</div>
+              <div class="phone-stat-val up">+$1,840</div>
+            </div>
+            <div class="phone-stat">
+              <div class="phone-stat-label">Open Trades</div>
+              <div class="phone-stat-val">7</div>
+            </div>
+            <div class="phone-stat">
+              <div class="phone-stat-label">Avg Entry</div>
+              <div class="phone-stat-val">$142.20</div>
+            </div>
+            <div class="phone-stat">
+              <div class="phone-stat-label">Exposure</div>
+              <div class="phone-stat-val dn">−3.1%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+</body>
+</html>
