@@ -1,5 +1,5 @@
 {
-  "name": "camelcase_css",
+  "name": "st-core.fscss",
   "version": "1.0.0",
   "description": "Lightweight FSCSS - based UI library for statistical dashboard and components",
   "extension": "fscss",
