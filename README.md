@@ -541,16 +541,11 @@ A minimal but complete dashboard page:
   top: -18px;
   left: 2px;
 }
-
 /* ================= EXTRA (USING st-core IDEA) ================= */
-
 
 @st-stat-card(.stat-card)
 @st-chart-axis-x(.x-axis)
 @st-chart-axis-y(.y-axis)
-
-
-
 @st-chart-grid(.chart-grid, 10, 7)
 </style>
 <div class="wrapper">
