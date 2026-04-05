@@ -91,7 +91,7 @@ Call this once. It writes all CSS custom properties onto your root element.
 /* defaults to :root */
 
 /* or target a custom root */
-@st-root(html)
+@st-root(root.html)
 ```
 
 **What it sets:**
