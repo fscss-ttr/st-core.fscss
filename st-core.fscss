@@ -1,4 +1,4 @@
-  @define st-root(root:root){`
+@define st-root(root:root){`
 :@use(root){
 /* colors */
 --st-bg: #0e0d14;
