@@ -1,7 +1,7 @@
 # st-core.fscss
 
 > Pure CSS statistical dashboard components for the FSCSS ecosystem.  
-> No JavaScript. No SVG. No canvas — just CSS doing the work.
+> No JavaScript. No SVG. No canvas - just CSS doing the work.
 
 **MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)  
 Requires FSCSS **v1.1.24+**
@@ -43,13 +43,15 @@ Requires FSCSS **v1.1.24+**
 
 ## 1. What is st-core?
 
-**st-core.fscss** is an FSCSS plugin that gives you a complete design system and set of chart/dashboard components — built entirely in CSS. You call a mixin once, point it at a selector, and the component renders itself.
+**st-core.fscss** is a lightweight, pure CSS data visualization system built on FSCSS.
+It enables developers to create charts, dashboards, and stat UIs using CSS variables and modern layout techniques — without relying on heavy JavaScript libraries.
+With optional minimal JavaScript, developers can dynamically update data by rewriting CSS variables, allowing smooth, native animations powered entirely by the browser.
 
 **Key ideas:**
 
 - Data lives in CSS custom properties (`--st-p1` … `--st-p8`).
-- Shapes are rendered via `clip-path: polygon()` — no SVG, no canvas.
-- JavaScript is optional — it only needs to write CSS variables. CSS does the rest.
+- Shapes are rendered via `clip-path: polygon()` - no SVG, no canvas.
+- JavaScript is optional - it only needs to write CSS variables. CSS does the rest.
 - Everything compiles to plain `.css` via the FSCSS CLI for zero-runtime production output.
 
 **Components:**
