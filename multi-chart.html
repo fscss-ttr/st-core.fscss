@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>st-core.fscss — Multi Chart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+
+<style>
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #0d0d10;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── FSCSS import ── */
+  @import(
+    (*) from st-core
+  )
+
+  @st-root()
+
+  /* ══════════════════════════════════════
+     CARD
+  ══════════════════════════════════════ */
+  .card {
+    width: 360px;
+    background: #13131a;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.03),
+      0 24px 60px rgba(0,0,0,0.6);
+  }
+
+  /* ── Header ── */
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #f0f0f5;
+    letter-spacing: -0.01em;
+  }
+
+  .card-sub {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    margin-top: 3px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .badge {
+    font-size: 9px;
+    font-family: 'DM Mono', monospace;
+    color: #50e3c2;
+    background: rgba(80,227,194,0.08);
+    border: 1px solid rgba(80,227,194,0.15);
+    border-radius: 6px;
+    padding: 3px 8px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 14px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.03em;
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-teal   { background: #32D8D4; box-shadow: 0 0 6px rgba(50,216,212,0.5); }
+  .dot-amber  { background: #E8A030; box-shadow: 0 0 6px rgba(232,160,48,0.5); }
+  .dot-violet { background: #B840C8; box-shadow: 0 0 6px rgba(184,64,200,0.5); }
+
+  /* ── Chart wrapper ── */
+  .chart-wrap {
+    display: flex;
+    gap: 8px;
+  }
+
+  /* ── Chart canvas ── */
+  .chart {
+    flex: 1;
+    height: 180px;
+    position: relative;
+    @st-chart-points(20,25,21,37,30,60,27,50)
+  }
+
+  /* ONE renderer */
+  @st-chart-line(.chart-line)
+
+  .chart-line {
+    @st-chart-line-width(2.5px);
+  }
+
+  /* ── Lines ── */
+  .line-1 {
+    background: #32D8D4;
+    filter: drop-shadow(0 0 4px rgba(50,216,212,0.4));
+  }
+
+  .line-2 {
+    background: #E8A030;
+    filter: drop-shadow(0 0 4px rgba(232,160,48,0.3));
+    @st-chart-points(10,20,16,15,66,50,80,54)
+  }
+
+  .line-3 {
+    background: #B840C8;
+    filter: drop-shadow(0 0 4px rgba(184,64,200,0.3));
+    @st-chart-points(5,39,20,30,27,70,60,70)
+  }
+
+  /* ── Grid ── */
+  @st-chart-grid(.chart-grid, 10, 7)
+  /* Y Axis */
+  @st-chart-axis-y(.y-axis)
+  /* ── X Axis ── */
+  @st-chart-axis-x(.x-axis)
+
+  .x-axis span {
+    font-size: 9px;
+    color: rgba(255,255,255,0.22);
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* ── Stats row ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .stat-cell {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .stat-cell:nth-child(1) .stat-value { color: #32D8D4; }
+  .stat-cell:nth-child(2) .stat-value { color: #E8A030; }
+  .stat-cell:nth-child(3) .stat-value { color: #B840C8; }
+
+  .stat-delta {
+    font-size: 9px;
+    color: rgba(255,255,255,0.25);
+    margin-top: 3px;
+  }
+
+  .stat-delta.up { color: #4cda8c; }
+  .stat-delta.dn { color: #e05050; }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div>
+      <div class="card-title">Weekly Performance</div>
+      <div class="card-sub">Apr 5 – Apr 11, 2026</div>
+    </div>
+    <span class="badge">LIVE</span>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-dot dot-teal"></span> Revenue
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot dot-amber"></span> Sessions
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot dot-violet"></span> Signups
+    </div>
+  </div>
+
+  <!-- Chart + Y-axis -->
+  <div class="chart-wrap">
+
+    <div class="chart">
+      <div class="chart-line line-1"></div>
+      <div class="chart-line line-2"></div>
+      <div class="chart-line line-3"></div>
+      <div class="chart-grid"></div>
+          <div class="y-axis">
+      <span>0</span>
+      <span>20</span>
+      <span>40</span>
+      <span>60</span>
+      <span>80</span>
+      <span>100</span>
+    </div>
+
+    </div>
+
+  </div>
+
+  <!-- X Axis -->
+  <div class="x-axis">
+    <span>Sun</span>
+    <span>Mon</span>
+    <span>Tue</span>
+    <span>Wed</span>
+    <span>Thu</span>
+    <span>Fri</span>
+    <span>Sat</span>
+    <span>Sun</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-label">Revenue</div>
+      <div class="stat-value">66</div>
+      <div class="stat-delta up">↑ +12%</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Sessions</div>
+      <div class="stat-value">80</div>
+      <div class="stat-delta up">↑ +34%</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Signups</div>
+      <div class="stat-value">70</div>
+      <div class="stat-delta dn">↓ −5%</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
