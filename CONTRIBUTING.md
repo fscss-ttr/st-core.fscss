@@ -83,22 +83,22 @@ fscss --version
 All mixins are defined in `st-core.fscss` using FSCSS `@define` blocks. The pattern looks like this:
 
 ```fscss
-@define st-example-mixin(selector:default) {
+@define st-example-mixin(selector:default) {`
   @use(selector){
     /* your CSS here */
   }
-}
+`}
 ```
 
 For mixins with multiple parameters:
 
 ```fscss
-@define st-chart-example(selector:default, param1:default, param2:default) {
+@define st-chart-example(selector:default, param1:default, param2:default) {`
   @use(selector){
     --st-example-var: @use(param);
     height: @use(param2);
   }
-}
+`}
 ```
 
 **When adding a new mixin:**
