@@ -242,11 +242,15 @@ transparent calc(100% / @use(cols))
 );
 opacity:.2;
 }`}
+
 @define st-chart-dots(st:.st-chart-dot-, size: 5px){`
+
   @arr st-dot-x[0, 14, 28, 42, 57, 71, 85, 100]
   @arr st-i[count(8)]
   @arr st-dot-y[10,20,16,15,66,50,80,54]
-
+ @use(st){
+   /* preserve */
+ }
   @st-chart-dot(
   @use(st)@arr.st-i[], 
     @arr.st-dot-x[@arr.st-i[]], 
@@ -258,4 +262,3 @@ opacity:.2;
     top: calc(var(--st-p@arr.st-i[]) - 6px);
   }
 `}
-
