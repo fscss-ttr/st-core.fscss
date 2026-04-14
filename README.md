@@ -43,7 +43,7 @@ Requires FSCSS **v1.1.24+**
 
 ## 1. What is st-core?
 
-**st-core.fscss (statistics core)** is a lightweight, pure CSS data visualization system built on FSCSS.
+**st-core.fscss (statistic core)** is a lightweight, pure CSS data visualization system built on FSCSS.
 It enables developers to create charts, dashboards, and stat UIs using CSS variables and modern layout techniques — without relying on heavy JavaScript libraries.
 With optional minimal JavaScript, developers can dynamically update data by rewriting CSS variables, allowing smooth, native animations powered entirely by the browser.
 
