@@ -1,0 +1,346 @@
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── FSCSS STYLES ─── */
+@import((*) from st-core)
+@st-root()
+
+body {
+  background: var(--st-bg);
+  font-family: 'Syne', sans-serif;
+  color: var(--st-text);
+  min-height: 100vh;
+}
+
+/* ─── PAGE LAYOUT ─── */
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ─── HEADER ─── */
+.header {
+  margin-bottom: 56px;
+}
+.header-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--st-accent);
+  margin-bottom: 12px;
+}
+.header-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--st-text);
+}
+.header-title span {
+  color: var(--st-accent);
+}
+.header-sub {
+  margin-top: 16px;
+  font-size: 15px;
+  color: var(--st-muted);
+  max-width: 540px;
+  line-height: 1.65;
+}
+
+/* ─── SECTION LABEL ─── */
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--st-accent-dim);
+  border-left: 2px solid var(--st-accent-dim);
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+
+/* ─── SECTION ─── */
+.demo-section {
+  margin-bottom: 64px;
+}
+
+/* ─── STAT GRID ─── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+@st-stat-card(.stat-card)
+
+/* ─── CHART WRAPPER ─── */
+.chart-wrap {
+  background: var(--st-card);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-lg);
+  padding: 20px 20px 0;
+}
+
+.chart-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.chart-label {
+  font-size: 12px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+}
+.chart-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--st-muted);
+}
+.chart-legend span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.dot-fill { width: 8px; height: 8px; border-radius: 50%; background: var(--st-accent); opacity: .45; }
+.dot-line { width: 8px; height: 8px; border-radius: 50%; background: var(--st-accent); }
+
+/* ─── CHART ─── */
+.chart {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--st-surface);
+}
+
+@st-chart-fill(.chart-fill)
+@st-chart-line(.chart-line)
+@st-chart-dot(.chart-dot, 71, 80)
+@st-chart-grid(.chart-grid, 8, 7)
+@st-chart-axis-x(.x-axis)
+@st-chart-axis-y(.y-axis)
+
+.chart-fill { opacity: .7; }
+
+.chart-line {
+  @st-chart-line-width(2px)
+  filter: drop-shadow(0 0 8px var(--st-accent));
+}
+
+.chart-dot {
+  --st-accent: var(--st-accent-2);
+  z-index: 10;
+}
+.chart-dot::after {
+  content: attr(data-point);
+  background: var(--st-accent);
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'Space Mono', monospace;
+  color: var(--st-bg);
+  border-radius: var(--st-radius-sm);
+  position: absolute;
+  top: -31px;
+  left: -22px;
+  white-space: nowrap;
+  letter-spacing: .04em;
+}
+.chart-dot::before {
+  content: '';
+  width: 8px; height: 8px;
+  background: var(--st-accent);
+  transform: rotate(45deg);
+  position: absolute;
+  top: -14px;
+  left: 1px;
+}
+
+/* ─── X AXIS ─── */
+@st-chart-axis-x(.x-axis)
+.x-axis {
+  padding: 10px var(--st-pad);
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+}
+
+/* ─── Y AXIS ─── */
+.y-axis {
+  padding: 8px 6px;
+  font-family: 'Space Mono', monospace;
+}
+
+/* ─── CAT BARS ─── */
+.cat-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-row-label {
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  min-width: 80px;
+  font-family: 'Space Mono', monospace;
+}
+
+.cat-bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--st-surface);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--st-border);
+}
+
+@st-cat-bar-fill(.cat-bar-fill, 0)
+
+.cat-bar-pct {
+  font-size: 11px;
+  font-family: 'Space Mono', monospace;
+  color: var(--st-accent-2);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ─── INDIVIDUAL BAR OVERRIDES ─── */
+.cat-bar-fill.b1 { --st-cat-bar-fill-range: 82%; }
+.cat-bar-fill.b2 { --st-cat-bar-fill-range: 61%; }
+.cat-bar-fill.b3 { --st-cat-bar-fill-range: 45%; }
+.cat-bar-fill.b4 { --st-cat-bar-fill-range: 29%; }
+.cat-bar-fill.b5 { --st-cat-bar-fill-range: 17%; }
+
+/* ─── PHONE CARD ─── */
+@st-phone(.phone-card)
+
+.phone-card {
+  width: 100%;
+  max-width: 360px;
+}
+
+/* ─── PHONE INNER ─── */
+.phone-inner {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.phone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.phone-balance {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--st-text);
+  line-height: 1;
+}
+.phone-balance-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--st-muted);
+  margin-bottom: 4px;
+  font-family: 'Space Mono', monospace;
+}
+
+.phone-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--st-green);
+  background: rgba(79,255,176,.1);
+  border: 1px solid rgba(79,255,176,.2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: 'Space Mono', monospace;
+}
+
+.phone-chart {
+  width: 100%;
+  height: 120px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--st-bg);
+}
+
+/* ─── PHONE STAT ROW ─── */
+.phone-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.phone-stat {
+  background: var(--st-bg);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-md);
+  padding: 12px 14px;
+}
+.phone-stat-label {
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  font-family: 'Space Mono', monospace;
+  margin-bottom: 4px;
+}
+.phone-stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--st-text);
+}
+.phone-stat-val.up { color: var(--st-green); }
+.phone-stat-val.dn { color: var(--st-red); }
+
+/* ─── CODE BADGE ─── */
+.code-snippet {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius-md);
+  padding: 16px 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--st-muted);
+  overflow-x: auto;
+}
+.code-snippet .kw { color: var(--st-accent); }
+.code-snippet .val { color: var(--st-accent-2); }
+.code-snippet .cm { color: #3a3459; }
+
+/* ─── DIVIDER ─── */
+.divider {
+  height: 1px;
+  background: var(--st-border);
+  margin: 48px 0;
+}
+
+/* ─── TWO COL ─── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .two-col { grid-template-columns: 1fr; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+}
