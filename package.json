@@ -21,6 +21,7 @@
         "st-chart-fill",
         "st-chart-line",
         "st-chart-dot",
+        "st-chart-dots", 
         "st-chart-points",
         "st-chart-line-width",
         "st-stat-card"
