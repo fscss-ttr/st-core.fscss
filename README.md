@@ -275,6 +275,24 @@ const chart = document.querySelector('.chart');
   chart.style.setProperty(`--st-p${i + 1}`, 100 - v + '%');
 });
 ```
+Example 
+```js
+const chartLine = document.querySelector(".chart-line");
+const chartFill = document.querySelector(".chart-fill");
+
+// The chart's coordinate system is top-down, so invert your percentage value
+const normalize = (n) => (100 - n) + '%';
+
+function updateChartData(points) {
+  // Build a string of CSS variables: "--st-p1: 40%; --st-p2: 75%;"
+  const vars = points.map((v, i) => `--st-p${i + 1}: ${normalize(v)};`).join(' ');
+  chartLine.style.cssText = vars;
+  chartFill.style.cssText = vars;
+}
+
+// Example: Switch to new data on the fly
+updateChartData([40, 75, 60, 45, 80, 50, 70, 30]);
+```
 
 ---
 
