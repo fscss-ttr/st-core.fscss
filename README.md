@@ -275,7 +275,9 @@ const chart = document.querySelector('.chart');
   chart.style.setProperty(`--st-p${i + 1}`, 100 - v + '%');
 });
 ```
+
 Example 
+
 ```js
 const chartLine = document.querySelector(".chart-line");
 const chartFill = document.querySelector(".chart-fill");
