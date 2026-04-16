@@ -120,7 +120,7 @@ Add the FSCSS runtime to your page — it compiles `fscss` syntax in-browser as 
 <script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
 ```
 
-> **Weight:** ~10 kb for the FSCSS runtime. st-core itself is fetched as a tiny ~0.5 kb `.fscss` source and compiled on first load. Subsequent loads are cached by the browser.
+> **Weight:** ~10 kb for the FSCSS runtime. st-core itself is fetched as a tiny ~5 kb `.fscss` source and compiled on first load. Subsequent loads are cached by the browser.
 
 Then import st-core inside any `<style>` block:
 
