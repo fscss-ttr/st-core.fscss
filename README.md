@@ -1442,7 +1442,7 @@ No JavaScript needed — `attr()` reads the HTML attribute directly in CSS.
 
 ---
 
-[Add your idea](https://github.com/fscss-ttr/st-core.fscss/CONTRIBUTING.md)
+[Add your idea](https://github.com/fscss-ttr/st-core.fscss/blob/main/CONTRIBUTING.md)
 
 > MIT License · Built with [FSCSS](https://fscss.devtem.org) · [fscss-ttr](https://github.com/fscss-ttr)
 
