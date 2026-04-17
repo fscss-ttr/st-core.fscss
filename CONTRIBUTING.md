@@ -22,13 +22,25 @@ Thanks for your interest in contributing. st-core is a focused plugin — a sing
 
 ```
 st-core.fscss/
-├── st-core.fscss       ← source file (all mixins live here)
-├── demo.html           ← single-chart demo
-├── multi-chart.html    ← multi-line chart demo
-├── static_demo.html    ← compiled/static demo
-├── package.json        ← FSCSS registry metadata
-├── README.md
-└── LICENSE
+├── demo/                       ←  demo assets folder
+│   ├── js/
+│   │   └── demo.js             ←  demo  js control for demo.html
+│   └── src/
+│       ├── demo.fscss          ←  FSCSS source for demo.html
+│       ├── multi-chart.fscss   ←  FSCSS source for multi-chart.html
+│       └── static_demo.fscss  ←  FSCSS source for static_demo.html
+│
+├── .gitattributes              ←  highlighting config
+├── CONTRIBUTING.md             ←  contributor guide
+├── LICENSE                     ←  MIT license
+├── README.md                   ←  docs & usage guide
+│
+├── demo.html                   ←  single chart demo
+├── multi-chart.html            ←  multi-line chart demo
+├── static_demo.html            ←  static chart demo
+│
+├── package.json                ←  FSCSS registry metadata
+└── st-core.fscss               ←  core library source (all mixins live here)
 ```
 
 The entire library is `st-core.fscss`. That's the only file you need to edit when adding or changing mixins.
