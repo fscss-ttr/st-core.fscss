@@ -1,6 +1,6 @@
  # Contributing to st-core.fscss
 
-Thanks for your interest in contributing. st-core is a focused plugin — a single `.fscss` source file that compiles to pure CSS. Contributions should stay true to that philosophy: lightweight, zero-runtime, CSS-first.
+Thanks for your interest in contributing. st-core is a focused module — a single `.fscss` source file that compiles to pure CSS. Contributions should stay true to that philosophy: lightweight, zero-runtime, CSS-first.
 
 ---
 
