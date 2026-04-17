@@ -170,7 +170,6 @@ Open `demo.html` or `multi-chart.html` in a browser. These use the FSCSS CDN run
 # Compile the source
 fscss st-core.fscss st-core.css
 
-# Then open static_demo.html — it references the compiled output
 ```
 
 Both tests should pass before you submit a PR. If the compiled output looks different from the CDN version, that's a bug worth noting in your PR description.
