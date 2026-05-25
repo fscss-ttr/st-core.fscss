@@ -1446,3 +1446,5 @@ No JavaScript needed — `attr()` reads the HTML attribute directly in CSS.
 
 > MIT License · Built with [FSCSS](https://fscss.devtem.org) · [fscss-ttr](https://github.com/fscss-ttr)
 
+> [Premium Dashboard Design](https://devtem.org/p?id=5b5e4957-765b-4969-b1a0-3a4d0de495b4)
+ 
