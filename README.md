@@ -7,9 +7,6 @@
 Requires FSCSS **v1.1.24+**
 
 ---
-> Need a hosted API, visual builder, and multi-series charts without writing FSCSS?
-        Use <a href="https://chart.devtem.org">ProvChart</a>.
----
 
 ## Table of Contents
 
@@ -1449,5 +1446,8 @@ No JavaScript needed — `attr()` reads the HTML attribute directly in CSS.
 
 > MIT License · Built with [FSCSS](https://fscss.devtem.org) · [fscss-ttr](https://github.com/fscss-ttr)
 
-> [Premium Dashboard Design](https://devtem.org/p?id=5b5e4957-765b-4969-b1a0-3a4d0de495b4)
- 
+> Need a hosted API, visual builder, and multi-series charts without writing FSCSS?
+        Use <a href="https://chart.devtem.org">ProvChart</a>.
+
+
+---
