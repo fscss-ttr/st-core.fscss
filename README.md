@@ -7,7 +7,8 @@
 Requires FSCSS **v1.1.24+**
 
 ---
-> For advanced charts api or no-code builder visit: https://chart.devtem.org
+> Need a hosted API, visual builder, and multi-series charts without writing FSCSS?
+        Use <a href="https://chart.devtem.org">ProvChart</a>.
 ---
 
 ## Table of Contents
