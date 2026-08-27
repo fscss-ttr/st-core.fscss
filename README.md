@@ -8,6 +8,10 @@ Requires FSCSS **v1.1.24+**
 
 ---
 
+![ProvChart generated svg](/docs/charts/demo.svg)
+
+---
+
 ## Table of Contents
 
 1. [What is st-core?](#1-what-is-st-core)
