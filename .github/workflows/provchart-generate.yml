@@ -1,7 +1,7 @@
 name: Test ProvChart Action
 
 on:
-  workflow_dispatch:    # run by hand from Actions tab
+  workflow_dispatch:    # run manually by hand from Actions tab 
 
 permissions:
   contents: write
