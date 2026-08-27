@@ -1,0 +1,13 @@
+[
+  {
+    "file": "demo.svg",
+    "type": "line",
+    "theme": "midnight",
+    "width": 640,
+    "height": 280,
+    "series": [
+      { "name": "A", "color": "#8b7bff", "points": [20, 35, 40, 55, 50] }
+    ],
+    "axisX": ["Mon", "Tue", "Wed", "Thu", "Fri"]
+  }
+]
