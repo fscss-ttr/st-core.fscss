@@ -9,7 +9,6 @@ permissions:
 jobs:
   charts:
     runs-on: ubuntu-latest
-    environment: PROVCHART
     steps:
       - uses: actions/checkout@v4
 
