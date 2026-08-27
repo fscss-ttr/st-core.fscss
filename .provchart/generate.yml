@@ -1,0 +1,5 @@
+- uses: fscss-ttr/provchart-readme-action@v1
+  with:
+    api-key: ${{ secrets.PROVCHART_API_KEY }}
+    config: .provchart/charts.json
+    output-dir: docs/charts
