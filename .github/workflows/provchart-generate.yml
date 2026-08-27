@@ -1,7 +1,7 @@
 name: Test ProvChart Action
 
 on:
-  workflow_dispatch:    # run manually by hand from Actions tab 
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -9,24 +9,27 @@ permissions:
 jobs:
   charts:
     runs-on: ubuntu-latest
+    # only if the secret lives in an Environment named PROVCHART:
+    # environment: PROVCHART
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check secret is non-empty
+        env:
+          KEY: ${{ secrets.PROVCHART_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::secrets.PROVCHART_API_KEY is empty for this repo"
+            echo "Create a Repository secret named exactly PROVCHART_API_KEY"
+            exit 1
+          fi
+          echo "Secret length: ${#KEY} (OK, value not printed)"
+
       - name: Generate SVGs
-        uses: fscss-ttr/provchart-readme-action@1.0.0
+        uses: fscss-ttr/provchart-readme-action@1.0.0   # note the 
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
-          config: .provchart/charts.json
-          output-dir: docs/charts
-
-      - name: Show output
-        run: ls -la docs/charts && head -c 200 docs/charts/demo.svg
-
-      - name: Commit (optional)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/charts
-          git diff --staged --quiet || (
-            git commit -m "test: ProvChart SVG" && git push
-          )
+        env:
+          PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
+          INPUT_CONFIG: .provchart/charts.json
+          INPUT_OUTPUT_DIR: docs/charts
