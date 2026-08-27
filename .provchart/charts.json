@@ -1,13 +1,23 @@
 [
   {
     "file": "demo.svg",
-    "type": "line",
+    "type": "area",
     "theme": "midnight",
-    "width": 640,
-    "height": 280,
+    "width": 720,
+    "height": 320,
+    "axisX": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "series": [
-      { "name": "A", "color": "#8b7bff", "points": [20, 35, 40, 55, 50] }
-    ],
-    "axisX": ["Mon", "Tue", "Wed", "Thu", "Fri"]
+      {
+        "name": "API Requests",
+        "color": "#8b7bff",
+        "points": [120, 185, 140, 260, 210, 340, 310]
+      },
+      {
+        "name": "Successful Responses",
+        "color": "#34d399",
+        "points": [115, 180, 138, 255, 205, 335, 305]
+      }
+    ]
   }
 ]
+
