@@ -9,8 +9,6 @@ permissions:
 jobs:
   charts:
     runs-on: ubuntu-latest
-    # only if the secret lives in an Environment named PROVCHART:
-    # environment: PROVCHART
     steps:
       - uses: actions/checkout@v4
 
@@ -26,10 +24,16 @@ jobs:
           echo "Secret length: ${#KEY} (OK, value not printed)"
 
       - name: Generate SVGs
-        uses: fscss-ttr/provchart-readme-action@1.0.3   # note the 
+        uses: fscss-ttr/provchart-readme-action@1.0.3
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
         env:
           PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
           INPUT_CONFIG: .provchart/charts.json
           INPUT_OUTPUT_DIR: docs/charts
+
+      - name: Commit generated charts
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update generated ProvChart SVGs"
+          file_pattern: "docs/charts/*.svg"
