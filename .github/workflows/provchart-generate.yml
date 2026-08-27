@@ -1,0 +1,32 @@
+name: Test ProvChart Action
+
+on:
+  workflow_dispatch:    # run by hand from Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate SVGs
+        uses: fscss-ttr/provchart-readme-action@v1.0.0
+        with:
+          api-key: ${{ secrets.PROVCHART_API_KEY }}
+          config: .provchart/charts.json
+          output-dir: docs/charts
+
+      - name: Show output
+        run: ls -la docs/charts && head -c 200 docs/charts/demo.svg
+
+      - name: Commit (optional)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/charts
+          git diff --staged --quiet || (
+            git commit -m "test: ProvChart SVG" && git push
+          )
