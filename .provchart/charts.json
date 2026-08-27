@@ -3,19 +3,19 @@
     "file": "demo.svg",
     "type": "area",
     "theme": "midnight",
-    "width": 720,
+    "width": 480,
     "height": 320,
     "axisX": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
     "series": [
       {
         "name": "API Requests",
         "color": "#8b7bff",
-        "points": [120, 185, 140, 260, 210, 340, 310]
+        "points": [20, 85, 40, 60, 10, 40, 95]
       },
       {
         "name": "Successful Responses",
         "color": "#34d399",
-        "points": [115, 180, 138, 255, 205, 335, 305]
+        "points": [15, 80, 38, 59, 5, 35, 79]
       }
     ]
   }
