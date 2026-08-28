@@ -24,7 +24,7 @@ jobs:
           echo "Secret length: ${#KEY} (OK, value not printed)"
 
       - name: Generate SVGs
-        uses: fscss-ttr/provchart-readme-action@1.0.3
+        uses: fscss-ttr/provchart-readme-action@v1.0.3
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
         env:
