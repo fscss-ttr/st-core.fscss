@@ -25,7 +25,7 @@ jobs:
           fi
           echo "Secret length: ${#KEY} (OK, value not printed)"
 
-      - uses: fscss-ttr/provchart-repo-stats@v1.1
+      - uses: fscss-ttr/provchart-repo-stats@v1.2
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
           charts: overview,languages
