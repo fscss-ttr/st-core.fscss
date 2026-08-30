@@ -14,6 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check secret is non-empty
+        env:
+          KEY: ${{ secrets.PROVCHART_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::secrets.PROVCHART_API_KEY is empty for this repo"
+            echo "Create a Repository secret named exactly PROVCHART_API_KEY"
+            exit 1
+          fi
+          echo "Secret length: ${#KEY} (OK, value not printed)"
+
       - uses: fscss-ttr/provchart-repo-stats@v1.1
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
