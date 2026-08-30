@@ -14,23 +14,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check secret is non-empty
+      - name: Check secret
         env:
           KEY: ${{ secrets.PROVCHART_API_KEY }}
         run: |
           if [ -z "$KEY" ]; then
-            echo "::error::secrets.PROVCHART_API_KEY is empty for this repo"
-            echo "Create a Repository secret named exactly PROVCHART_API_KEY"
+            echo "::error::PROVCHART_API_KEY is empty"
             exit 1
           fi
-          echo "Secret length: ${#KEY} (OK, value not printed)"
-       
-      - uses: fscss-ttr/provchart-repo-stats@v1.2
+          echo "Secret OK (length ${#KEY})"
+
+      - uses: fscss-ttr/provchart-repo-stats@v1.3
         with:
-         api-key: ${{ secrets.PROVCHART_API_KEY }}
+          api-key: ${{ secrets.PROVCHART_API_KEY }}
+          # defaults: overview=area (real counts), languages=hbar
         env:
-         PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
-    
+          PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update repo stats charts"
