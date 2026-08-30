@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: fscss-ttr/provchart-repo-stats@v1
+      - uses: fscss-ttr/provchart-repo-stats@v1.1
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
           charts: overview,languages
