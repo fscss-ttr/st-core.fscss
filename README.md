@@ -3,12 +3,14 @@
 > Pure CSS statistical dashboard components for the FSCSS ecosystem.  
 > No JavaScript. No SVG. No canvas — just CSS doing the work.
 
+
 **MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)  
 Requires FSCSS **v1.1.24+**
 
 ---
 
-![ProvChart generated svg](/docs/charts/demo.svg)
+![Repo overview](./docs/charts/repo-overview.svg)
+![Languages](./docs/charts/languages.svg)
 
 ---
 
