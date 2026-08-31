@@ -27,7 +27,8 @@ jobs:
       - uses: fscss-ttr/provchart-repo-stats@v1.3
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
-          # defaults: overview=area (real counts), languages=hbar
+          overview-type: bar
+          languages-type: hbar
         env:
           PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
 
