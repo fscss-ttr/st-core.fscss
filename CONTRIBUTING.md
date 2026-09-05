@@ -4,6 +4,11 @@ Thanks for your interest in contributing. st-core is a focused module — a sing
 
 ---
 
+### READ [SOURCE CODE EXPLANATION](/EXPLAINED.md) 
+> Which provides a detailed explanation of the `st-core.fscss` mixins, outlining their purpose, usage, and the mechanisms involved. It serves as a guide for developers to understand the structure and functionality of the mixins without needing to delve into the compiler's internals.
+ 
+---
+
 ## Table of Contents
 
 1. [Project Structure](#1-project-structure)
