@@ -123,7 +123,7 @@ No redraw. No DOM manipulation. The browser repaints the polygon instantly.
 Add the FSCSS runtime to your page — it compiles `fscss` syntax in-browser as the page loads:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 ```
 
 > **Weight:** ~10 kb for the FSCSS runtime. st-core itself is fetched as a tiny ~5 kb `.fscss` source and compiled on first load. Subsequent loads are cached by the browser.
@@ -889,7 +889,7 @@ document.querySelector('.bar-equities')
 The smallest possible working chart — data, fill, line, nothing else.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core)
@@ -925,7 +925,7 @@ The smallest possible working chart — data, fill, line, nothing else.
 Use `@st-chart-dot` to manually place a single highlighted dot with a floating tooltip label — ideal for showing a selected value, a peak, or a live cursor.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core)
@@ -1023,7 +1023,7 @@ Use `@st-chart-dot` to manually place a single highlighted dot with a floating t
 Use `@st-chart-dots` to show all 8 data points at once, pinned to the line automatically. Highlight one specific dot with a tooltip.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core)
@@ -1104,7 +1104,7 @@ Use `@st-chart-dots` to show all 8 data points at once, pinned to the line autom
 ### Multi-line chart
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core)
@@ -1167,7 +1167,7 @@ Use `@st-chart-dots` to show all 8 data points at once, pinned to the line autom
 A complete phone-frame dashboard with stat card, line chart, all dots, grid, axes, and category bars.
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.1.24/exec.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core)
