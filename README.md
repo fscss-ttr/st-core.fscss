@@ -135,7 +135,9 @@ Then import st-core inside any `<style>` block:
 ```css
 /* Import every mixin */
 @import((*) from st-core)
-
+```
+Or
+```css
 /* Or use exec init style */
 @import(exec(_init st-core))
 ```
