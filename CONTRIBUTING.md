@@ -45,11 +45,11 @@ st-core.fscss/
 ├── static_demo.html            ←  static chart demo
 │
 ├── package.json                ←  FSCSS registry metadata
-├── st-core@2.fscss               ←  v2 extended 
+├── st-core@v2.fscss               ←  v2 extended 
 └── st-core.fscss               ←  core library source (all v1 starter mixins live here)
 ```
 
-The entire library is `st-core@2.fscss`. That's the only file you need to edit when adding or changing mixins to the st-core v2.
+The entire library is `st-core@v2.fscss`. That's the only file you need to edit when adding or changing mixins to the st-core v2.
 
 ---
 
