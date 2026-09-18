@@ -7,12 +7,12 @@
 **MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)  
 Requires FSCSS **v1.1.24+**
 
-**[SOURCE CODE EXPLANATION](/EXPLAINED.md)** 
+**[SOURCE CODE EXPLANATION](./EXPLAINED.md)** 
 
 ---
 
-![Repo overview](./docs/charts/repo-overview.svg)
-![Languages](./docs/charts/languages.svg)
+![Repo overview](../docs/charts/repo-overview.svg)
+![Languages](../docs/charts/languages.svg)
 
 ---
 
