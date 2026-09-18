@@ -1,0 +1,280 @@
+
+
+@define st-root(root:root){`
+:@use(root){
+/* colors */
+--st-bg: #0e0d14;
+--st-surface: #161422;
+--st-card: #1c1a2e;
+
+--st-accent: #9d7eff;
+--st-accent-2: #c4a8ff;
+--st-accent-dim: #3a2e6e;
+
+--st-green: #4fffb0;
+--st-red: #ff5e7d;
+
+--st-text: #e8e3ff;
+--st-muted: #6b6488;
+--st-border: rgba(157,126,255,.15);
+
+/* radius */
+--st-radius-xl: 40px;
+--st-radius-lg: 16px;
+--st-radius-md: 12px;
+--st-radius-sm: 10px;
+
+/* spacing */
+--st-pad: 24px;
+
+/* chart points (Y values only) */
+--st-p1: 68%;
+--st-p2: 59%;
+--st-p3: 70%;
+--st-p4: 35%;
+--st-p5: 58%;
+--st-p6: 22%;
+--st-p7: 42%;
+--st-p8: 55%;
+
+--st-peak-x: 71%;
+--st-peak-y: var(--st-p6);
+/* range */
+--st-cat-bar-fill-range: 0;
+/* line with */
+--st-chart-line-width: 1.5px;
+}
+`}
+/* normalize input */
+@define st-chart(p1: 88, p2: 59, p3: 70, p4: 35, p5: 58, p6: 22, p7: 42, p8: 55){
+--st-p1: num(100 - @use(p1))%;
+--st-p2: num(100 - @use(p2))%;
+--st-p3: num(100 - @use(p3))%;
+--st-p4: num(100 - @use(p4))%;
+--st-p5: num(100 - @use(p5))%;
+--st-p6: num(100 - @use(p6))%;
+--st-p7: num(100 - @use(p7))%;
+--st-p8: num(100 - @use(p8))%;
+}
+
+@define st-chart-points(p){`
+inline("
+@arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+
+empty{ /* preserve */}
+empty-@arr.@use(p)-idx[]{
+  $idx: @arr.@use(p)-idx[];
+  --st-p$idx: num(100 -@arr.@use(p)[$idx])%;
+}")
+`}
+
+@define st-container(st:body){` @use(st){ min-height: 100vh; background: var(--st-bg); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; color: var(--st-text); padding: var(--st-pad); } `}
+
+@define st-phone(st:.st-phone){`
+@use(st){
+width: 360px;
+background: var(--st-surface);
+border-radius: var(--st-radius-xl);
+border: 1px solid var(--st-border);
+overflow: hidden;
+
+box-shadow:
+0 0 0 1px rgba(157,126,255,.08),
+0 40px 80px rgba(0,0,0,.6),
+0 0 120px rgba(100,60,220,.12) inset;
+}
+`}
+
+
+@define st-chart-fill(st:.st-chart-fill, p){`
+@use(st){
+  position: absolute;
+  inset: 0;
+
+  /* Build index array from the same data array that was passed to st-chart-points */
+  
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+  clip-path: polygon(
+inline("{}
+    empty-@arr.@use(p)-idx[] {
+      
+      $i: @arr.@use(p)-idx[];
+      num( < $i! -1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
+    }
+    100% 100%,
+    0% 100%
+ }"));
+
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--st-accent) 35%, transparent),
+    transparent
+  );
+}
+`}
+
+@define st-chart-line-width(st){
+  --st-chart-line-width: @use(st);
+}
+
+@define st-chart-line(st:.st-chart-line, p){`
+@use(st){
+  position: absolute;
+  inset: 0;
+
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+  @arr @use(p)-reversed-idx[@arr.@use(p)-idx!.reverse]
+  
+  clip-path: polygon(
+    /* top edge (the visible stroke) */
+    inline("{}
+      empty-@arr.@use(p)-idx[] {
+        $i: @arr.@use(p)-idx[];
+        num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
+      }
+    ")
+    inline("{}
+      empty-@arr.@use(p)-reversed-idx[] reverse {
+        $i: @arr.@use(p)-reversed-idx[];
+        $isLast: equal($i, 1);
+        
+        num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1> )%
+          calc(var(--st-p$i) + var(--st-chart-line-width)), 
+      }
+    ")
+ -100% calc(var(--st-p1) + var(--st-chart-line-width)) );
+
+  background: var(--st-accent);
+}
+`}
+
+
+
+@define st-chart-dot(st:.st-chart-dot, x:0, y:0, size: 12px){`
+@use(st){ 
+  position: absolute; 
+left: calc( @use(x)% - 6px);
+top: calc(num(-<@use(y)> +100)% - 6px); %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent); }
+`}
+
+@define st-cat-bar-fill(st:.st-cat-bar-fill, range:0){`
+@use(st){
+--st-cat-bar-fill-range: @use(range)%;
+height: 100%;
+width: var(--st-cat-bar-fill-range);
+border-radius: 999px;
+
+background: linear-gradient(
+90deg,
+var(--st-accent),
+var(--st-accent-2)
+);
+transform-origin: left;
+}
+`}
+
+@define st-stat-card(st:.st-stat-card){`
+@use(st) {
+background: var(--st-card);
+border-radius: var(--st-radius-lg);
+border: 1px solid var(--st-border);
+padding: var(--st-pad);
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+@use(st) .st-stat-label {
+font-size: 11px;
+letter-spacing: .08em;
+text-transform: uppercase;
+color: var(--st-muted);
+}
+
+@use(st) .st-stat-value {
+font-size: 28px;
+font-weight: 700;
+color: var(--st-text);
+line-height: 1;
+}
+
+@use(st) .st-stat-delta {
+font-size: 12px;
+font-weight: 600;
+}
+
+@use(st) .st-stat-delta.up { color: var(--st-green); }
+@use(st) .st-stat-delta.down { color: var(--st-red); }
+`}
+
+@define st-chart-axis-x(st:.st-chart-axis-x){`
+@use(st){
+display: flex;
+justify-content: space-between;
+width: 100%;
+padding: var(--st-pad);
+font-size: 0.8em;
+color: var(--st-muted);
+}
+`}
+@define st-chart-axis-y(st:.y-axis){`
+@use(st){
+display: flex;
+flex-direction: column-reverse;
+justify-content: space-between;
+height: 100%;
+width: 100%;
+position: absolute;
+font-size: 0.5em;
+color: var(--st-muted);
+padding: 0;
+opacity: .8;
+}
+`}
+
+
+@define st-chart-grid(st:.st-chart-grid, rows:10, cols:7){`
+@use(st){
+position: absolute;
+width: 100%;
+height: 100%;
+background: repeating-linear-gradient(
+to bottom,
+$st-muted 0,
+$st-muted 1px,
+transparent 1px,
+transparent calc(100% / @use(rows))
+), repeating-linear-gradient(
+to right,
+$st-accent 0,
+$st-accent 1px,
+transparent 1px,
+transparent calc(100% / @use(cols))
+);
+opacity:.2;
+}`}
+
+
+@define st-chart-dots(st:.st-chart-dot-, p, size: 8px){`
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+empty{
+  /* preserve*/
+}
+  @use(st)@arr.@use(p)-idx[] {
+    $i: @arr.@use(p)-idx[];
+
+  position: absolute; 
+left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
+top: calc(num(-@arr.@use(p)[$i] +100)% - 6px); %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
+  }
+
+  empty{
+    /* preserve*/
+  }
+  @use(st)@arr.@use(p)-idx[] {
+    $i: @arr.@use(p)-idx[];
+    top: calc(var(--st-p$i) - 6px);
+  }
+`}
+
+
