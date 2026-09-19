@@ -45,7 +45,7 @@
 --st-chart-line-width: 1.5px;
 }
 `}
-/* normalize input */
+
 @define st-chart(p1: 88, p2: 59, p3: 70, p4: 35, p5: 58, p6: 22, p7: 42, p8: 55){
 --st-p1: num(100 - @use(p1))%;
 --st-p2: num(100 - @use(p2))%;
@@ -266,14 +266,6 @@ empty{
   position: absolute; 
 left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
 top: calc(num(-@arr.@use(p)[$i] +100)% - 6px); %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
-  }
-
-  empty{
-    /* preserve*/
-  }
-  @use(st)@arr.@use(p)-idx[] {
-    $i: @arr.@use(p)-idx[];
-    top: calc(var(--st-p$i) - 6px);
   }
 `}
 
