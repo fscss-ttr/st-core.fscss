@@ -6,7 +6,7 @@
 **MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)
 Requires FSCSS **v1.2.3+**
 
-**[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** | · **[LEGACY V1 DOCS](https://github.com/fscss-ttr/st-core.fscss/blob/main/v1/README.md)**
+**[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** · **[LEGACY V1 DOCS](https://github.com/fscss-ttr/st-core.fscss/blob/main/v1/README.md)**
 
 ---
 
@@ -79,6 +79,8 @@ st-core@v2 processes FSCSS array data to dynamically generate `clip-path: polygo
 
 The mixin reads the array length, computes horizontal steps (`0%, 11%, 22% ... 100%`), normalizes Y heights, and outputs standard CSS declarations.
 
+`@st-chart-fill` / `@st-chart-line` declare the **renderer** for a selector — the array they take just tells the renderer how many points to expect. The actual per-element Y values are written separately by `@st-chart-points(array)` on each element (container or child) — see [`@st-chart-points`](#st-chart-points) below. Any element that doesn't call it inherits the values from its nearest ancestor that did.
+
 ---
 
 ## 4. Installation
@@ -117,7 +119,10 @@ Initializes global CSS custom properties for theming, radii, and grid colors:
 
 ```css
 @st-root()        /* Targets :root */
-@st-root(body)    /* Targets custom scope */
+```
+Or
+```css
+@st-root(root.class...)    /* Targets custom scope */
 ```
 
 ---
@@ -153,6 +158,8 @@ Inverts array coordinates and writes normalized variable targets onto the contai
   @st-chart-points(myData)
 }
 ```
+
+This is the call that actually sets `--st-p1`…`--st-p{n}` on an element. Call it once per dataset you need — on the chart container for the default series, and again on any child that needs a different array (see the [multi-line example](#multi-line--multi-area-chart-with-opacity)).
 
 ### `@st-chart-fill`
 
@@ -203,10 +210,8 @@ Auto-generates positioning rules for every point marker in the array:
 Generates vertical and horizontal chart background lines:
 
 ```css
-/* @st-chart-grid(.chart-grid, rows: 10, cols: 7)
- example usage */
+/* selector, rows, cols */
 @st-chart-grid(.chart-grid, 10, 7)
-
 ```
 
 ### `@st-chart-axis-x` & `@st-chart-axis-y`
@@ -257,7 +262,7 @@ Renders stat cards with label, text, and change indicator styles:
 Renders progress bar component fills:
 
 ```css
-/* @st-cat-bar-fill(.bar-fill, range: 75) */
+/* selector, range */
 @st-cat-bar-fill(.bar-fill, 75)
 ```
 
@@ -286,7 +291,6 @@ Renders progress bar component fills:
   height: 200px;
   width: 100%;
   max-width: 400px;
-  max-width: 400px;
   background: var(--st-surface);
   border-radius: 16px;
 }
@@ -311,11 +315,11 @@ Renders progress bar component fills:
 @arr seriesA[30, 50, 75, 40, 85, 60]
 @arr seriesB[10, 25, 45, 20, 55, 30]
 
-/* Series A */
+/* Series A — renderer + points */
 @st-chart-fill(.fill-a, seriesA)
 @st-chart-line(.line-a, seriesA)
 
-/* Series B */
+/* Series B — renderer + points */
 @st-chart-fill(.fill-b, seriesB)
 @st-chart-line(.line-b, seriesB)
 
@@ -327,11 +331,29 @@ Renders progress bar component fills:
   background: var(--st-bg);
 }
 
-.fill-a { opacity: 0.6; --st-accent: #9d7eff; }
-.line-a { --st-accent: #9d7eff; }
+/* .fill-a / .line-a inherit seriesA from .chart, but set it
+   explicitly for clarity and to avoid relying on inheritance */
+.fill-a {
+  @st-chart-points(seriesA)
+  opacity: 0.6;
+  --st-accent: #9d7eff;
+}
+.line-a {
+  @st-chart-points(seriesA)
+  --st-accent: #9d7eff;
+}
 
-.fill-b { opacity: 0.3; --st-accent: #4fffb0; }
-.line-b { --st-accent: #4fffb0; }
+/* .fill-b / .line-b MUST set their own points — otherwise they
+   inherit .chart's seriesA values and render the wrong data */
+.fill-b {
+  @st-chart-points(seriesB)
+  opacity: 0.3;
+  --st-accent: #4fffb0;
+}
+.line-b {
+  @st-chart-points(seriesB)
+  --st-accent: #4fffb0;
+}
 </style>
 
 <div class="chart">
