@@ -1,66 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>st-core · Expenses Chart</title>
-  <!-- fscss runtime-->
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.0/runtime.min.js" async></script>
-  <!-- demo.fscss -->
-  <link type="style.fscss" href="./demo/src/demo.fscss">
-  
+  <title>st-core@v2 — release demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+  <link type="style/fscss" href="demo.fscss">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  
 </head>
-
 <body>
-  
   <div class="page">
-    
     <div class="page-header">
       <div class="page-title">Analytics</div>
-      <div class="page-badge">st-core demo</div>
+      <div class="page-badge">st-core@v2</div>
     </div>
-    
-    <!-- ── FSCSS MARKUP ── -->
-    <div class="wrapper">
-      
+
+    <div class="phone">
       <div class="stat-card">
         <div class="st-stat-label">TOTAL EXPENSES</div>
         <div class="st-stat-value">$1,326.03</div>
         <div class="st-stat-delta up">+5.1% vs last week</div>
       </div>
-      
-      <div class="chart">
+
+      <div class="chart" id="chart">
         <div class="chart-fill"></div>
         <div class="chart-line"></div>
-        <div class="chart-dot"><span class="tooltip">$405.67</span></div>
+        <div class="chart-dot"><span class="tooltip">$440.00</span></div>
         <div class="chart-grid"></div>
         <div class="y-axis">
-          <span>0</span><span>10</span><span>20</span><span>30</span>
-          <span>40</span><span>50</span><span>60</span><span>70</span>
-          <span>80</span><span>90</span><span>100</span>
+          <span>0</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span>
         </div>
       </div>
-      
-      <div class="x-axis days">
-        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
-        <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+
+      <div class="x-axis">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
       </div>
-      
     </div>
-    
-    <button class="update-btn">↻ Update chart</button>
-    
-    <div class="page-footer">Powered by <span>FSCSS</span> · Figsh Digital</div>
-    
+
+    <button type="button" class="update-btn" id="update">↻ Randomize series</button>
+    <p class="note">Pure CSS polygons from <code>@arr</code> · JS only writes <code>--st-p*</code></p>
+    <div class="page-footer">Powered by <span>FSCSS 1.2.3</span> · st-core@v2</div>
   </div>
-  
-  <script src="./demo/js/demo.js"></script>
+
+  <script>
+    const fill = document.querySelector('.chart-fill');
+    const line = document.querySelector('.chart-line');
+    const dot = document.querySelector('.chart-dot');
+    const n = 6;
+
+    const normalize = (v) => (100 - v) + '%';
+    const xAt = (i) => ((i / (n - 1)) * 100) + '%';
+
+    function applyPoints(points) {
+      const vars = points.map((v, i) => `--st-p${i + 1}: ${normalize(v)};`).join(' ');
+      fill.style.cssText = vars;
+      line.style.cssText = vars;
+
+      const peak = Math.max(...points);
+      const idx = points.indexOf(peak);
+      dot.style.top = normalize(peak);
+      dot.style.left = xAt(idx);
+      dot.querySelector('.tooltip').textContent = '$' + (peak * 5.5).toFixed(2);
+    }
+
+    document.getElementById('update').addEventListener('click', () => {
+      const points = Array.from({ length: n }, () => Math.floor(Math.random() * 70) + 20);
+      applyPoints(points);
+    });
+  </script>
 </body>
-
 </html>
-
-
