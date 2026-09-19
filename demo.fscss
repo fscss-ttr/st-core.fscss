@@ -1,0 +1,173 @@
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @import((*) from st-core@v2)
+
+    @st-root()
+    @st-container(body)
+    @st-phone(.phone)
+    @st-stat-card(.stat-card)
+    @st-chart-axis-x(.x-axis)
+    @st-chart-axis-y(.y-axis)
+    @st-chart-grid(.chart-grid, 10, 6)
+
+    @arr myData[56, 67, 70, 43, 67, 80]
+
+    @st-chart-fill(.chart-fill, myData)
+    @st-chart-line(.chart-line, myData)
+    @st-chart-dot(.chart-dot, 80, 80, 12px)
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(196, 168, 255, .04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(196, 168, 255, .04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 28px 20px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff;
+      letter-spacing: -.5px;
+    }
+    .page-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: #c4a8ff;
+      background: rgba(196, 168, 255, .12);
+      border: 1px solid rgba(196, 168, 255, .2);
+      padding: 4px 8px;
+      border-radius: 99px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .phone {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 22px;
+      width: 100%;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .chart {
+      width: 100%;
+      height: 200px;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      background: var(--st-surface);
+      border: 1px solid rgba(255, 255, 255, .06);
+      @st-chart-points(myData)
+    }
+
+    .chart-fill,
+    .chart-line {
+      height: 100%;
+      transition: clip-path .9s cubic-bezier(.4, 0, .2, 1);
+    }
+    .chart-line {
+      @st-chart-line-width(2px);
+      filter: drop-shadow(0 0 8px var(--st-accent));
+    }
+    .chart-fill { opacity: .85; }
+
+    .chart-dot {
+      transition: top .9s cubic-bezier(.4, 0, .2, 1), left .9s cubic-bezier(.4, 0, .2, 1);
+      overflow: visible;
+      z-index: 3;
+    }
+    .chart-dot .tooltip {
+      background: var(--st-accent);
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #0a0a0f;
+      border-radius: 8px;
+      position: absolute;
+      top: -40px;
+      left: -26px;
+      white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+    }
+    .chart-dot::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--st-accent);
+      transform: rotate(45deg);
+      position: absolute;
+      top: -18px;
+      left: 2px;
+    }
+
+    .stat-card {
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 16px;
+    }
+
+    .x-axis {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+    }
+
+    .update-btn {
+      align-self: flex-start;
+      background: transparent;
+      color: #c4a8ff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1.5px solid rgba(196, 168, 255, .4);
+      font-weight: 500;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .5px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .update-btn:hover {
+      background: rgba(196, 168, 255, .1);
+      border-color: #c4a8ff;
+      color: #fff;
+    }
+
+    .page-footer {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: rgba(255, 255, 255, .2);
+      letter-spacing: .5px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .page-footer span { color: rgba(196, 168, 255, .45); }
+
+    .note {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: rgba(255, 255, 255, .35);
+      line-height: 1.45;
+    }
