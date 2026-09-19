@@ -61,7 +61,7 @@ This document walks through every `@define` in the source, in the order they app
 `}
 ```
 
-- **`root` parameter defaults to `root`**, meaning a bare `@st-root()` targets `:root`. Pass a selector (`@st-root(.wrapper)`) to scope the whole token set to a subtree instead — useful for a themed card sitting inside a page with a different palette.
+- **`root` parameter defaults to `root`**, meaning a bare `@st-root()` targets `:root`. Pass a selector (`@st-root(root.wrapper)`) to scope the whole token set to a subtree instead — useful for a themed card sitting inside a page with a different palette.
 - Every color, radius, and spacing value the rest of the library references is defined here as a CSS custom property. Nothing downstream hardcodes a color; they all read `var(--st-*)`.
 - **`--st-p1` through `--st-p8` ship with default values.** This is a safety net: if you use a component that reads `--st-p$i` before anything has written to it (skipped `@st-chart-points` by mistake), you get a plausible-looking placeholder shape instead of a broken layout.
 - `--st-peak-x` / `--st-peak-y` are convenience tokens for annotating a single standout point (e.g. positioning a callout dot at the chart's highest value) — `--st-peak-y` even aliases `--st-p6` as a worked example.
