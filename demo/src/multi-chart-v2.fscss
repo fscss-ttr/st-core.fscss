@@ -104,9 +104,11 @@
      (swap these for any number of points,
      no fixed 8-value limit)
   ══════════════════════════════════════ */
-  @arr revenue[20, 25, 21, 37, 30, 60, 27, 50]
+  @arr revenue[40, 25, 21, 37, 30, 60, 27, 50]
   @arr sessions[10, 20, 16, 15, 66, 50, 80, 54]
   @arr signups[5, 39, 20, 30, 27, 70, 60, 70]
+
+  @st-chart-line(.chart-line, revenue)
 
   /* ── Chart canvas ── */
   .chart {
@@ -116,33 +118,32 @@
     @st-chart-points(revenue)
   }
 
-  /* v2: each line gets its own renderer call + its own array */
-  @st-chart-line(.line-1, revenue)
-  @st-chart-line(.line-2, sessions)
-  @st-chart-line(.line-3, signups)
-
-  .chart-line {
-    @st-chart-line-width(2.5px);
-  }
-
-  /* ── Lines ── */
+  /* v2: one shared renderer (.chart-line) — each line just
+     writes its own --st-p vars via @st-chart-points */
   .line-1 {
+    @st-chart-points(revenue)
     background: #32D8D4;
     filter: drop-shadow(0 0 4px rgba(50,216,212,0.4));
   }
 
   .line-2 {
+    @st-chart-points(sessions)
     background: #E8A030;
     filter: drop-shadow(0 0 4px rgba(232,160,48,0.3));
   }
 
   .line-3 {
+    @st-chart-points(signups)
     background: #B840C8;
     filter: drop-shadow(0 0 4px rgba(184,64,200,0.3));
   }
 
+  .chart-line {
+    @st-chart-line-width(2.5px);
+  }
+
   /* ── Grid ── */
-  @st-chart-grid(.chart-grid, rows: 10, cols: 7)
+  @st-chart-grid(.chart-grid, 10, 7)
   /* Y Axis */
   @st-chart-axis-y(.y-axis)
   /* ── X Axis ── */
