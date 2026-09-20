@@ -1,0 +1,13 @@
+{
+  "name": "st-core-svelte-sample",
+  "private": true,
+  "version": "1.0.0",
+  "description": "st-core@v2 + Svelte compiled integration sample",
+  "scripts": {
+    "build:st-core": "fscss src/styles/st-core.fscss src/styles/st-core.css",
+    "prebuild": "npm run build:st-core"
+  },
+  "devDependencies": {
+    "fscss": "^1.2.3"
+  }
+}
