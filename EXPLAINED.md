@@ -392,11 +392,6 @@ No polygons here — the grid is two stacked `repeating-linear-gradient`s doing 
     background: #fff;
     border: 2.5px solid var(--st-accent);
   }
-
-  @use(st)@arr.@use(p)-idx[] {
-    $i: @arr.@use(p)-idx[];
-    top: calc(var(--st-p$i) - 6px);
-  }
 `}
 ```
 
