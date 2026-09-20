@@ -1,0 +1,24 @@
+@import((*) from st-core@v2)
+
+@st-root()
+
+/* Compile-time length template (7 points). Svelte overwrites --st-pN. */
+@arr chartData[0, 0, 0, 0, 0, 0, 0]
+
+@st-chart-fill(.chart-fill, chartData)
+@st-chart-line(.chart-line, chartData)
+
+.chart {
+  @st-chart-points(chartData)
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: var(--st-surface);
+  border-radius: var(--st-radius-lg);
+  overflow: hidden;
+}
+
+.chart-fill,
+.chart-line {
+  transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
