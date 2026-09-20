@@ -42,7 +42,7 @@ Requires FSCSS **v1.2.3+**
     - [Full Mobile Dashboard Frame](#full-mobile-dashboard-frame)
 11. [Design Token Reference](#11-design-token-reference)
 12. [Performance & SEO](#12-performance--seo)
-
+13. [Integrations](#13-integrations) 
 ---
 
 ## 1. What is st-core v2?
@@ -84,6 +84,8 @@ The mixin reads the array length, computes horizontal steps (`0%, 11%, 22% ... 1
 ---
 
 ## 4. Installation
+
+**See [integration and templates](integration/)**
 
 ### CDN / Runtime Mode
 
@@ -520,6 +522,19 @@ Renders progress bar component fills:
 - **Zero Hydration Overhead** — Pure CSS charts require zero JS initialization before rendering.
 - **Low Compiled Size** — Compiles to lightweight CSS shapes and variables (~0.8 kb minified).
 - **GPU-Accelerated Transitions** — Animating dataset updates through CSS custom properties leverages browser composite threads.
+
+---
+
+## 13. Integrations
+
+Official samples **[integration/](./integration/)**
+
+| Folder | Stack | Notes |
+|--------|--------|--------|
+| integration/html | HTML + JS | Runtime or compiled CSS |
+| integration/svelte | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` |
+
+**Add your stack:** See [integration/README.md](integration/README.md) …
 
 ---
 
