@@ -416,3 +416,14 @@ Across every chart mixin in this file, the split is consistent:
 | Line/fill/dot **values** | `@st-chart-points(array)` | Writes, on whichever element calls it |
 
 Every renderer mixin needs the array purely to know *how many* points to loop over. The array's actual values only ever reach the page through `--st-p1`…`--st-p{n}`, and those variables are inherited down the DOM like any other custom property. That's the entire reason a multi-series chart requires `@st-chart-points(seriesN)` on each series' own element — skip it, and that element silently inherits whatever its nearest ancestor last set.
+
+## Integrations
+
+Official samples … **[integration/](./integration/)**
+
+| Folder | Stack | Notes |
+|--------|--------|--------|
+| integration/html | HTML + JS | Runtime or compiled CSS |
+| integration/svelte | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` |
+
+**Add your stack:** See [integration/README.md](integration/README.md)
