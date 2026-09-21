@@ -386,7 +386,7 @@ No polygons here — the grid is two stacked `repeating-linear-gradient`s doing 
     $i: @arr.@use(p)-idx[];
     position: absolute;
     left: calc(num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
-    top: calc(num(-@arr.@use(p)[$i] + 100)% - 6px);
+    top: calc(var(--st-p$i) - 6px);
     %2(width, height[: @use(size);])
     border-radius: 50%;
     background: #fff;
