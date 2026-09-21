@@ -265,8 +265,11 @@ empty{
 
   position: absolute; 
 left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
-top: calc(num(-@arr.@use(p)[$i] +100)% - 6px); %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
+top: calc(var(--st-p$i) - 6px); 
+%2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
   }
 `}
+
+
 
 
