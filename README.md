@@ -92,7 +92,7 @@ The mixin reads the array length, computes horizontal steps (`0%, 11%, 22% ... 1
 Include the **FSCSS v1.2.3+** runtime in your document:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
 ```
 
 Then import st-core@v2 directly inside your `<style>` block:
@@ -275,7 +275,7 @@ Renders progress bar component fills:
 ### Simple Minimal Demo
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core@v2)
@@ -307,7 +307,7 @@ Renders progress bar component fills:
 ### Multi-Line & Multi-Area Chart (with Opacity)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
 
 <style>
 @import((*) from st-core@v2)
@@ -373,7 +373,7 @@ Renders progress bar component fills:
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
     @st-root()
@@ -429,7 +429,7 @@ Renders progress bar component fills:
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.3/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
 
