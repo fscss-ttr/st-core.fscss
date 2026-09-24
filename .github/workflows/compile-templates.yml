@@ -1,0 +1,59 @@
+# Compile FSCSS templates (admin-dashboard and future packs)
+name: Compile templates
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'templates/**/*.fscss'
+      - '.github/workflows/compile-templates.yml'
+  pull_request:
+    paths:
+      - 'templates/**/*.fscss'
+      - '.github/workflows/compile-templates.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install FSCSS CLI
+        run: npm install -g fscss@1.2.4
+
+      - name: Compile admin-dashboard
+        working-directory: templates/admin-dashboard
+        run: |
+          fscss dashboard.fscss dashboard.css
+          echo "Compiled dashboard.css ($(wc -c < dashboard.css) bytes)"
+          head -c 200 dashboard.css || true
+
+      - name: Upload compiled CSS (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-dashboard-css
+          path: templates/admin-dashboard/dashboard.css
+
+      # Commit CSS back on main so Pages / hub can serve it without a local build
+      - name: Commit compiled CSS
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add templates/admin-dashboard/dashboard.css
+          if git diff --staged --quiet; then
+            echo "No CSS changes to commit"
+          else
+            git commit -m "chore: compile templates/admin-dashboard/dashboard.css [skip ci]"
+            git push
+          fi
