@@ -1,3 +1,4 @@
+/* dashboard style */
     @import((*) from st-core@v2)
     @import((*) from circle-progress)
     @import((*) from icon-mask)
