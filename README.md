@@ -1,3 +1,11 @@
+<meta
+  name="description"
+  content="Lightweight data visualizations with st-core.fscss, a CSS-based charting system."
+/>
+<meta
+  name="keywords"
+  content="st-core v2, st-core.fscss, CSS charts, pure CSS charts, FSCSS, data visualization"
+/>
 # st-core.fscss
 
 > Pure CSS statistical dashboard components for the FSCSS ecosystem.
