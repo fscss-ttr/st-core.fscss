@@ -1,6 +1,6 @@
 # Admin dashboard template
 
-[![Template Preview](templates/admin-dashboard/preview.jpg)](https://hub.devtem.org/st-core.fscss/templates/admin-dashboard/)
+[![Template Preview](preview.jpg)](https://hub.devtem.org/st-core.fscss/templates/admin-dashboard/)
 
 HTML + FSCSS template built on:
 
