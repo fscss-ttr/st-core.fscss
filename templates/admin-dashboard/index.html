@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Figsh Admin Dashboard — st-core template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Runtime preview (dev). Production: compile dashboard.fscss → dashboard.css -->
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
+  <link type="text/fscss" href="dashboard.fscss">
+  <!-- After CLI compile, prefer:
+  <link rel="stylesheet" href="dashboard.css">
+  -->
+</head>
+<body>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <span class="icon icon-chart"></span>
+      Figsh
+    </div>
+    <nav class="nav">
+      <a href="#" class="active"><span class="icon icon-home"></span> Dashboard</a>
+      <a href="#"><span class="icon icon-chart"></span> Analytics</a>
+      <a href="#"><span class="icon icon-messages"></span> Messages</a>
+      <a href="#"><span class="icon icon-users"></span> Customers</a>
+      <a href="#"><span class="icon icon-files"></span> Products</a>
+      <a href="#"><span class="icon icon-tasks"></span> Orders</a>
+      <a href="#"><span class="icon icon-reports"></span> Reports</a>
+      <a href="#"><span class="icon icon-settings"></span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" style="display:flex;align-items:center;gap:12px;padding:11px 14px;color:var(--st-muted);text-decoration:none;font-size:0.92rem;">
+        <span class="icon icon-logout"></span> Logout
+      </a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu" type="button">
+          <span class="icon icon-tasks"></span>
+        </button>
+        <h1>Analytics Overview</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="icon-btn"><span class="icon icon-search"></span></div>
+        <div class="icon-btn">
+          <span class="icon icon-notifications"></span>
+          <span class="badge-dot"></span>
+        </div>
+        <div class="profile">
+          <button class="profile-btn" id="profileBtn" type="button">
+            <div class="avatar">F</div>
+            Figsh
+            <span class="icon icon-times" style="transform:rotate(45deg);width:14px;height:14px;"></span>
+          </button>
+          <div class="dropdown" id="profileDropdown">
+            <a href="#"><span class="icon icon-profile"></span> Profile</a>
+            <a href="#"><span class="icon icon-settings"></span> Settings</a>
+            <a href="#"><span class="icon icon-support"></span> Support</a>
+            <a href="#"><span class="icon icon-logout"></span> Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">Total Sales</div>
+        <div class="value">$48,290</div>
+        <div class="delta up">↑ 12.5% vs last week</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Orders</div>
+        <div class="value">1,842</div>
+        <div class="delta up">↑ 8.2%</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Products</div>
+        <div class="value">326</div>
+        <div class="delta down">↓ 2.1%</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Customers</div>
+        <div class="value">9,471</div>
+        <div class="delta up">↑ 5.4%</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="chart-header">
+          <div>
+            <div class="card-title">Revenue</div>
+            <div class="card-sub">Gross revenue by day</div>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-range="7d" type="button">7d</button>
+            <button class="tab" data-range="30d" type="button">30d</button>
+            <button class="tab" data-range="90d" type="button">90d</button>
+          </div>
+        </div>
+        <div class="legend"><span class="rev">Revenue</span></div>
+        <div class="chart-wrap">
+          <div class="y-labels">
+            <span>$6.5k</span><span>$5.5k</span><span>$4.5k</span><span>$3.5k</span>
+          </div>
+          <div class="chart" id="revenueChart">
+            <div class="rev-fill"></div>
+            <div class="rev-line"></div>
+            <div class="rev-grid"></div>
+          </div>
+          <div class="x-labels" id="xLabels">
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:24px;">
+        <div class="card">
+          <div class="card-title">Traffic Sources</div>
+          <div class="card-sub">Where your visitors came from</div>
+          <div class="traffic-body">
+            <div class="traffic-pie">
+              <div class="pie-center">
+                <div><strong>100</strong><br><span>Total</span></div>
+              </div>
+            </div>
+            <div class="traffic-legend">
+              <div><span class="dot green"></span> Direct <span class="pct">45%</span></div>
+              <div><span class="dot blue"></span> Organic <span class="pct">30%</span></div>
+              <div><span class="dot purple"></span> Social <span class="pct">15%</span></div>
+              <div><span class="dot orange"></span> Referral <span class="pct">10%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Goals</div>
+          <div class="card-sub">Quarterly progress</div>
+          <div class="goals-list">
+            <div class="goal-item">
+              <div class="goal-head"><span>Users</span><span>847 / 1000</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:84.7%"></div></div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-head"><span>Revenue Target</span><span>34.5k / 50k</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:69%"></div></div>
+            </div>
+            <div class="goal-item">
+              <div class="goal-head"><span>Conversion</span><span>62 / 80</span></div>
+              <div class="bar-track"><div class="bar-fill" style="width:77.5%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Messages</div>
+        <div class="card-sub">Recent conversations</div>
+        <div class="list">
+          <div class="list-item">
+            <div class="avatar-sm">A</div>
+            <div class="meta">
+              <div class="name">Alex Rivera</div>
+              <div class="msg">Hey, can we schedule a call about the new campaign?</div>
+            </div>
+            <div class="time">2m</div>
+          </div>
+          <div class="list-item">
+            <div class="avatar-sm">S</div>
+            <div class="meta">
+              <div class="name">Sarah Chen</div>
+              <div class="msg">Invoice #4821 has been paid. Thanks!</div>
+            </div>
+            <div class="time">18m</div>
+          </div>
+          <div class="list-item">
+            <div class="avatar-sm">M</div>
+            <div class="meta">
+              <div class="name">Marcus Lee</div>
+              <div class="msg">The product images look great. Approved.</div>
+            </div>
+            <div class="time">1h</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+        <div class="card-sub">Latest system events</div>
+        <div class="list">
+          <div class="list-item">
+            <div class="avatar-sm" style="background:#166534;">✓</div>
+            <div class="meta">
+              <div class="name">Order #9842 completed</div>
+              <div class="msg">Customer paid $249.00</div>
+            </div>
+            <div class="time">5m</div>
+          </div>
+          <div class="list-item">
+            <div class="avatar-sm" style="background:#1e3a8a;">↑</div>
+            <div class="meta">
+              <div class="name">New product added</div>
+              <div class="msg">"Wireless Earbuds Pro" is now live</div>
+            </div>
+            <div class="time">32m</div>
+          </div>
+          <div class="list-item">
+            <div class="avatar-sm" style="background:#4c1d95;">★</div>
+            <div class="meta">
+              <div class="name">5-star review received</div>
+              <div class="msg">From customer @jennyk</div>
+            </div>
+            <div class="time">1h</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="card-title">Sales Data</div>
+        <div class="card-sub">View detailed records</div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th><th>Source</th><th>Visitors</th><th>Orders</th><th>Revenue</th><th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Sep 23</td><td>Direct</td><td>1,240</td><td>86</td><td>$6,420</td><td><span class="badge up">+12%</span></td></tr>
+              <tr><td>Sep 22</td><td>Organic</td><td>980</td><td>64</td><td>$5,110</td><td><span class="badge up">+8%</span></td></tr>
+              <tr><td>Sep 21</td><td>Social</td><td>640</td><td>41</td><td>$3,280</td><td><span class="badge down">-3%</span></td></tr>
+              <tr><td>Sep 20</td><td>Referral</td><td>410</td><td>29</td><td>$2,150</td><td><span class="badge up">+5%</span></td></tr>
+              <tr><td>Sep 19</td><td>Direct</td><td>1,080</td><td>72</td><td>$5,890</td><td><span class="badge up">+9%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
