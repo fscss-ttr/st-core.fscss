@@ -14,7 +14,11 @@
 **MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)
 Requires FSCSS **v1.2.3+**
 
-**[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** · **[LEGACY V1 DOCS](https://github.com/fscss-ttr/st-core.fscss/blob/main/v1/README.md)**
+**[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** · **[TEMPLATES](https://github.com/fscss-ttr/st-core.fscss/blob/main/templates/)**
+
+---
+
+[![Template Preview](/templates/admin-dashboard/preview.jpg)](https://hub.devtem.org/st-core.fscss/templates/admin-dashboard/)
 
 ---
 
