@@ -1,5 +1,7 @@
 # Admin dashboard template
 
+Preview: https://hub.devtem.org/st-core.fscss/templates/admin-dashboard/
+
 [![Template Preview](preview.jpg)](https://hub.devtem.org/st-core.fscss/templates/admin-dashboard/)
 
 HTML + FSCSS template built on:
