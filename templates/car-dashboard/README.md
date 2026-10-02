@@ -96,6 +96,32 @@ Also worth knowing: **a failed remote import still reports `✔ Compiled`**, emi
 
 ---
 
+## Range-switch animation
+
+Switching 7D / 30D / 90D replays a staggered sequence. **No JS re-trigger is needed** — the outgoing range drops `.is-active` and becomes `display:none`, the incoming one gains it and flips to `display:block`, and a display change restarts keyframes.
+
+| Element | Animation | Timing |
+|---------|-----------|--------|
+| `.speed-grid-*` | fade the plot area in | 420 ms `ease-out`, no delay |
+| `.speed-fill-*` | grow up out of the baseline | 560 ms `cubic-bezier(.22,1,.36,1)` |
+| `.speed-line-*` | draw in from the left | 620 ms, 80 ms delay |
+| `.peak` | pop, after the line lands | 420 ms spring, 430 ms delay |
+| `.axis-y` / `.axis-x` | fade labels in | 380 ms, 220 ms delay |
+
+Every rule uses `backwards` fill-mode. That is load-bearing: the delays are staggered, so without it an element sits at **full opacity** for its whole delay and then snaps to its from-state. The existing `prefers-reduced-motion` block neutralises all of it.
+
+### Shorthands used (fscss 1.2.5)
+
+`anim:` → `animation`, `trans:` → `transition`, `tf:` → `transform`. All three expand correctly, including `tf:` inside at-rule bodies.
+
+Two things the 1.2.5 README documents that do **not** work as written, so this template avoids both:
+
+1. **The `()` keyframes-with-selector form is broken.** `$(@keyframes rise, .sel, &[420ms ease])` compiles to
+   `rise, .sel, {animation:rise 420ms ease;}@keyframes rise` — the name leaks out as a dangling selector, so the animation lands in a rule that can never match. Plain `@keyframes` is emitted at top level with zero cruft and is used instead.
+2. **At-rule names are parsed out of comments.** Writing `@keyframes` inside a `/* */` comment makes fscss hoist the surrounding *prose* into the output as a bogus at-rule — and it consumes the comment terminator, corrupting everything after it. Comments in this file avoid naming at-rules.
+
+---
+
 ## Icons
 
 This template keeps **inline stroked SVG** rather than [icon-mask](https://github.com/fscss-ttr/icon-mask.fscss), unlike [budget-app](../budget-app/). Two reasons:

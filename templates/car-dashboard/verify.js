@@ -67,18 +67,80 @@ for (const m of new Set([...js.matchAll(/\$\("#([\w-]+)"\)/g)].map(x => x[1]))) 
 }
 
 console.log("\n=== per-range CSS geometry ===");
+// Brace-aware block scan. The chart helpers emit their rules NESTED inside
+// the range container (.speed-7d { .speed-fill-7d { clip-path: ... } }),
+// and a selector can appear in several rules at once (a grouped animation
+// rule listed before the geometry rule). So neither a regex over
+// `sel { ... }` nor indexOf(sel) + next "polygon(" is safe: the first
+// silently reports a different range's polygon, the second cannot span
+// nested braces. Collect every block with its own selector + body, then
+// take the one that both owns the selector and carries the polygon.
+const blocks = [];
+{
+  const src = css.replace(/\/\*[\s\S]*?\*\//g, " "); // comments may hold braces/quotes
+  let depth = 0, selStart = 0;
+  for (let i = 0; i < src.length; i++) {
+    const ch = src[i];
+    if (ch === "{") {
+      const sel = src.slice(selStart, i).trim();
+      let d = 0, j = i;
+      for (; j < src.length; j++) {
+        if (src[j] === "{") d++;
+        else if (src[j] === "}") { d--; if (!d) break; }
+      }
+      blocks.push({ sel, body: src.slice(i + 1, j) });
+      // Record the block but keep scanning INSIDE it, otherwise nested
+      // rules (which is where the chart helpers live) are never visited.
+      selStart = i + 1;
+      continue;
+    }
+    if (ch === "}") { depth = 0; selStart = i + 1; }
+    else if (ch === ";" && depth === 0) selStart = i + 1;
+  }
+}
 const poly = (sel) => {
-  const i = css.indexOf(sel); if (i < 0) return null;
-  const s = css.indexOf("polygon(", i); if (s < 0) return null;
-  let d = 0, j = s + 7;
-  while (j < css.length) { if (css[j] === "(") d++; else if (css[j] === ")") { d--; if (!d) break; } j++; }
-  return css.slice(s + 8, j).split(",").filter(s => s.trim()).length;
+  for (const b of blocks) {
+    if (!b.sel.split(",").some((s) => s.trim() === sel)) continue;
+    const s = b.body.indexOf("polygon(");
+    if (s < 0) continue;
+    let d = 0, j = s + 7;
+    while (j < b.body.length) { if (b.body[j] === "(") d++; else if (b.body[j] === ")") { d--; if (!d) break; } j++; }
+    return b.body.slice(s + 8, j).split(",").filter((x) => x.trim()).length;
+  }
+  return null;
 };
 const exp = { "7d": [9, 15], "30d": [12, 21], "90d": [14, 25] };
 for (const k of ["7d", "30d", "90d"]) {
   const f = poly(".speed-fill-" + k), l = poly(".speed-line-" + k);
   ok(f === exp[k][0] && l === exp[k][1], k + ": fill " + f + " (exp " + exp[k][0] + "), line " + l + " (exp " + exp[k][1] + ")");
 }
+
+console.log("\n=== range-switch animation ===");
+for (const k of ["chartGridIn", "chartFillIn", "chartLineIn", "chartPeakIn", "chartAxisIn"]) {
+  ok(css.includes("@keyframes " + k), "declares " + k);
+}
+// `backwards` matters: the delays are staggered, so without it an element
+// sits at full opacity for its whole delay instead of holding from-state.
+const animRule = (sel) => {
+  const b = blocks.find((x) => x.sel.split(",").some((s) => s.trim() === sel) && /animation:/.test(x.body));
+  return b ? b.body : "";
+};
+for (const [sel, name] of [[".speed-fill-7d", "chartFillIn"], [".speed-line-7d", "chartLineIn"], [".speed-grid-7d", "chartGridIn"]]) {
+  const body = animRule(sel);
+  ok(new RegExp("animation:\\s*" + name + "\\b").test(body) && /backwards/.test(body),
+     sel + " animates " + name + " with backwards fill");
+}
+ok(/transform-origin:\s*50%\s+100%/.test(animRule(".speed-fill-7d")), "fill scales from the baseline");
+const peakBody = blocks.find((x) => x.sel === ".peak" && /animation:/.test(x.body))?.body || "";
+ok(/animation:\s*chartPeakIn\b/.test(peakBody) && /backwards/.test(peakBody), "peak pops in with backwards fill");
+ok(/transition:/.test(peakBody) && /left/.test(peakBody) && /top/.test(peakBody), "peak glides on left/top");
+ok(/@media \(prefers-reduced-motion: reduce\)/.test(css), "reduced-motion block still present");
+// fscss parses at-rule names out of comments and hoists them as real
+// rules, so a comment mentioning one silently corrupts the output.
+const declared = new Set([...css.matchAll(/@keyframes\s+([a-zA-Z-]+)/g)].map((x) => x[1]));
+const expected = new Set(["badge", "chartAxisIn", "chartFillIn", "chartGridIn", "chartLineIn", "chartPeakIn", "drop", "halo", "ping", "rise"]);
+const bogus = [...declared].filter((k) => !expected.has(k));
+ok(bogus.length === 0, "no keyframes hoisted out of comments" + (bogus.length ? " -> " + bogus.join(", ") : ""));
 
 console.log("\n=== regression guards ===");
 ok(!/:has\(/.test(css), "no :has()");

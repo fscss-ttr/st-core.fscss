@@ -422,6 +422,80 @@ body.nav-open .scrim{ opacity: 1; visibility: visible; }
   100%{ transform: scale(2.1); opacity: 0; }
 }
 
+/* ------------------------------------------------------------------
+   Range-switch animation
+
+   No JS re-trigger is needed. The outgoing range drops .is-active and
+   becomes display:none, the incoming one gains it and flips to
+   display:block, and a display change restarts keyframes - so each
+   switch replays the sequence from zero.
+
+   Delays are staggered and every rule uses `backwards`, so an element
+   holds its from-state while it waits instead of flashing at full
+   opacity first. The global prefers-reduced-motion block further down
+   already neutralises all of this.
+
+   Shorthands (fscss 1.2.5) used below: anim, trans, tf.
+
+   The keyframe bodies below are deliberately written as plain at-rules
+   rather than the dollar-paren form the 1.2.5 README documents for
+   keyframes with a target selector. That form compiles incorrectly in
+   1.2.5: it emits the keyframe name as a dangling selector and puts
+   the animation shorthand in a rule that can never match. Plain
+   at-rules are emitted at top level with zero cruft, so that form is
+   avoided until the compiler side is fixed. It also means this comment
+   must avoid naming the at-rule directly - fscss parses at-rule names
+   out of comments and hoists them into the output as real rules.
+   ------------------------------------------------------------------ */
+
+/* plot area arrives first */
+@keyframes chartGridIn{
+  from{ opacity: 0; }
+  to  { opacity: .2; }
+}
+/* fill grows up out of the baseline */
+@keyframes chartFillIn{
+  from{ opacity: 0; tf: translateY(10px) scaleY(.55); }
+  60% { opacity: 1; }
+  to  { opacity: 1; tf: translateY(0) scaleY(1); }
+}
+/* line draws across, just behind the fill */
+@keyframes chartLineIn{
+  from{ opacity: 0; tf: translateX(-16px); }
+  to  { opacity: 1; tf: translateX(0); }
+}
+/* peak pops once the line has landed */
+@keyframes chartPeakIn{
+  0%  { opacity: 0; tf: scale(.25); }
+  65% { opacity: 1; tf: scale(1.4); }
+  100%{ opacity: 1; tf: scale(1); }
+}
+@keyframes chartAxisIn{
+  from{ opacity: 0; }
+  to  { opacity: 1; }
+}
+
+.speed-grid-7d, .speed-grid-30d, .speed-grid-90d{
+  anim: chartGridIn 420ms ease-out backwards;
+}
+.speed-fill-7d, .speed-fill-30d, .speed-fill-90d{
+  transform-origin: 50% 100%;
+  anim: chartFillIn 560ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+.speed-line-7d, .speed-line-30d, .speed-line-90d{
+  anim: chartLineIn 620ms cubic-bezier(0.22, 1, 0.36, 1) 80ms backwards;
+}
+.peak{
+  /* glides when the peak moves within a range (e.g. refreshed data) */
+  trans: left 420ms cubic-bezier(0.22, 1, 0.36, 1),
+         top 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  anim: chartPeakIn 420ms cubic-bezier(0.34, 1.56, 0.64, 1) 430ms backwards;
+}
+.range.is-active .axis-y,
+.range.is-active .axis-x{
+  anim: chartAxisIn 380ms ease-out 220ms backwards;
+}
+
 .axis-x{
   display: flex;
   justify-content: space-between;
