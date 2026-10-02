@@ -103,7 +103,6 @@ This template keeps **inline stroked SVG** rather than [icon-mask](https://githu
 - `icon-mask` covers 4 of the 7 nav icons here (`@icon-chart`, `@icon-clock`, `@icon-alert`, `@icon-settings`) but has no bolt, thermometer or tyre. Substituting generic icons would lose the vehicle-specific meaning.
 - `icon-mask` renders as a mask image tinted with `background-color`, while these icons are 2px stroked outlines. Mixing the two in one nav produces visibly inconsistent weight.
 
-Happy to switch if the icon set grows, or to split nav into icon-mask + inline if maintainers prefer the dependency.
 
 ---
 
