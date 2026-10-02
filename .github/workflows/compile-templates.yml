@@ -44,7 +44,7 @@ jobs:
           echo "Compiled budget.css ($(wc -c < budget.css) bytes)"
 
       - name: Compile car-dashboard
-        working-directory: template/car-dashboard
+        working-directory: templates/car-dashboard
         run: |
           fscss car.fscss car.css
           echo "Compiled car.css ($(wc -c < car.css) bytes)"
