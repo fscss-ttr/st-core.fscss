@@ -12,6 +12,8 @@ npx fscss@1.2.5 dashboard.fscss dashboard.css
 
 Hub preview: [https://hub.devtem.org/st-core.fscss/templates/live-shift/](https://hub.devtem.org/st-core.fscss/templates/live-shift/)
 
+[![Template Preview](/templates/live-shift/live-shift.jpg)](https://hub.devtem.org/st-core.fscss/templates/live-shift/)
+
 ## Files
 
 | File | Role |
