@@ -3,13 +3,13 @@ Ready-made UI samples using **st-core@v2** and related FSCSS modules.
 
 ---
 
-[![Template Preview](/templates/budget-app/budget.jpg)](/templates/budget-app/)
+- [![Template Preview](/templates/budget-app/budget.jpg)](/templates/budget-app/) 
 
-[![Template Preview](/templates/admin-dashboard/preview.jpg)](/templates/admin-dashboard/)
+- [![Template Preview](/templates/admin-dashboard/preview.jpg)](/templates/admin-dashboard/)
 
-[![Template Preview](/templates/car-dashboard/car.jpg)](/templates/car-dashboard/)
+- [![Template Preview](/templates/car-dashboard/car.jpg)](/templates/car-dashboard/)
 
-
+- [![Template Preview](/templates/live-shift/live-shift.jpg)](/templates/live-shift/)
 
 ---
 
@@ -28,3 +28,5 @@ Preview admin dashboard: https://hub.devtem.org/st-core.fscss/templates/admin-da
 
 FIGSHBudget — dual phone Home + Budget UI (st-core@v2 + icon-mask).
 Preview path: [templates/budget-app/](templates/budget-app/)
+
+[Live-shift trading dashboard](/templates/live-shift/)
