@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Shift · Trading Dashboard · st-core@v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- Preview: compiled CSS. For live FSCSS, swap for runtime + type or dashboard.fscss link -->
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+
+  <div class="dash">
+
+    <div class="header">
+      <h1>PORTFOLIO</h1>
+      <div class="live-badge">Live</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="st-stat-label">Value</div>
+        <div class="st-stat-value" id="port-value">$84,210</div>
+        <div class="st-stat-delta up" id="port-delta">▲ +2.14%</div>
+      </div>
+      <div class="stat-card">
+        <div class="st-stat-label">Day P&amp;L</div>
+        <div class="st-stat-value" id="pnl-value">+$1,782</div>
+        <div class="st-stat-delta up" id="pnl-delta">▲ 24h</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-label">Price · last 8 ticks</div>
+      <div class="chart" id="chart">
+        <div class="chart-grid"></div>
+        <div class="chart-fill" id="fill"></div>
+        <div class="chart-line" id="line"></div>
+        <div class="y-axis">
+          <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+        </div>
+      </div>
+      <div class="x-axis">
+        <span>t-7</span><span>t-6</span><span>t-5</span><span>t-4</span>
+        <span>t-3</span><span>t-2</span><span>t-1</span><span>now</span>
+      </div>
+    </div>
+
+    <div class="alloc">
+      <div class="alloc-row">
+        <div class="alloc-meta"><span>Equities</span><span id="eq-pct">58%</span></div>
+        <div class="bar-track"><div class="bar-fill bar-equities" id="bar-eq"></div></div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-meta"><span>Crypto</span><span id="cr-pct">27%</span></div>
+        <div class="bar-track"><div class="bar-fill bar-crypto" id="bar-cr"></div></div>
+      </div>
+      <div class="alloc-row">
+        <div class="alloc-meta"><span>Forex</span><span id="fx-pct">15%</span></div>
+        <div class="bar-track"><div class="bar-fill bar-forex" id="bar-fx"></div></div>
+      </div>
+    </div>
+
+    <div class="ticker" id="ticker">Updating every ~1.2 s · pure CSS charts</div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
