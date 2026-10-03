@@ -48,6 +48,12 @@ jobs:
         run: |
           fscss car.fscss car.css
           echo "Compiled car.css ($(wc -c < car.css) bytes)"
+
+      - name: Compile live-shift
+        working-directory: templates/live-shift
+        run: |
+          fscss dashboard.fscss dashboard.css
+          echo "Compile live-shift css ($(wc -c < dashboard.css) bytes)"
           
       - name: Upload compiled CSS
         uses: actions/upload-artifact@v4
@@ -57,13 +63,14 @@ jobs:
             templates/admin-dashboard/dashboard.css
             templates/budget-app/budget.css
             templates/car-dashboard/car.css
+            templates/live-shift/dashboard.css
 
       - name: Commit compiled CSS
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add templates/admin-dashboard/dashboard.css templates/budget-app/budget.css templates/car-dashboard/car.css
+          git add templates/admin-dashboard/dashboard.css templates/budget-app/budget.css templates/car-dashboard/car.css templates/live-shift/dashboard.css
           if git diff --staged --quiet; then
             echo "No CSS changes to commit"
           else
