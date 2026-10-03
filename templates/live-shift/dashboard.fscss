@@ -1,0 +1,151 @@
+   @import((*) from st-core@v2)
+
+    @st-root()
+    @st-container(body)
+    @st-phone(.dash)
+
+    /* ── Data series (any length) ── */
+    @arr priceData[42, 55, 48, 68, 61, 79, 72, 85]
+
+    @st-stat-card(.stat-card)
+    @st-chart-fill(.chart-fill, priceData)
+    @st-chart-line(.chart-line, priceData)
+    @st-chart-grid(.chart-grid, 8, 7)
+    @st-chart-axis-x(.x-axis)
+    @st-chart-axis-y(.y-axis)
+    @st-cat-bar-fill(.bar-fill)
+
+    .dash {
+      width: 380px;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 0;
+      color: var(--st-text);
+    }
+    .live-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--st-green);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .live-badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--st-green);
+      box-shadow: 0 0 8px var(--st-green);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* Stat row */
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .stat-card {
+      padding: 14px !important;
+    }
+    .stat-card .st-stat-value {
+      font-size: 22px !important;
+    }
+
+    /* Chart */
+    .chart-wrap {
+      background: var(--st-card);
+      border: 1px solid var(--st-border);
+      border-radius: var(--st-radius-lg);
+      padding: 12px 12px 4px;
+      position: relative;
+    }
+    .chart-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--st-muted);
+      margin-bottom: 6px;
+    }
+    .chart {
+      position: relative;
+      height: 160px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      background: var(--st-surface);
+      @st-chart-points(priceData)
+    }
+    .chart-fill,
+    .chart-line {
+      transition: clip-path 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .chart-line {
+      @st-chart-line-width(2px);
+      filter: drop-shadow(0 0 6px var(--st-accent));
+    }
+
+    /* Allocation bars */
+    .alloc {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .alloc-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .alloc-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--st-muted);
+    }
+    .alloc-meta span:last-child {
+      color: var(--st-text);
+      font-weight: 600;
+    }
+    .bar-track {
+      height: 8px;
+      background: var(--st-surface);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      transition: width 0.8s ease;
+    }
+    .bar-equities { --st-cat-bar-fill-range: 58%; }
+    .bar-crypto   { --st-cat-bar-fill-range: 27%; }
+    .bar-forex    { --st-cat-bar-fill-range: 15%; }
+
+    /* Footer ticker */
+    .ticker {
+      font-size: 11px;
+      color: var(--st-muted);
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
