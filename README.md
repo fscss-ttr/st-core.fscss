@@ -19,7 +19,7 @@ Requires FSCSS **v1.2.3+**
 ---
 **Playground:**
 
-**[Try st-core@v2 free Visual Builder](https://hub.devtem.org/st-core.fscss/visual-builder/)** 
+**[Try visually via st-core@v2 free Visual chart Builder](https://hub.devtem.org/st-core.fscss/visual-builder/)** 
 
 [![Visual builder](/visual-builder.jpg)](https://hub.devtem.org/st-core.fscss/visual-builder/)
 
