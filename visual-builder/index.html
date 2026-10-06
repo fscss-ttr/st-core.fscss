@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>st-core.fscss Visual Chart Builder</title>
+  <meta name="description" content="Build CSS-only charts with st-core.fscss v2. Edit data, tweak the look, and copy FSCSS, CSS or HTML. Open source." />
+  <meta name="theme-color" content="#0b0a12" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient" aria-hidden="true"></div>
+
+  <div class="app">
+
+    <!-- Controls -->
+    <aside class="sidebar" aria-label="Chart settings">
+      <header class="logo">
+        <img class="logo-mark" src="icon.svg" alt="" width="40" height="40" />
+        <div>
+          <h1>st-core Chart Builder</h1>
+          <p>v2 · pure CSS charts with FSCSS</p>
+        </div>
+      </header>
+
+      <details class="group" open>
+        <summary>Data</summary>
+        <div class="group-body">
+          <label class="field">
+            <span>Values, from 0 to 100 (commas or spaces)</span>
+            <textarea id="data-input" spellcheck="false" rows="3">56, 67, 70, 43, 67, 80, 55</textarea>
+          </label>
+          <div class="btn-row">
+            <button type="button" class="btn" id="btn-random">Randomize</button>
+          </div>
+          <p class="hint">Start from a shape:</p>
+          <div class="presets" id="presets"></div>
+        </div>
+      </details>
+
+      <details class="group" open>
+        <summary>Layers</summary>
+        <div class="group-body pills">
+          <label class="pill"><input type="checkbox" id="opt-fill" checked /><span>Area fill</span></label>
+          <label class="pill"><input type="checkbox" id="opt-line" checked /><span>Line</span></label>
+          <label class="pill"><input type="checkbox" id="opt-grid" /><span>Grid</span></label>
+          <label class="pill"><input type="checkbox" id="opt-dots" /><span>Dots</span></label>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Appearance</summary>
+        <div class="group-body">
+          <div class="row">
+            <label class="field">
+              <span>Height (px)</span>
+              <input type="number" id="opt-height" value="220" min="80" max="600" inputmode="numeric" />
+            </label>
+            <label class="field">
+              <span>Radius (px)</span>
+              <input type="number" id="opt-radius" value="12" min="0" max="40" inputmode="numeric" />
+            </label>
+          </div>
+          <label class="field">
+            <span>Accent color</span>
+            <span class="color-row">
+              <input type="color" id="opt-color" value="#9d7eff" aria-label="Pick accent color" />
+              <input type="text" id="opt-accent" value="#9d7eff" spellcheck="false" />
+            </span>
+          </label>
+          <div class="row">
+            <label class="field">
+              <span>Array name</span>
+              <input type="text" id="opt-arrname" value="myData" spellcheck="false" />
+            </label>
+            <label class="field">
+              <span>Chart class</span>
+              <input type="text" id="opt-class" value="chart" spellcheck="false" />
+            </label>
+          </div>
+        </div>
+      </details>
+
+      <details class="group">
+        <summary>Grid size</summary>
+        <div class="group-body">
+          <div class="row">
+            <label class="field">
+              <span>Rows</span>
+              <input type="number" id="opt-grid-rows" value="5" min="2" max="20" inputmode="numeric" />
+            </label>
+            <label class="field">
+              <span>Columns</span>
+              <input type="number" id="opt-grid-cols" value="6" min="2" max="30" inputmode="numeric" />
+            </label>
+          </div>
+          <p class="hint">Only used when the Grid layer is on.</p>
+        </div>
+      </details>
+
+      <button type="button" class="btn btn-primary btn-build" id="btn-build">Build preview</button>
+      <p class="hint">
+        Uses the <code>fscss</code> ESM build and <code>@import((*) from st-core@v2)</code>.
+        The preview updates as you type.
+      </p>
+    </aside>
+
+    <!-- Output -->
+    <main class="main">
+      <div class="toolbar">
+        <h2 class="toolbar-title">Output</h2>
+        <div class="tabs" id="tabs" role="tablist" aria-label="Output format">
+          <span class="tab-indicator" aria-hidden="true"></span>
+          <button type="button" class="tab active" role="tab" id="tab-preview" aria-selected="true" aria-controls="panel-preview" data-panel="preview">Preview</button>
+          <button type="button" class="tab" role="tab" id="tab-fscss" aria-selected="false" aria-controls="panel-fscss" data-panel="fscss" tabindex="-1">FSCSS</button>
+          <button type="button" class="tab" role="tab" id="tab-css" aria-selected="false" aria-controls="panel-css" data-panel="css" tabindex="-1">CSS</button>
+          <button type="button" class="tab" role="tab" id="tab-html" aria-selected="false" aria-controls="panel-html" data-panel="html" tabindex="-1">HTML</button>
+        </div>
+      </div>
+
+      <section id="panel-preview" class="panel preview-wrap" role="tabpanel" aria-labelledby="tab-preview">
+        <div class="stats" id="stats" aria-label="Data summary">
+          <div class="stat"><b id="stat-count">0</b><span>points</span></div>
+          <div class="stat"><b id="stat-min">0</b><span>lowest</span></div>
+          <div class="stat"><b id="stat-max">0</b><span>highest</span></div>
+          <div class="stat"><b id="stat-avg">0</b><span>average</span></div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-head">
+            <span>Live chart (st-core@v2)</span>
+            <button type="button" class="btn btn-small" id="btn-replay">Replay</button>
+          </div>
+          <div id="chart-preview" aria-label="Chart preview"></div>
+          <p class="hint">Move over the chart to read values.</p>
+        </div>
+
+        <p class="status" id="status" role="status" aria-live="polite">
+          <i class="status-dot" aria-hidden="true"></i><span id="status-text">Ready. Edit the data to see it update.</span>
+        </p>
+      </section>
+
+      <section id="panel-fscss" class="panel code-panel" role="tabpanel" aria-labelledby="tab-fscss" hidden>
+        <div class="code-header">
+          <h3>FSCSS source</h3>
+          <button type="button" class="btn" data-copy="fscss">Copy FSCSS</button>
+        </div>
+        <pre class="code" id="out-fscss" tabindex="0"></pre>
+      </section>
+
+      <section id="panel-css" class="panel code-panel" role="tabpanel" aria-labelledby="tab-css" hidden>
+        <div class="code-header">
+          <h3>Compiled CSS</h3>
+          <button type="button" class="btn" data-copy="css">Copy CSS</button>
+        </div>
+        <pre class="code" id="out-css" tabindex="0"></pre>
+      </section>
+
+      <section id="panel-html" class="panel code-panel" role="tabpanel" aria-labelledby="tab-html" hidden>
+        <div class="code-header">
+          <h3>Standalone HTML</h3>
+          <button type="button" class="btn" data-copy="html">Copy HTML</button>
+        </div>
+        <pre class="code" id="out-html" tabindex="0"></pre>
+      </section>
+
+      <footer class="footer">
+        <p class="footer-lead">
+          This page is open source. Found a bug or have an idea? Improve it with us.
+        </p>
+        <nav class="footer-links" aria-label="Project links">
+          <a href="https://github.com/fscss-ttr/st-core.fscss" target="_blank" rel="noopener">Source on GitHub</a>
+          <a href="https://github.com/fscss-ttr/st-core.fscss/tree/main/visual-builder" target="_blank" rel="noopener">Edit this page</a>
+          <a href="https://github.com/fscss-ttr/st-core.fscss/issues" target="_blank" rel="noopener">Report an issue</a>
+          <a href="https://github.com/fscss-ttr/st-core.fscss/graphs/contributors" target="_blank" rel="noopener">Contributors</a>
+          <a href="https://fscss.devtem.org" target="_blank" rel="noopener">FSCSS docs</a>
+        </nav>
+        <p class="footer-credit">
+          Built with <a href="https://fscss.devtem.org" target="_blank" rel="noopener">FSCSS</a>
+          by the fscss-ttr community.
+        </p>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">Copied</div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
