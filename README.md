@@ -17,8 +17,11 @@ Requires FSCSS **v1.2.3+**
 **[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** · **[TEMPLATES](https://github.com/fscss-ttr/st-core.fscss/blob/main/templates/)**
 
 ---
+**Playground:**
 
-[![Template Preview](/templates/budget-app/budget.jpg)](https://hub.devtem.org/st-core.fscss/templates/budget-app/)
+**[Try st-core@v2 free Visual Builder](https://hub.devtem.org/st-core.fscss/visual-builder/)** 
+
+[![Visual builder](/visual-builder.jpg)](https://hub.devtem.org/st-core.fscss/visual-builder/)
 
 ---
 
