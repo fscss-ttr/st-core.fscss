@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>st-core.fscss — Spider Chart (v2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+  <link type="text/fscss" href="./demo/src/spider-chart-v2.fscss">
+</head>
+<body>
+
+<div class="card">
+
+  <div class="card-header">
+    <div>
+      <div class="card-title">Team Skills Comparison</div>
+      <div class="card-sub">Sprint review · Q2 2026</div>
+    </div>
+    <span class="badge">LIVE</span>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="legend-dot dot-violet"></span> Team A
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot dot-green"></span> Team B
+    </div>
+  </div>
+
+  <div class="spiders">
+
+    <div class="spider-panel">
+      <div class="panel-title">Team A</div>
+      <div class="spider-wrap team-a">
+        <div class="spider-grid"></div>
+        <div class="spider-spokes"></div>
+        <div class="fill-a"></div>
+        <div class="line-a"></div>
+        <div class="dot-a-1"></div>
+        <div class="dot-a-2"></div>
+        <div class="dot-a-3"></div>
+        <div class="dot-a-4"></div>
+        <div class="dot-a-5"></div>
+        <div class="dot-a-6"></div>
+        <span class="spider-label speed">Speed</span>
+        <span class="spider-label quality">Quality</span>
+        <span class="spider-label ux">UX</span>
+        <span class="spider-label scale">Scale</span>
+        <span class="spider-label cost">Cost</span>
+        <span class="spider-label support">Support</span>
+      </div>
+    </div>
+
+    <div class="spider-panel">
+      <div class="panel-title">Team B</div>
+      <div class="spider-wrap team-b">
+        <div class="spider-grid"></div>
+        <div class="spider-spokes"></div>
+        <div class="fill-b"></div>
+        <div class="line-b"></div>
+        <div class="dot-b-1"></div>
+        <div class="dot-b-2"></div>
+        <div class="dot-b-3"></div>
+        <div class="dot-b-4"></div>
+        <div class="dot-b-5"></div>
+        <div class="dot-b-6"></div>
+        <span class="spider-label speed">Speed</span>
+        <span class="spider-label quality">Quality</span>
+        <span class="spider-label ux">UX</span>
+        <span class="spider-label scale">Scale</span>
+        <span class="spider-label cost">Cost</span>
+        <span class="spider-label support">Support</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-label">Avg Score A</div>
+      <div class="stat-value">73</div>
+      <div class="stat-delta up">↑ +8%</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Avg Score B</div>
+      <div class="stat-value">72</div>
+      <div class="stat-delta up">↑ +3%</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-label">Gap (Scale)</div>
+      <div class="stat-value">40</div>
+      <div class="stat-delta dn">B leads</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
