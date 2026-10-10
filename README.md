@@ -1,25 +1,29 @@
 <meta
   name="description"
-  content="Lightweight data visualizations with st-core.fscss, a CSS-based charting system."
+  content="Lightweight data visualizations with st-core.fscss — pure CSS area, line, and spider/radar charts. No SVG, no canvas."
 />
 <meta
   name="keywords"
-  content="st-core v2, st-core.fscss, CSS charts, pure CSS charts, FSCSS, data visualization"
+  content="st-core v2, st-core.fscss, CSS charts, pure CSS charts, spider chart, radar chart, FSCSS, data visualization"
 />
+
 # st-core.fscss
 
 > Pure CSS statistical dashboard components for the FSCSS ecosystem.
 > No JavaScript dependencies. No SVG. No canvas — just pure CSS array processing.
+>
+> **Area · Line · Spider / Radar**
 
-**MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)
+**MIT Licensed** · [github.com/fscss-ttr/st-core.fscss](https://github.com/fscss-ttr/st-core.fscss)  
 Requires FSCSS **v1.2.3+**
 
 **[SOURCE CODE EXPLANATION](https://github.com/fscss-ttr/st-core.fscss/blob/main/EXPLAINED.md)** · **[TEMPLATES](https://github.com/fscss-ttr/st-core.fscss/blob/main/templates/)**
 
 ---
+
 **Playground:**
 
-**[Try visually via st-core@v2 free Visual chart Builder](https://hub.devtem.org/st-core.fscss/visual-builder/)** 
+**[Try visually via st-core@v2 free Visual chart Builder](https://hub.devtem.org/st-core.fscss/visual-builder/)**
 
 [![Visual builder](/visual-builder.jpg)](https://hub.devtem.org/st-core.fscss/visual-builder/)
 
@@ -35,96 +39,129 @@ Requires FSCSS **v1.2.3+**
    - [CLI / Compiled Mode](#cli--compiled-mode)
 5. [Design Tokens — `@st-root`](#5-design-tokens--st-root)
 6. [Layout Helpers](#6-layout-helpers)
-   - [`@st-container`](#st-container)
-   - [`@st-phone`](#st-phone)
-7. [Chart System & Mixins](#7-chart-system--mixins)
-   - [`@st-chart-points`](#st-chart-points)
-   - [`@st-chart-fill`](#st-chart-fill)
-   - [`@st-chart-line`](#st-chart-line)
-   - [`@st-chart-line-width`](#st-chart-line-width)
-   - [`@st-chart-dot`](#st-chart-dot)
-   - [`@st-chart-dots`](#st-chart-dots)
-   - [`@st-chart-grid`](#st-chart-grid)
-   - [`@st-chart-axis-x` & `@st-chart-axis-y`](#st-chart-axis-x--st-chart-axis-y)
-8. [JS Control Layer](#8-js-control-layer)
-9. [UI Components](#9-ui-components)
-   - [`@st-stat-card`](#st-stat-card)
-   - [`@st-cat-bar-fill`](#st-cat-bar-fill)
-10. [Full Examples](#10-full-examples)
-    - [Simple Minimal Demo](#simple-minimal-demo)
-    - [Multi-Line & Multi-Area Chart (with Opacity)](#multi-line--multi-area-chart-with-opacity)
-    - [Dynamic JS Interactive Chart](#dynamic-js-interactive-chart)
-    - [Full Mobile Dashboard Frame](#full-mobile-dashboard-frame)
-11. [Design Token Reference](#11-design-token-reference)
-12. [Performance & SEO](#12-performance--seo)
-13. [Integrations](#13-integrations) 
+7. [Linear Chart System](#7-linear-chart-system)
+8. [Spider / Radar Chart System](#8-spider--radar-chart-system)
+   - [`@st-spider-points`](#st-spider-points)
+   - [`@st-spider-fill`](#st-spider-fill)
+   - [`@st-spider-line`](#st-spider-line)
+   - [`@st-spider-dots`](#st-spider-dots)
+   - [`@st-spider-grid`](#st-spider-grid)
+   - [`@st-spider-spokes` / `@st-spider-spokes-n`](#st-spider-spokes--st-spider-spokes-n)
+   - [Axis labels](#axis-labels)
+   - [Multi-series radar](#multi-series-radar)
+   - [JS updates for spider](#js-updates-for-spider)
+9. [JS Control Layer (linear)](#9-js-control-layer-linear)
+10. [UI Components](#10-ui-components)
+11. [Full Examples](#11-full-examples)
+    - [Minimal linear chart](#minimal-linear-chart)
+    - [Multi-line & multi-area chart (with opacity)](#multi-line--multi-area-chart-with-opacity)
+    - [Dynamic JS interactive chart](#dynamic-js-interactive-chart)
+    - [Full mobile dashboard frame](#full-mobile-dashboard-frame)
+    - [Minimal spider chart](#minimal-spider-chart)
+    - [Two teams + axis labels](#two-teams--axis-labels)
+    - [Multi-series radar](#multi-series-radar-example)
+12. [Design Token Reference](#12-design-token-reference)
+13. [Performance & SEO](#13-performance--seo)
+14. [Integrations](#14-integrations)
+
 ---
 
 ## 1. What is st-core v2?
 
-**st-core.fscss** is a CSS visualization system built on top of FSCSS. It allows you to build responsive charts and statistical dashboards using standard CSS custom properties and dynamic polygon generation.
+**st-core.fscss** is a CSS visualization system built on top of FSCSS. It builds responsive charts and statistical dashboards using standard CSS custom properties and dynamic `clip-path: polygon()` generation.
+
+Supported chart families:
+
+| Family | Coordinates | Typical use |
+|--------|-------------|-------------|
+| **Linear** (area / line) | Cartesian X/Y (`--st-pN`) | Time series, revenue, trends |
+| **Spider / radar** | Polar (`--st-sxN` / `--st-syN`) | Skills, multi-axis comparison |
 
 ---
 
 ## 2. What's New in v2?
 
-In **v1**, charts were strictly constrained to 8 fixed data points mapped to hardcoded CSS variables (`--st-p1` through `--st-p8`).
+In **v1**, charts were locked to 8 fixed points (`--st-p1` … `--st-p8`).
 
 **In v2:**
 
-- **Dynamic Datasets (`@arr`)** — Pass FSCSS arrays (`@arr myData[...]`) of *any length* (5, 12, 50+ data points).
-- **Automatic X-Spacing** — Points are dynamically distributed evenly across `0%` to `100%` chart width based on dataset size (`array.length`).
-- **In-Line Normalization** — Dynamic inline math (`num(100 - @arr[])%`) normalizes natural values (0–100) directly inside style calculations.
-- **Dual-Edge Polygon Polyline** — Line strokes generated via closed top-to-bottom array loop calculations for precision rendering.
+- **Dynamic datasets (`@arr`)** — any length (5, 12, 50+ points)
+- **Automatic X-spacing** — even distribution from `array.length`
+- **In-line normalization** — `num(100 - value)%` for natural 0–100 scores
+- **Dual-edge polyline strokes** — closed top/bottom polygon for line width
+- **Spider / radar charts** — polar polygons, dynamic spokes, multi-series, axis labels
 
 ---
 
 ## 3. How It Works
 
-st-core@v2 processes FSCSS array data to dynamically generate `clip-path: polygon()` rules:
+### Linear charts
 
 ```css
-/* Define an array in FSCSS */
-@arr myData[50, 10, 97, 35, 66, 50, 80, 54, 70, 60]
+@arr myData[50, 10, 97, 35, 66, 50, 80, 54]
 
-/* Apply mixins with array references */
 @st-chart-fill(.chart-fill, myData)
 @st-chart-line(.chart-line, myData)
+
+.chart {
+  @st-chart-points(myData)   /* writes --st-p1 … --st-pN */
+  position: relative;
+  height: 200px;
+}
 ```
 
-The mixin reads the array length, computes horizontal steps (`0%, 11%, 22% ... 100%`), normalizes Y heights, and outputs standard CSS declarations.
+### Spider / radar charts
 
-`@st-chart-fill` / `@st-chart-line` declare the **renderer** for a selector — the array they take just tells the renderer how many points to expect. The actual per-element Y values are written separately by `@st-chart-points(array)` on each element (container or child) — see [`@st-chart-points`](#st-chart-points) below. Any element that doesn't call it inherits the values from its nearest ancestor that did.
+```css
+@arr skills[80, 65, 90, 55, 70, 85]
+
+@st-spider-fill(.spider-fill, skills)
+@st-spider-line(.spider-line, skills)
+@st-spider-dots(.spider-dot-, skills, 9px)
+@st-spider-grid(.spider-grid)
+@st-spider-spokes(.spider-spokes, skills)   /* or @st-spider-spokes-n(.spokes, 6) */
+
+.spider {
+  @st-spider-points(skills, 42)   /* writes --st-sxN / --st-syN */
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+}
+```
+
+**Rule of thumb:** renderers (`fill` / `line` / `dots`) only need the array for *length*. Coordinate values are written by `@st-chart-points` or `@st-spider-points` on the **host element**. Children inherit those custom properties.
 
 ---
 
 ## 4. Installation
 
-**See [integration and templates](integration/)**
-
 ### CDN / Runtime Mode
 
-Include the **FSCSS v1.2.3+** runtime in your document:
-
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
 ```
-
-Then import st-core@v2 directly inside your `<style>` block:
 
 ```css
 @import((*) from st-core@v2)
 ```
 
+Or from this repo via jsDelivr:
+
+```css
+@import((*) from "https://cdn.jsdelivr.net/gh/fscss-ttr/st-core.fscss@main/st-core@v2.fscss")
+```
+
+Or a local path:
+
+```css
+@import((*) from "/st-core@v2.fscss")
+```
+
 ### CLI / Compiled Mode
 
-Compile `.fscss` files directly into production-ready `.css` files using the CLI:
-
 ```bash
-# Upgrade or install FSCSS CLI v1.2.3+
 npm install -g fscss@latest
-
-# Compile stylesheet
 fscss input.fscss output.css
 ```
 
@@ -132,14 +169,26 @@ fscss input.fscss output.css
 
 ## 5. Design Tokens — `@st-root`
 
-Initializes global CSS custom properties for theming, radii, and grid colors:
+```css
+@st-root()                 /* :root */
+@st-root(root.my-scope)    /* scoped theme */
+@st-spider-root()          /* optional spider token defaults */
+```
+
+Spider-related tokens (also included in `@st-root` when using the full module):
+
+| Token | Default | Role |
+|-------|---------|------|
+| `--st-spider-fill-opacity` | `35%` | Fill transparency in `color-mix` |
+| `--st-spider-stroke-scale` | `0.97` | Inner edge of dual-pass stroke |
+
+Override per series:
 
 ```css
-@st-root()        /* Targets :root */
-```
-Or
-```css
-@st-root(root.class...)    /* Targets custom scope */
+.series-a {
+  --st-accent: #ff9f43;
+  --st-spider-fill-opacity: 22%;
+}
 ```
 
 ---
@@ -148,15 +197,11 @@ Or
 
 ### `@st-container`
 
-Center-aligned viewport container for demos and dashboards:
-
 ```css
 @st-container(body)
 ```
 
 ### `@st-phone`
-
-Device frame container with rounded borders and glow shadows:
 
 ```css
 @st-phone(.wrapper)
@@ -164,11 +209,11 @@ Device frame container with rounded borders and glow shadows:
 
 ---
 
-## 7. Chart System & Mixins
+## 7. Linear Chart System
 
 ### `@st-chart-points`
 
-Inverts array coordinates and writes normalized variable targets onto the container element:
+Writes inverted Y values onto the host:
 
 ```css
 .chart {
@@ -176,27 +221,14 @@ Inverts array coordinates and writes normalized variable targets onto the contai
 }
 ```
 
-This is the call that actually sets `--st-p1`…`--st-p{n}` on an element. Call it once per dataset you need — on the chart container for the default series, and again on any child that needs a different array (see the [multi-line example](#multi-line--multi-area-chart-with-opacity)).
-
-### `@st-chart-fill`
-
-Fills the area beneath the line plot using an automatically bounded polygon gradient:
+### `@st-chart-fill` / `@st-chart-line`
 
 ```css
 @st-chart-fill(.chart-fill, myData)
-```
-
-### `@st-chart-line`
-
-Draws the line stroke using a dual-pass closed polygon:
-
-```css
 @st-chart-line(.chart-line, myData)
 ```
 
 ### `@st-chart-line-width`
-
-Overrides stroke width on a target line element:
 
 ```css
 .chart-line {
@@ -204,97 +236,213 @@ Overrides stroke width on a target line element:
 }
 ```
 
-### `@st-chart-dot`
-
-Positions a single custom marker dot (ideal for tooltips or peaks):
+### `@st-chart-dot` / `@st-chart-dots`
 
 ```css
-/* Params: selector, x%, y%, size */
 @st-chart-dot(.chart-dot, 70, 60, 12px)
+@st-chart-dots(.dot-, myData, 8px)   /* → .dot-1 … .dot-N */
 ```
 
-### `@st-chart-dots`
-
-Auto-generates positioning rules for every point marker in the array:
+### `@st-chart-grid` / axes
 
 ```css
-/* Generates .dot-1, .dot-2 ... .dot-N */
-@st-chart-dots(.dot-, myData, 8px)
-```
-
-### `@st-chart-grid`
-
-Generates vertical and horizontal chart background lines:
-
-```css
-/* selector, rows, cols */
 @st-chart-grid(.chart-grid, 10, 7)
-```
-
-### `@st-chart-axis-x` & `@st-chart-axis-y`
-
-Formative axis wrapper helpers:
-
-```css
 @st-chart-axis-x(.x-axis)
 @st-chart-axis-y(.y-axis)
 ```
 
 ---
 
-## 8. JS Control Layer
+## 8. Spider / Radar Chart System
 
-Updating charts dynamically via JavaScript consists of changing the `--st-p{n}` CSS variables on the element:
+Polar charts map each value to a vertex on a circle. Angle `0°` is at the **top**. Radius is a percentage of the box (`rmax`, default `42`).
+
+### `@st-spider-points`
+
+**Must** be called on the host that owns the series:
+
+```css
+.spider {
+  @st-spider-points(skills, 42)   /* array, max radius % */
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+}
+```
+
+Writes:
+
+```css
+--st-sx1: calc(50% + (r * 1%) * sin(0deg));
+--st-sy1: calc(50% - (r * 1%) * cos(0deg));
+/* … one pair per data point */
+```
+
+### `@st-spider-fill`
+
+Closed polar polygon filled with `color-mix` of `--st-accent`:
+
+```css
+@st-spider-fill(.spider-fill, skills)
+```
+
+### `@st-spider-line`
+
+Dual-pass stroke (outer path + inner path scaled by `--st-spider-stroke-scale`):
+
+```css
+@st-spider-line(.spider-line, skills)
+```
+
+### `@st-spider-dots`
+
+Generates `.spider-dot-1` … `.spider-dot-N`. **Add matching elements in HTML.**
+
+```css
+@st-spider-dots(.spider-dot-, skills, 9px)
+```
+
+```html
+<div class="spider-dot-1"></div>
+<!-- … one per point -->
+```
+
+### `@st-spider-grid`
+
+Concentric rings via radial gradient:
+
+```css
+@st-spider-grid(.spider-grid)
+```
+
+### `@st-spider-spokes` / `@st-spider-spokes-n`
+
+Thin radial axis lines. Prefer matching the data array so spoke count = vertex count:
+
+```css
+@st-spider-spokes(.spider-spokes, skills)   /* from array length */
+@st-spider-spokes-n(.spider-spokes, 6)      /* explicit count */
+```
+
+### Axis labels
+
+Labels are plain absolutely positioned elements around the host. Example for 6 axes:
+
+```html
+<div class="spider-wrap">
+  <!-- grid, spokes, fill, line, dots -->
+  <span class="spider-label speed">Speed</span>
+  <span class="spider-label quality">Quality</span>
+  <span class="spider-label ux">UX</span>
+  <span class="spider-label scale">Scale</span>
+  <span class="spider-label cost">Cost</span>
+  <span class="spider-label support">Support</span>
+</div>
+```
+
+```css
+.spider-label {
+  position: absolute;
+  font-size: 0.7rem;
+  color: var(--st-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+.spider-label.speed   { top: -18px; left: 50%; transform: translateX(-50%); }
+.spider-label.quality { top: 14%; right: -36px; }
+.spider-label.ux      { bottom: 14%; right: -28px; }
+.spider-label.scale   { bottom: -18px; left: 50%; transform: translateX(-50%); }
+.spider-label.cost    { bottom: 14%; left: -28px; }
+.spider-label.support { top: 14%; left: -42px; }
+```
+
+For other axis counts, place labels at angles `(i - 1) * 360 / N` (0° = top).
+
+### Multi-series radar
+
+Each series is a **separate host** with its own `@st-spider-points` so coordinates never clash. See the [full multi-series example](#multi-series-radar-example) below.
+
+### JS updates for spider
+
+Polar positions are CSS `calc()` with `sin` / `cos`. To animate data at runtime, set `--st-sxN` / `--st-syN`:
 
 ```js
-const chartLine = document.querySelector(".chart-line");
-const normalize = (n) => (100 - n) + '%';
-
-function updatePoints(pointsArray) {
-  const cssVars = pointsArray
-    .map((v, i) => `--st-p${i + 1}: ${normalize(v)};`)
-    .join(' ');
-
-  chartLine.style.cssText = cssVars;
+function polarVars(values, rmax = 42) {
+  const n = values.length;
+  return values.map((v, i) => {
+    const ang = (i * 360) / n;
+    const r = (v / 100) * rmax;
+    return (
+      `--st-sx${i + 1}: calc(50% + (${r} * 1%) * sin(${ang} * 1deg));` +
+      `--st-sy${i + 1}: calc(50% - (${r} * 1%) * cos(${ang} * 1deg));`
+    );
+  }).join(' ');
 }
 
-// Update runtime values
-updatePoints([50, 20, 85, 40, 95]);
+const host = document.querySelector('.spider');
+host.style.cssText = polarVars([80, 65, 90, 55, 70, 85]);
+```
+
+Polygon length (number of vertices) is fixed at compile time from the `@arr` length. Changing *length* at runtime requires a matching compiled renderer or a max-length template (same constraint as linear charts).
+
+---
+
+## 9. JS Control Layer (linear)
+
+```js
+const normalize = (n) => (100 - n) + '%';
+
+function updatePoints(el, pointsArray) {
+  el.style.cssText = pointsArray
+    .map((v, i) => `--st-p${i + 1}: ${normalize(v)};`)
+    .join(' ');
+}
+
+updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 ```
 
 ---
 
-## 9. UI Components
+## 10. UI Components
 
 ### `@st-stat-card`
-
-Renders stat cards with label, text, and change indicator styles:
 
 ```css
 @st-stat-card(.stat-card)
 ```
 
+```html
+<div class="stat-card">
+  <div class="st-stat-label">TOTAL EXPENSES</div>
+  <div class="st-stat-value">$1,326.03</div>
+  <div class="st-stat-delta up">+5.1% vs last week</div>
+</div>
+```
+
 ### `@st-cat-bar-fill`
 
-Renders progress bar component fills:
-
 ```css
-/* selector, range */
 @st-cat-bar-fill(.bar-fill, 75)
+```
+
+```html
+<div class="bar-track" style="height:8px;background:var(--st-surface);border-radius:999px;overflow:hidden">
+  <div class="bar-fill"></div>
+</div>
 ```
 
 ---
 
-## 10. Full Examples
+## 11. Full Examples
 
-### Simple Minimal Demo
+### Minimal linear chart
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
-
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
-
 @st-root()
 
 @arr myData[20, 45, 28, 80, 65, 90, 40]
@@ -319,37 +467,30 @@ Renders progress bar component fills:
 </div>
 ```
 
-### Multi-Line & Multi-Area Chart (with Opacity)
+### Multi-line & multi-area chart (with opacity)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
-
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
-
 @st-root()
 
 @arr seriesA[30, 50, 75, 40, 85, 60]
 @arr seriesB[10, 25, 45, 20, 55, 30]
 
-/* Series A — renderer + points */
 @st-chart-fill(.fill-a, seriesA)
 @st-chart-line(.line-a, seriesA)
-
-/* Series B — renderer + points */
 @st-chart-fill(.fill-b, seriesB)
 @st-chart-line(.line-b, seriesB)
 
 .chart {
-  @st-chart-points(seriesA)
   position: relative;
   height: 220px;
   width: 100%;
   background: var(--st-bg);
 }
 
-/* .fill-a / .line-a inherit seriesA from .chart, but set it
-   explicitly for clarity and to avoid relying on inheritance */
+/* Each series owns its own points scope */
 .fill-a {
   @st-chart-points(seriesA)
   opacity: 0.6;
@@ -360,8 +501,6 @@ Renders progress bar component fills:
   --st-accent: #9d7eff;
 }
 
-/* .fill-b / .line-b MUST set their own points — otherwise they
-   inherit .chart's seriesA values and render the wrong data */
 .fill-b {
   @st-chart-points(seriesB)
   opacity: 0.3;
@@ -376,19 +515,18 @@ Renders progress bar component fills:
 <div class="chart">
   <div class="chart-fill fill-a"></div>
   <div class="chart-line line-a"></div>
-
   <div class="chart-fill fill-b"></div>
   <div class="chart-line line-b"></div>
 </div>
 ```
 
-### Dynamic JS Interactive Chart
+### Dynamic JS interactive chart
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
     @st-root()
@@ -413,12 +551,10 @@ Renders progress bar component fills:
   </style>
 </head>
 <body>
-
   <div class="chart">
     <div class="chart-fill"></div>
     <div class="chart-line"></div>
   </div>
-
   <button id="randomize">Randomize Data</button>
 
   <script>
@@ -428,7 +564,6 @@ Renders progress bar component fills:
     document.getElementById('randomize').addEventListener('click', () => {
       const randomPoints = Array.from({ length: 5 }, () => Math.floor(Math.random() * 80) + 10);
       const styleVars = randomPoints.map((v, i) => `--st-p${i + 1}: ${100 - v}%;`).join(' ');
-
       fill.style.cssText = styleVars;
       line.style.cssText = styleVars;
     });
@@ -437,14 +572,14 @@ Renders progress bar component fills:
 </html>
 ```
 
-### Full Mobile Dashboard Frame
+### Full mobile dashboard frame
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.4/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
 
@@ -485,7 +620,6 @@ Renders progress bar component fills:
   </style>
 </head>
 <body>
-
   <div class="wrapper">
     <div class="stat-card">
       <div class="st-stat-label">TOTAL EXPENSES</div>
@@ -499,59 +633,382 @@ Renders progress bar component fills:
       <div class="chart-dot"></div>
       <div class="chart-grid"></div>
       <div class="y-axis">
-        <span>0</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span>
+        <span>0</span><span>20</span><span>40</span>
+        <span>60</span><span>80</span><span>100</span>
       </div>
     </div>
 
     <div class="x-axis">
-      <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      <span>Mon</span><span>Tue</span><span>Wed</span>
+      <span>Thu</span><span>Fri</span><span>Sat</span>
     </div>
   </div>
-
 </body>
 </html>
 ```
 
+### Minimal spider chart
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<style>
+@import((*) from st-core@v2)
+@st-root()
+@st-spider-root()
+
+@arr skills[80, 65, 90, 55, 70, 85]
+
+@st-spider-fill(.spider-fill, skills)
+@st-spider-line(.spider-line, skills)
+@st-spider-dots(.spider-dot-, skills, 9px)
+@st-spider-grid(.spider-grid)
+@st-spider-spokes(.spider-spokes, skills)
+
+.spider {
+  @st-spider-points(skills, 42)
+  position: relative;
+  width: 280px;
+  height: 280px;
+  background: var(--st-surface);
+  border-radius: 50%;
+}
+</style>
+
+<div class="spider">
+  <div class="spider-grid"></div>
+  <div class="spider-spokes"></div>
+  <div class="spider-fill"></div>
+  <div class="spider-line"></div>
+  <div class="spider-dot-1"></div>
+  <div class="spider-dot-2"></div>
+  <div class="spider-dot-3"></div>
+  <div class="spider-dot-4"></div>
+  <div class="spider-dot-5"></div>
+  <div class="spider-dot-6"></div>
+</div>
+```
+
+### Two teams + axis labels
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<style>
+@import((*) from st-core@v2)
+@st-root()
+@st-spider-root()
+
+@arr teamA[92, 78, 85, 55, 48, 80]
+@arr teamB[68, 82, 70, 95, 62, 58]
+
+@st-spider-fill(.fill-a, teamA)
+@st-spider-line(.line-a, teamA)
+@st-spider-dots(.dot-a-, teamA, 10px)
+
+@st-spider-fill(.fill-b, teamB)
+@st-spider-line(.line-b, teamB)
+@st-spider-dots(.dot-b-, teamB, 10px)
+
+@st-spider-grid(.spider-grid)
+@st-spider-spokes-n(.spider-spokes, 6)
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+}
+
+.skill-card {
+  width: 340px;
+  background: var(--st-card);
+  border-radius: 20px;
+  border: 1px solid var(--st-border);
+  padding: 28px 24px 32px;
+}
+
+.skill-card h2 {
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--st-accent);
+  margin: 0 0 22px;
+}
+
+.spider-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 280px;
+  margin: 0 auto;
+  background: var(--st-surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--st-border);
+}
+
+.spider-wrap.team-a {
+  @st-spider-points(teamA, 42)
+  --st-accent: #9d7eff;
+  --st-spider-fill-opacity: 28%;
+}
+.spider-wrap.team-b {
+  @st-spider-points(teamB, 42)
+  --st-accent: #4fffb0;
+  --st-spider-fill-opacity: 30%;
+}
+
+.spider-label {
+  position: absolute;
+  font-size: 0.7rem;
+  color: var(--st-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+.spider-label.speed   { top: -18px; left: 50%; transform: translateX(-50%); }
+.spider-label.quality { top: 14%; right: -36px; }
+.spider-label.ux      { bottom: 14%; right: -28px; }
+.spider-label.scale   { bottom: -18px; left: 50%; transform: translateX(-50%); }
+.spider-label.cost    { bottom: 14%; left: -28px; }
+.spider-label.support { top: 14%; left: -42px; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--st-bg);
+  color: var(--st-text);
+  font-family: system-ui, sans-serif;
+  padding: 40px 20px;
+}
+</style>
+
+<div class="cards">
+  <div class="skill-card">
+    <h2>Skills · Team A</h2>
+    <div class="spider-wrap team-a">
+      <div class="spider-grid"></div>
+      <div class="spider-spokes"></div>
+      <div class="fill-a"></div>
+      <div class="line-a"></div>
+      <div class="dot-a-1"></div><div class="dot-a-2"></div>
+      <div class="dot-a-3"></div><div class="dot-a-4"></div>
+      <div class="dot-a-5"></div><div class="dot-a-6"></div>
+      <span class="spider-label speed">Speed</span>
+      <span class="spider-label quality">Quality</span>
+      <span class="spider-label ux">UX</span>
+      <span class="spider-label scale">Scale</span>
+      <span class="spider-label cost">Cost</span>
+      <span class="spider-label support">Support</span>
+    </div>
+  </div>
+
+  <div class="skill-card">
+    <h2>Skills · Team B</h2>
+    <div class="spider-wrap team-b">
+      <div class="spider-grid"></div>
+      <div class="spider-spokes"></div>
+      <div class="fill-b"></div>
+      <div class="line-b"></div>
+      <div class="dot-b-1"></div><div class="dot-b-2"></div>
+      <div class="dot-b-3"></div><div class="dot-b-4"></div>
+      <div class="dot-b-5"></div><div class="dot-b-6"></div>
+      <span class="spider-label speed">Speed</span>
+      <span class="spider-label quality">Quality</span>
+      <span class="spider-label ux">UX</span>
+      <span class="spider-label scale">Scale</span>
+      <span class="spider-label cost">Cost</span>
+      <span class="spider-label support">Support</span>
+    </div>
+  </div>
+</div>
+```
+
+### Multi-series radar example
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<style>
+@import((*) from st-core@v2)
+@st-root()
+@st-spider-root()
+
+@arr seriesA[70, 55, 40, 85, 90]
+@arr seriesB[45, 75, 60, 50, 55]
+@arr seriesC[85, 40, 70, 35, 65]
+@arr seriesD[55, 30, 80, 70, 45]
+@arr seriesE[30, 90, 55, 60, 75]
+
+@st-spider-fill(.fill-a, seriesA)
+@st-spider-line(.line-a, seriesA)
+@st-spider-dots(.dot-a-, seriesA, 9px)
+
+@st-spider-fill(.fill-b, seriesB)
+@st-spider-line(.line-b, seriesB)
+@st-spider-dots(.dot-b-, seriesB, 9px)
+
+@st-spider-fill(.fill-c, seriesC)
+@st-spider-line(.line-c, seriesC)
+@st-spider-dots(.dot-c-, seriesC, 9px)
+
+@st-spider-fill(.fill-d, seriesD)
+@st-spider-line(.line-d, seriesD)
+@st-spider-dots(.dot-d-, seriesD, 9px)
+
+@st-spider-fill(.fill-e, seriesE)
+@st-spider-line(.line-e, seriesE)
+@st-spider-dots(.dot-e-, seriesE, 9px)
+
+@st-spider-grid(.spider-grid)
+@st-spider-spokes-n(.multi-spokes, 5)
+
+.multi-spider {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: 0 auto;
+  background: var(--st-card);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--st-border);
+}
+
+/* Each series = own coordinate scope */
+.series-a {
+  @st-spider-points(seriesA, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff9f43; --st-spider-fill-opacity: 22%;
+}
+.series-b {
+  @st-spider-points(seriesB, 42)
+  position: absolute; inset: 0;
+  --st-accent: #54a0ff; --st-spider-fill-opacity: 18%;
+}
+.series-c {
+  @st-spider-points(seriesC, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff6b9d; --st-spider-fill-opacity: 20%;
+}
+.series-d {
+  @st-spider-points(seriesD, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff6b35; --st-spider-fill-opacity: 15%;
+}
+.series-e {
+  @st-spider-points(seriesE, 42)
+  position: absolute; inset: 0;
+  --st-accent: #a55eea; --st-spider-fill-opacity: 18%;
+}
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 12px 20px;
+  justify-content: center; margin-top: 20px;
+  font-size: 0.78rem; color: var(--st-text);
+}
+.legend i {
+  width: 11px; height: 11px; border-radius: 50%;
+  display: inline-block; margin-right: 6px; vertical-align: middle;
+}
+
+body {
+  margin: 0; min-height: 100vh; background: var(--st-bg);
+  color: var(--st-text); font-family: system-ui, sans-serif;
+  padding: 40px 20px; text-align: center;
+}
+</style>
+
+<div class="multi-spider">
+  <div class="spider-grid" style="opacity:.4"></div>
+  <div class="multi-spokes"></div>
+
+  <div class="series-a">
+    <div class="fill-a"></div><div class="line-a"></div>
+    <div class="dot-a-1"></div><div class="dot-a-2"></div>
+    <div class="dot-a-3"></div><div class="dot-a-4"></div>
+    <div class="dot-a-5"></div>
+  </div>
+  <div class="series-b">
+    <div class="fill-b"></div><div class="line-b"></div>
+    <div class="dot-b-1"></div><div class="dot-b-2"></div>
+    <div class="dot-b-3"></div><div class="dot-b-4"></div>
+    <div class="dot-b-5"></div>
+  </div>
+  <div class="series-c">
+    <div class="fill-c"></div><div class="line-c"></div>
+    <div class="dot-c-1"></div><div class="dot-c-2"></div>
+    <div class="dot-c-3"></div><div class="dot-c-4"></div>
+    <div class="dot-c-5"></div>
+  </div>
+  <div class="series-d">
+    <div class="fill-d"></div><div class="line-d"></div>
+    <div class="dot-d-1"></div><div class="dot-d-2"></div>
+    <div class="dot-d-3"></div><div class="dot-d-4"></div>
+    <div class="dot-d-5"></div>
+  </div>
+  <div class="series-e">
+    <div class="fill-e"></div><div class="line-e"></div>
+    <div class="dot-e-1"></div><div class="dot-e-2"></div>
+    <div class="dot-e-3"></div><div class="dot-e-4"></div>
+    <div class="dot-e-5"></div>
+  </div>
+</div>
+
+<div class="legend">
+  <span><i style="background:#ff9f43"></i>Series A</span>
+  <span><i style="background:#54a0ff"></i>Series B</span>
+  <span><i style="background:#ff6b9d"></i>Series C</span>
+  <span><i style="background:#ff6b35"></i>Series D</span>
+  <span><i style="background:#a55eea"></i>Series E</span>
+</div>
+```
+
 ---
 
-## 11. Design Token Reference
+## 12. Design Token Reference
 
-| Variable          | Default Value | Usage                       |
-| ------------------ | -------------- | ---------------------------- |
-| `--st-bg`          | `#0e0d14`      | Page body background         |
-| `--st-surface`     | `#161422`      | Surface/container background |
-| `--st-card`        | `#1c1a2e`      | Card component background    |
-| `--st-accent`      | `#9d7eff`      | Primary brand accent         |
-| `--st-accent-2`    | `#c4a8ff`      | Secondary accent gradient    |
-| `--st-green`       | `#4fffb0`      | Positive delta state         |
-| `--st-red`         | `#ff5e7d`      | Negative delta state         |
-| `--st-text`        | `#e8e3ff`      | Primary text color           |
-| `--st-muted`       | `#6b6488`      | Muted labels / grid stroke   |
-| `--st-radius-xl`   | `40px`         | Outer device frame radius    |
-| `--st-radius-lg`   | `16px`         | Component card radius        |
-
----
-
-## 12. Performance & SEO
-
-- **Zero Hydration Overhead** — Pure CSS charts require zero JS initialization before rendering.
-- **Low Compiled Size** — Compiles to lightweight CSS shapes and variables (~0.8 kb minified).
-- **GPU-Accelerated Transitions** — Animating dataset updates through CSS custom properties leverages browser composite threads.
+| Variable | Default | Usage |
+|----------|---------|--------|
+| `--st-bg` | `#0e0d14` | Page background |
+| `--st-surface` | `#161422` | Chart / surface |
+| `--st-card` | `#1c1a2e` | Cards |
+| `--st-accent` | `#9d7eff` | Primary stroke / fill |
+| `--st-accent-2` | `#c4a8ff` | Gradients |
+| `--st-green` | `#4fffb0` | Positive delta |
+| `--st-red` | `#ff5e7d` | Negative delta |
+| `--st-text` | `#e8e3ff` | Primary text |
+| `--st-muted` | `#6b6488` | Labels / muted UI |
+| `--st-border` | `rgba(157,126,255,.15)` | Grid / spokes |
+| `--st-radius-xl` | `40px` | Device frame |
+| `--st-radius-lg` | `16px` | Cards |
+| `--st-pad` | `24px` | Card padding |
+| `--st-chart-line-width` | `1.5px` | Linear stroke |
+| `--st-spider-fill-opacity` | `35%` | Radar fill strength |
+| `--st-spider-stroke-scale` | `0.97` | Radar stroke thickness |
 
 ---
 
-## 13. Integrations
+## 13. Performance & SEO
 
-Official samples **[integration/](./integration/)**
+- **Zero hydration** — charts paint with CSS only  
+- **Small compiled output** — polygons + variables (~1 kb class)  
+- **GPU-friendly updates** — animate via custom properties / `clip-path`  
+- **SEO-friendly** — real DOM structure, no canvas/SVG dependency  
+
+---
+
+## 14. Integrations
+
+Official samples: **[integration/](./integration/)** · **[templates/](./templates/)**
 
 | Folder | Stack | Notes |
 |--------|--------|--------|
-| integration/html | HTML + JS | Runtime or compiled CSS |
-| integration/svelte | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` |
+| `integration/html` | HTML + JS | Runtime or compiled CSS |
+| `integration/svelte` | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` / polar vars |
+| `templates/admin-dashboard` | HTML dashboard | Revenue chart, stat cards, range tabs |
+| `templates/…` | Other demos | See repo `templates/` |
 
-**Add your stack:** See [integration/README.md](integration/README.md) …
+**Add your stack:** [integration/README.md](integration/README.md)
 
 ---
 
 [Add your idea](https://github.com/fscss-ttr/st-core.fscss/blob/main/CONTRIBUTING.md)
+
 > MIT License · Built with [FSCSS](https://fscss.devtem.org) · [fscss-ttr](https://github.com/fscss-ttr)
+
