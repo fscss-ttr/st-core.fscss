@@ -1,0 +1,224 @@
+/* ============================================================
+   spider-chart-v2.fscss — integration/html demo
+   Requires FSCSS ≥ 1.2.3 + st-core@v2 (with spider)
+   ============================================================ */
+
+@import((*) from st-core@v2)
+
+@st-root()
+@st-spider-root()
+
+/* ── Data ─────────────────────────────────────────────────── */
+@arr teamA[92, 78, 85, 55, 48, 80]   /* Speed Quality UX Scale Cost Support */
+@arr teamB[68, 82, 70, 95, 62, 58]
+
+/* ── Renderers ────────────────────────────────────────────── */
+@st-spider-fill(.fill-a, teamA)
+@st-spider-line(.line-a, teamA)
+@st-spider-dots(.dot-a-, teamA, 9px)
+
+@st-spider-fill(.fill-b, teamB)
+@st-spider-line(.line-b, teamB)
+@st-spider-dots(.dot-b-, teamB, 9px)
+
+@st-spider-grid(.spider-grid)
+@st-spider-spokes-n(.spider-spokes, 6)
+
+/* ── Page shell ───────────────────────────────────────────── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--st-bg);
+  font-family: 'Syne', system-ui, sans-serif;
+  color: var(--st-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background: var(--st-card);
+  border: 1px solid var(--st-border);
+  border-radius: 20px;
+  padding: 28px 28px 32px;
+  box-shadow:
+    0 0 0 1px rgba(157, 126, 255, 0.06),
+    0 28px 56px rgba(0, 0, 0, 0.45);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.card-sub {
+  font-size: 0.78rem;
+  color: var(--st-muted);
+  margin-top: 4px;
+  font-family: 'DM Mono', ui-monospace, monospace;
+}
+
+.badge {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--st-green);
+  border: 1px solid color-mix(in srgb, var(--st-green) 40%, transparent);
+  background: color-mix(in srgb, var(--st-green) 12%, transparent);
+  border-radius: 999px;
+  padding: 4px 10px;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  margin: 16px 0 22px;
+  font-size: 0.78rem;
+  color: var(--st-muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-violet { background: #9d7eff; }
+.dot-green  { background: #4fffb0; }
+
+/* ── Dual spiders ─────────────────────────────────────────── */
+.spiders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 640px) {
+  .spiders { grid-template-columns: 1fr; }
+}
+
+.spider-panel {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: 16px;
+  padding: 18px 14px 22px;
+  text-align: center;
+}
+
+.panel-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  margin-bottom: 14px;
+}
+
+.spider-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 240px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  background: var(--st-card);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--st-border);
+}
+
+.spider-wrap.team-a {
+  @st-spider-points(teamA, 42)
+  --st-accent: #9d7eff;
+  --st-spider-fill-opacity: 28%;
+}
+
+.spider-wrap.team-b {
+  @st-spider-points(teamB, 42)
+  --st-accent: #4fffb0;
+  --st-spider-fill-opacity: 30%;
+}
+
+/* Axis labels */
+.spider-label {
+  position: absolute;
+  font-size: 0.62rem;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  color: var(--st-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+.spider-label.speed   { top: -16px; left: 50%; transform: translateX(-50%); }
+.spider-label.quality { top: 14%; right: -28px; }
+.spider-label.ux      { bottom: 14%; right: -22px; }
+.spider-label.scale   { bottom: -16px; left: 50%; transform: translateX(-50%); }
+.spider-label.cost    { bottom: 14%; left: -22px; }
+.spider-label.support { top: 14%; left: -34px; }
+
+.divider {
+  height: 1px;
+  background: var(--st-border);
+  margin: 24px 0 18px;
+}
+
+/* ── Stats row ────────────────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 520px) {
+  .stats-row { grid-template-columns: 1fr; }
+}
+
+.stat-cell {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--st-muted);
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-family: 'DM Mono', ui-monospace, monospace;
+}
+
+.stat-delta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.stat-delta.up { color: var(--st-green); }
+.stat-delta.dn { color: var(--st-red); }

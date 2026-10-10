@@ -1,0 +1,135 @@
+/* ============================================================
+   spider-multi-v2.fscss — 5-series radar integration demo
+   ============================================================ */
+
+@import((*) from st-core@v2)
+
+@st-root()
+@st-spider-root()
+
+@arr seriesA[70, 55, 40, 85, 90]
+@arr seriesB[45, 75, 60, 50, 55]
+@arr seriesC[85, 40, 70, 35, 65]
+@arr seriesD[55, 30, 80, 70, 45]
+@arr seriesE[30, 90, 55, 60, 75]
+
+@st-spider-fill(.fill-a, seriesA)
+@st-spider-line(.line-a, seriesA)
+@st-spider-dots(.dot-a-, seriesA, 8px)
+
+@st-spider-fill(.fill-b, seriesB)
+@st-spider-line(.line-b, seriesB)
+@st-spider-dots(.dot-b-, seriesB, 8px)
+
+@st-spider-fill(.fill-c, seriesC)
+@st-spider-line(.line-c, seriesC)
+@st-spider-dots(.dot-c-, seriesC, 8px)
+
+@st-spider-fill(.fill-d, seriesD)
+@st-spider-line(.line-d, seriesD)
+@st-spider-dots(.dot-d-, seriesD, 8px)
+
+@st-spider-fill(.fill-e, seriesE)
+@st-spider-line(.line-e, seriesE)
+@st-spider-dots(.dot-e-, seriesE, 8px)
+
+@st-spider-grid(.spider-grid)
+@st-spider-spokes-n(.multi-spokes, 5)
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--st-bg);
+  font-family: 'Syne', system-ui, sans-serif;
+  color: var(--st-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--st-card);
+  border: 1px solid var(--st-border);
+  border-radius: 20px;
+  padding: 28px 24px 32px;
+  text-align: center;
+  box-shadow:
+    0 0 0 1px rgba(157, 126, 255, 0.06),
+    0 28px 56px rgba(0, 0, 0, 0.45);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--st-accent-2);
+  margin-bottom: 6px;
+}
+
+.card-sub {
+  font-size: 0.78rem;
+  color: var(--st-muted);
+  max-width: 360px;
+  margin: 0 auto 22px;
+  line-height: 1.5;
+}
+
+.multi-spider {
+  position: relative;
+  width: min(320px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto 22px;
+  background: var(--st-surface);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--st-border);
+}
+
+.series-a {
+  @st-spider-points(seriesA, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff9f43; --st-spider-fill-opacity: 20%;
+}
+.series-b {
+  @st-spider-points(seriesB, 42)
+  position: absolute; inset: 0;
+  --st-accent: #54a0ff; --st-spider-fill-opacity: 16%;
+}
+.series-c {
+  @st-spider-points(seriesC, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff6b9d; --st-spider-fill-opacity: 18%;
+}
+.series-d {
+  @st-spider-points(seriesD, 42)
+  position: absolute; inset: 0;
+  --st-accent: #ff6b35; --st-spider-fill-opacity: 14%;
+}
+.series-e {
+  @st-spider-points(seriesE, 42)
+  position: absolute; inset: 0;
+  --st-accent: #a55eea; --st-spider-fill-opacity: 16%;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--st-text);
+}
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
