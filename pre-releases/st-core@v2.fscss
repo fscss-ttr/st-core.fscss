@@ -2,6 +2,7 @@
    st-core@v2.fscss
    Pure CSS charts + polar/radar (spider) for the FSCSS ecosystem
    Requires FSCSS ≥ 1.2.3
+   pre-release: https://cdn.jsdelivr.net/gh/fscss-ttr/st-core.fscss@main/pre-releases/st-core@v2.fscss
    ============================================================ */
 
 /* ---------- Design tokens ---------- */
