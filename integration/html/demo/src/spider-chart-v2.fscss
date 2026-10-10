@@ -3,7 +3,7 @@
    Requires FSCSS ≥ 1.2.3 + st-core@v2 (with spider)
    ============================================================ */
 
-@import((*) from "/st-core@v2.fscss")
+@import((*) from st-core@v2)
 
 @st-root()
 @st-spider-root()
