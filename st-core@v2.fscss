@@ -1,5 +1,10 @@
+/* ============================================================
+   st-core@v2.fscss
+   Pure CSS charts + polar/radar (spider) for the FSCSS ecosystem
+   Requires FSCSS ≥ 1.2.3
+   ============================================================ */
 
-
+/* ---------- Design tokens ---------- */
 @define st-root(root:root){`
 :@use(root){
 /* colors */
@@ -27,7 +32,7 @@
 /* spacing */
 --st-pad: 24px;
 
-/* chart points (Y values only) */
+/* chart points (Y values only) — defaults / safety net */
 --st-p1: 68%;
 --st-p2: 59%;
 --st-p3: 70%;
@@ -39,13 +44,44 @@
 
 --st-peak-x: 71%;
 --st-peak-y: var(--st-p6);
-/* range */
 --st-cat-bar-fill-range: 0;
-/* line with */
 --st-chart-line-width: 1.5px;
+
+/* spider tokens */
+--st-spider-fill-opacity: 35%;
+--st-spider-stroke-scale: 0.97;
 }
 `}
 
+/* ---------- Layout helpers ---------- */
+@define st-container(st:body){`
+@use(st){
+min-height: 100vh;
+background: var(--st-bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Syne', system-ui, sans-serif;
+color: var(--st-text);
+padding: var(--st-pad);
+}
+`}
+
+@define st-phone(st:.st-phone){`
+@use(st){
+width: 360px;
+background: var(--st-surface);
+border-radius: var(--st-radius-xl);
+border: 1px solid var(--st-border);
+overflow: hidden;
+box-shadow:
+  0 0 0 1px rgba(157,126,255,.08),
+  0 40px 80px rgba(0,0,0,.6),
+  0 0 120px rgba(100,60,220,.12) inset;
+}
+`}
+
+/* ---------- Linear chart (Cartesian) ---------- */
 @define st-chart(p1: 88, p2: 59, p3: 70, p4: 35, p5: 58, p6: 22, p7: 42, p8: 55){
 --st-p1: num(100 - @use(p1))%;
 --st-p2: num(100 - @use(p2))%;
@@ -68,47 +104,15 @@ empty-@arr.@use(p)-idx[]{
 }")
 `}
 
-@define st-container(st:body){`
-@use(st){ 
-min-height: 100vh;
-background: var(--st-bg);
-display: flex;
-align-items: center;
-justify-content: center;
-font-family: 'Syne', sans-serif;
-color: var(--st-text);
-padding: var(--st-pad);
-}
-`}
-
-@define st-phone(st:.st-phone){`
-@use(st){
-width: 360px;
-background: var(--st-surface);
-border-radius: var(--st-radius-xl);
-border: 1px solid var(--st-border);
-overflow: hidden;
-
-box-shadow:
-0 0 0 1px rgba(157,126,255,.08),
-0 40px 80px rgba(0,0,0,.6),
-0 0 120px rgba(100,60,220,.12) inset;
-}
-`}
-
-
 @define st-chart-fill(st:.st-chart-fill, p){`
 @use(st){
   position: absolute;
   inset: 0;
 
-  /* Build index array from the same data array that was passed to st-chart-points */
-  
   @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
   clip-path: polygon(
 inline("{}
     empty-@arr.@use(p)-idx[] {
-      
       $i: @arr.@use(p)-idx[];
       num( < $i! -1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
     }
@@ -135,9 +139,8 @@ inline("{}
 
   @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
   @arr @use(p)-reversed-idx[@arr.@use(p)-idx!.reverse]
-  
+
   clip-path: polygon(
-    /* top edge (the visible stroke) */
     inline("{}
       empty-@arr.@use(p)-idx[] {
         $i: @arr.@use(p)-idx[];
@@ -148,9 +151,9 @@ inline("{}
       empty-@arr.@use(p)-reversed-idx[] reverse {
         $i: @arr.@use(p)-reversed-idx[];
         $isLast: equal($i, 1);
-        
+
         num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1> )%
-          calc(var(--st-p$i) + var(--st-chart-line-width)), 
+          calc(var(--st-p$i) + var(--st-chart-line-width)),
       }
     ")
  -100% calc(var(--st-p1) + var(--st-chart-line-width)) );
@@ -159,31 +162,92 @@ inline("{}
 }
 `}
 
-
-
 @define st-chart-dot(st:.st-chart-dot, x:0, y:0, size: 12px){`
-@use(st){ 
-  position: absolute; 
-left: calc( @use(x)% - 6px);
-top: calc(num(-<@use(y)> +100)% - 6px); %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent); }
+@use(st){
+  position: absolute;
+  left: calc( @use(x)% - 6px);
+  top: calc(num(-<@use(y)> +100)% - 6px);
+  %2(width, height[: @use(size);])
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--st-accent);
+}
 `}
 
+@define st-chart-dots(st:.st-chart-dot-, p, size: 8px){`
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+empty{
+  /* preserve*/
+}
+  @use(st)@arr.@use(p)-idx[] {
+    $i: @arr.@use(p)-idx[];
+  position: absolute;
+  left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
+  top: calc(var(--st-p$i) - 6px);
+  %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
+  }
+`}
+
+@define st-chart-grid(st:.st-chart-grid, rows:10, cols:7){`
+@use(st){
+position: absolute;
+width: 100%;
+height: 100%;
+background: repeating-linear-gradient(
+to bottom,
+$st-muted 0,
+$st-muted 1px,
+transparent 1px,
+transparent calc(100% / @use(rows))
+), repeating-linear-gradient(
+to right,
+$st-accent 0,
+$st-accent 1px,
+transparent 1px,
+transparent calc(100% / @use(cols))
+);
+opacity:.2;
+}`}
+
+@define st-chart-axis-x(st:.st-chart-axis-x){`
+@use(st){
+display: flex;
+justify-content: space-between;
+width: 100%;
+padding: var(--st-pad);
+font-size: 0.8em;
+color: var(--st-muted);
+}
+`}
+
+@define st-chart-axis-y(st:.y-axis){`
+@use(st){
+display: flex;
+flex-direction: column-reverse;
+justify-content: space-between;
+height: 100%;
+width: 100%;
+position: absolute;
+font-size: 0.5em;
+color: var(--st-muted);
+padding: 0;
+opacity: .8;
+}
+`}
+
+/* ---------- Category bar ---------- */
 @define st-cat-bar-fill(st:.st-cat-bar-fill, range:0){`
 @use(st){
 --st-cat-bar-fill-range: @use(range)%;
 height: 100%;
 width: var(--st-cat-bar-fill-range);
 border-radius: 999px;
-
-background: linear-gradient(
-90deg,
-var(--st-accent),
-var(--st-accent-2)
-);
+background: linear-gradient(90deg, var(--st-accent), var(--st-accent-2));
 transform-origin: left;
 }
 `}
 
+/* ---------- Stat card ---------- */
 @define st-stat-card(st:.st-stat-card){`
 @use(st) {
 background: var(--st-card);
@@ -218,69 +282,167 @@ font-weight: 600;
 @use(st) .st-stat-delta.down { color: var(--st-red); }
 `}
 
-@define st-chart-axis-x(st:.st-chart-axis-x){`
-@use(st){
-display: flex;
-justify-content: space-between;
-width: 100%;
-padding: var(--st-pad);
-font-size: 0.8em;
-color: var(--st-muted);
-}
-`}
-@define st-chart-axis-y(st:.y-axis){`
-@use(st){
-display: flex;
-flex-direction: column-reverse;
-justify-content: space-between;
-height: 100%;
-width: 100%;
-position: absolute;
-font-size: 0.5em;
-color: var(--st-muted);
-padding: 0;
-opacity: .8;
-}
-`}
+/* ============================================================
+   SPIDER / RADAR (polar)
+   ============================================================ */
 
-
-@define st-chart-grid(st:.st-chart-grid, rows:10, cols:7){`
-@use(st){
-position: absolute;
-width: 100%;
-height: 100%;
-background: repeating-linear-gradient(
-to bottom,
-$st-muted 0,
-$st-muted 1px,
-transparent 1px,
-transparent calc(100% / @use(rows))
-), repeating-linear-gradient(
-to right,
-$st-accent 0,
-$st-accent 1px,
-transparent 1px,
-transparent calc(100% / @use(cols))
-);
-opacity:.2;
-}`}
-
-
-@define st-chart-dots(st:.st-chart-dot-, p, size: 8px){`
-  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
-empty{
-  /* preserve*/
-}
-  @use(st)@arr.@use(p)-idx[] {
-    $i: @arr.@use(p)-idx[];
-
-  position: absolute; 
-left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
-top: calc(var(--st-p$i) - 6px); 
-%2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
+@define st-spider-root(root:root){`
+  :@use(root){
+    --st-spider-fill-opacity: 35%;
+    --st-spider-stroke-scale: 0.97;
   }
 `}
 
+/* Write --st-sxN / --st-syN (angle 0° at top) */
+@define st-spider-points(p, rmax:42){`
+inline("
+@arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
 
+empty{ /* preserve */ }
+empty-@arr.@use(p)-idx[]{
+  $idx: @arr.@use(p)-idx[];
+  --st-sx$idx: calc(50% + (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * sin(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
+  --st-sy$idx: calc(50% - (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * cos(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
+}")
+`}
 
+@define st-spider-fill(st:.st-spider-fill, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    clip-path: polygon(
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          var(--st-sx$i) var(--st-sy$i),
+        }
+      ")
+      var(--st-sx1) var(--st-sy1)
+    );
+
+    background: color-mix(
+      in srgb,
+      var(--st-accent) var(--st-spider-fill-opacity, 35%),
+      transparent
+    );
+  }
+`}
+
+@define st-spider-line(st:.st-spider-line, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    @arr @use(p)-rev[@arr.@use(p)-idx!.reverse]
+
+    clip-path: polygon(
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          var(--st-sx$i) var(--st-sy$i),
+        }
+      ")
+      inline("{}
+        empty-@arr.@use(p)-rev[]{
+          $i: @arr.@use(p)-rev[];
+          calc(50% + (var(--st-sx$i) - 50%) * var(--st-spider-stroke-scale, 0.97))
+          calc(50% + (var(--st-sy$i) - 50%) * var(--st-spider-stroke-scale, 0.97)),
+        }
+      ")
+      var(--st-sx1) var(--st-sy1)
+    );
+
+    background: var(--st-accent);
+  }
+`}
+
+@define st-spider-dots(st:.st-spider-dot-, p, size:10px){`
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+  empty{ /* preserve */ }
+  @use(st)@arr.@use(p)-idx[]{
+    $i: @arr.@use(p)-idx[];
+    position: absolute;
+    width: @use(size);
+    height: @use(size);
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid var(--st-accent);
+    left: calc(var(--st-sx$i) - @use(size) / 2);
+    top:  calc(var(--st-sy$i) - @use(size) / 2);
+    z-index: 2;
+    box-sizing: border-box;
+  }
+`}
+
+@define st-spider-grid(st:.st-spider-grid){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 50%,
+        transparent 19%, var(--st-border) 20%, transparent 21%,
+        transparent 39%, var(--st-border) 40%, transparent 41%,
+        transparent 59%, var(--st-border) 60%, transparent 61%,
+        transparent 79%, var(--st-border) 80%, transparent 81%
+      );
+    opacity: 0.45;
+  }
+`}
+
+/* Dynamic spokes from data array length (same p as points/fill/line) */
+@define st-spider-spokes(st:.st-spider-spokes, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.75;
+    mask: radial-gradient(circle, transparent 8%, #000 9%);
+
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    background: conic-gradient(
+      from -90deg,
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          transparent num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
+          var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
+          var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length + 0.9)deg,
+          transparent num(<$i - 1> * 360 / @arr.@use(p)!.length + 0.9)deg,
+        }
+      ")
+      transparent 360deg
+    );
+  }
+`}
+
+/* Explicit spoke count (no data array required) */
+@define st-spider-spokes-n(st:.st-spider-spokes, n:6){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.75;
+    mask: radial-gradient(circle, transparent 8%, #000 9%);
+
+    @arr _spk[count(@use(n), 1)]
+    background: conic-gradient(
+      from -90deg,
+      inline("{}
+        empty-@arr._spk[]{
+          $i: @arr._spk[];
+          transparent num(<$i - 1> * 360 / @use(n))deg,
+          var(--st-border) num(<$i - 1> * 360 / @use(n))deg,
+          var(--st-border) num(<$i - 1> * 360 / @use(n) + 0.9)deg,
+          transparent num(<$i - 1> * 360 / @use(n) + 0.9)deg,
+        }
+      ")
+      transparent 360deg
+    );
+  }
+`}
