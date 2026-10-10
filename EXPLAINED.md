@@ -1,6 +1,6 @@
 # How `st-core@v2.fscss` Works under the Hood
 
-`st-core@v2` renders SVG-free, canvas-free charts by leaning on two FSCSS primitives: **array iteration** (`@arr`, `inline("...")` loops) and **inline calculation** (`num()`, `calc()`). Every visual piece — fills, strokes, dots, grids, stat cards — reduces to CSS custom properties written once and read many times.
+`st-core@v2` renders SVG-free, canvas-free charts by leaning on two FSCSS primitives: **array iteration** (`@arr`, `inline("...")` loops) and **inline calculation** (`num()`, `calc()`). Every visual piece — fills, strokes, dots, grids, spider polygons, spokes, stat cards — reduces to CSS custom properties written once and read many times.
 
 This document walks through every `@define` in the source, in the order they appear.
 
@@ -22,7 +22,14 @@ This document walks through every `@define` in the source, in the order they app
 12. [`@st-chart-axis-x` / `@st-chart-axis-y` — Axis Wrappers](#12-st-chart-axis-x--st-chart-axis-y--axis-wrappers)
 13. [`@st-chart-grid` — Background Grid](#13-st-chart-grid--background-grid)
 14. [`@st-chart-dots` — Auto-Generated Markers](#14-st-chart-dots--auto-generated-markers)
-15. [The One Rule That Ties It All Together](#15-the-one-rule-that-ties-it-all-together)
+15. [`@st-spider-root` — Spider Token Defaults](#15-st-spider-root--spider-token-defaults)
+16. [`@st-spider-points` — Polar Coordinate Writer](#16-st-spider-points--polar-coordinate-writer)
+17. [`@st-spider-fill` — Polar Area Fill](#17-st-spider-fill--polar-area-fill)
+18. [`@st-spider-line` — Polar Dual-Pass Stroke](#18-st-spider-line--polar-dual-pass-stroke)
+19. [`@st-spider-dots` — Polar Markers](#19-st-spider-dots--polar-markers)
+20. [`@st-spider-grid` — Concentric Rings](#20-st-spider-grid--concentric-rings)
+21. [`@st-spider-spokes` / `@st-spider-spokes-n` — Radial Axes](#21-st-spider-spokes--st-spider-spokes-n--radial-axes)
+22. [The One Rule That Ties It All Together](#22-the-one-rule-that-ties-it-all-together)
 
 ---
 
@@ -57,6 +64,10 @@ This document walks through every `@define` in the source, in the order they app
   --st-peak-y: var(--st-p6);
   --st-cat-bar-fill-range: 0;
   --st-chart-line-width: 1.5px;
+
+  /* spider defaults (also set by @st-spider-root) */
+  --st-spider-fill-opacity: 35%;
+  --st-spider-stroke-scale: 0.97;
 }
 `}
 ```
@@ -65,7 +76,8 @@ This document walks through every `@define` in the source, in the order they app
 - Every color, radius, and spacing value the rest of the library references is defined here as a CSS custom property. Nothing downstream hardcodes a color; they all read `var(--st-*)`.
 - **`--st-p1` through `--st-p8` ship with default values.** This is a safety net: if you use a component that reads `--st-p$i` before anything has written to it (skipped `@st-chart-points` by mistake), you get a plausible-looking placeholder shape instead of a broken layout.
 - `--st-peak-x` / `--st-peak-y` are convenience tokens for annotating a single standout point (e.g. positioning a callout dot at the chart's highest value) — `--st-peak-y` even aliases `--st-p6` as a worked example.
-- `--st-chart-line-width` is the single source of truth for stroke thickness, read by `@st-chart-line` and overridable by `@st-chart-line-width`.
+- `--st-chart-line-width` is the single source of truth for linear stroke thickness, read by `@st-chart-line` and overridable by `@st-chart-line-width`.
+- **`--st-spider-fill-opacity` / `--st-spider-stroke-scale`** are polar counterparts: fill strength for `color-mix`, and how far the dual-pass stroke inner edge is scaled toward the center.
 
 ---
 
@@ -106,7 +118,7 @@ Charts render top-down in CSS (`0%` is the top of the box), but data conceptuall
 - Inside the loop, `--st-p$idx: num(100 - @arr.@use(p)[$idx])%;` does two things per iteration:
   1. Looks up the raw value at that index in your original array (`@arr.@use(p)[$idx]`).
   2. Inverts it (`100 - value`) and writes it to the correspondingly-numbered CSS variable (`--st-p1`, `--st-p2`, ...).
-- This is the **only** mixin in the file that writes `--st-p*` from an arbitrary-length array. Every other chart mixin (`@st-chart-fill`, `@st-chart-line`, `@st-chart-dots`) only *reads* those variables — they never set them independently. That's why calling `@st-chart-points(arrayName)` on an element is mandatory before any renderer on that element (or its descendants) will show the right shape.
+- This is the **only** linear mixin that writes `--st-p*` from an arbitrary-length array. Every other linear chart mixin only *reads* those variables.
 
 ---
 
@@ -395,18 +407,248 @@ No polygons here — the grid is two stacked `repeating-linear-gradient`s doing 
 `}
 ```
 
-This one generates a `.dot-1`, `.dot-2`, ... `.dot-N` rule per array index (via `@use(st)@arr.@use(p)-idx[]`, concatenating the selector prefix with each index) and is worth reading carefully — it writes `top` **twice**.
+This one generates a `.dot-1`, `.dot-2`, ... `.dot-N` rule per array index (via `@use(st)@arr.@use(p)-idx[]`, concatenating the selector prefix with each index).
 
-- **First block** computes `top` directly from the raw array value: `calc(num(-@arr.@use(p)[$i] + 100)% - 6px)`. This positions each dot from the *array itself*, with no dependency on `--st-p*` variables at all — a self-contained fallback.
-- **Second block**, emitted afterward, overrides `top` again with `calc(var(--st-p$i) - 6px)` — reading the CSS variable instead of recomputing from the array.
-- Because **CSS resolves duplicate declarations in source order, last one wins**, the second block's `top` is what actually takes effect at render time. The first block's computation is functionally dead once the second runs — but it does mean that if `@st-chart-points(p)` was *never* called on an ancestor, `--st-p$i` is undefined and `top` falls back to its initial/auto value rather than silently using the array-derived first computation.
-- **Practical upshot**: `@st-chart-dots`, like `@st-chart-fill` and `@st-chart-line`, effectively requires `@st-chart-points(p)` to have run somewhere in scope for correct positioning, even though its `left` calculation (X-axis) is entirely self-sufficient and never touches `--st-p*` at all. Only the vertical positioning has this dependency.
+- **`left`** is self-contained: same even X-spacing formula as fill/line, no dependence on `--st-p*`.
+- **`top`** reads `var(--st-p$i)` — so `@st-chart-points(p)` must have run in scope for correct vertical placement.
+- The `-6px` offsets center the default-sized marker on the point.
 
 ---
 
-## 15. The One Rule That Ties It All Together
+## 15. `@st-spider-root` — Spider Token Defaults
+
+```css
+@define st-spider-root(root:root){`
+  :@use(root){
+    --st-spider-fill-opacity: 35%;
+    --st-spider-stroke-scale: 0.97;
+  }
+`}
+```
+
+Optional companion to `@st-root` that only sets polar tokens. Useful when a page already has a custom theme but wants spider defaults, or when you want to re-scope spider tokens under a card without resetting the whole palette.
+
+Override per series with normal custom properties:
+
+```css
+.series-a {
+  --st-accent: #ff9f43;
+  --st-spider-fill-opacity: 22%;
+}
+```
+
+---
+
+## 16. `@st-spider-points` — Polar Coordinate Writer
+
+```css
+@define st-spider-points(p, rmax:42){`
+inline("
+@arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+
+empty{ /* preserve */ }
+empty-@arr.@use(p)-idx[]{
+  $idx: @arr.@use(p)-idx[];
+  --st-sx$idx: calc(50% + (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * sin(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
+  --st-sy$idx: calc(50% - (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * cos(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
+}")
+`}
+```
+
+This is the **polar equivalent of `@st-chart-points`**. Instead of inverted Y percentages on a horizontal axis, it writes Cartesian coordinates of vertices on a circle.
+
+- **Angle convention:** `0°` is at the **top** of the chart (north). Index `1` sits at the top; later indices rotate clockwise by `360° / N`.
+- **Radius:** each value is treated as a 0–100 score. `value / 100 * rmax` scales it into a percentage of the host box. Default `rmax: 42` leaves a margin so dots and labels do not clip the edge.
+- **Trig is left in CSS `calc()` + `sin()` / `cos()`** so runtime JS can update `--st-sxN` / `--st-syN` without recompiling FSCSS. Only the *angle step* and *radius factor* are resolved at compile time via `num(...)`.
+- **X:** `50% + r% * sin(θ)` — right is positive X.  
+- **Y:** `50% - r% * cos(θ)` — up is negative Y in CSS, so the leading minus puts `θ = 0` at the top.
+- Must be called on the **host** that owns the series. Children (fill, line, dots) inherit `--st-sxN` / `--st-syN` the same way linear charts inherit `--st-pN`.
+
+---
+
+## 17. `@st-spider-fill` — Polar Area Fill
+
+```css
+@define st-spider-fill(st:.st-spider-fill, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    clip-path: polygon(
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          var(--st-sx$i) var(--st-sy$i),
+        }
+      ")
+      var(--st-sx1) var(--st-sy1)
+    );
+
+    background: color-mix(
+      in srgb,
+      var(--st-accent) var(--st-spider-fill-opacity, 35%),
+      transparent
+    );
+  }
+`}
+```
+
+- Builds a closed polygon by walking every vertex `var(--st-sx$i) var(--st-sy$i)`, then repeating the first vertex so the path closes cleanly.
+- Unlike linear fill, there is no “bottom edge” — the shape is already a closed polar region.
+- Fill color is `color-mix` of `--st-accent` with transparency controlled by `--st-spider-fill-opacity` (handy for multi-series overlays).
+- Array `p` is used only for **length** (how many vertices). Coordinates come from the host’s `@st-spider-points`.
+
+---
+
+## 18. `@st-spider-line` — Polar Dual-Pass Stroke
+
+```css
+@define st-spider-line(st:.st-spider-line, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    @arr @use(p)-rev[@arr.@use(p)-idx!.reverse]
+
+    clip-path: polygon(
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          var(--st-sx$i) var(--st-sy$i),
+        }
+      ")
+      inline("{}
+        empty-@arr.@use(p)-rev[]{
+          $i: @arr.@use(p)-rev[];
+          calc(50% + (var(--st-sx$i) - 50%) * var(--st-spider-stroke-scale, 0.97))
+          calc(50% + (var(--st-sy$i) - 50%) * var(--st-spider-stroke-scale, 0.97)),
+        }
+      ")
+      var(--st-sx1) var(--st-sy1)
+    );
+
+    background: var(--st-accent);
+  }
+`}
+```
+
+Same dual-pass idea as `@st-chart-line`, adapted to polar space:
+
+1. **Outer path** — the data polygon itself (`--st-sx` / `--st-sy`).
+2. **Inner path** — each vertex scaled toward the center by `--st-spider-stroke-scale` (default `0.97`). Walking the reversed index list closes the band without self-intersection.
+3. The thin ring between outer and inner edges is filled with `--st-accent`, which reads as a stroke.
+
+There is no CSS “stroke width” on `clip-path`; the gap between `1.0` and `0.97` *is* the stroke thickness. Smaller scale → thicker apparent line.
+
+---
+
+## 19. `@st-spider-dots` — Polar Markers
+
+```css
+@define st-spider-dots(st:.st-spider-dot-, p, size:10px){`
+  @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+  empty{ /* preserve */ }
+  @use(st)@arr.@use(p)-idx[]{
+    $i: @arr.@use(p)-idx[];
+    position: absolute;
+    width: @use(size);
+    height: @use(size);
+    border-radius: 50%;
+    background: #fff;
+    border: 2.5px solid var(--st-accent);
+    left: calc(var(--st-sx$i) - @use(size) / 2);
+    top:  calc(var(--st-sy$i) - @use(size) / 2);
+    z-index: 2;
+    box-sizing: border-box;
+  }
+`}
+```
+
+- Emits `.prefix1` … `.prefixN` rules (e.g. `.spider-dot-1`). **Matching elements must exist in the HTML.**
+- Position is simply the polar vertex minus half the marker size — no separate X-spacing formula.
+- Depends entirely on `--st-sxN` / `--st-syN` from `@st-spider-points` on an ancestor.
+
+---
+
+## 20. `@st-spider-grid` — Concentric Rings
+
+```css
+@define st-spider-grid(st:.st-spider-grid){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 50%,
+        transparent 19%, var(--st-border) 20%, transparent 21%,
+        transparent 39%, var(--st-border) 40%, transparent 41%,
+        transparent 59%, var(--st-border) 60%, transparent 61%,
+        transparent 79%, var(--st-border) 80%, transparent 81%
+      );
+    opacity: 0.45;
+  }
+`}
+```
+
+Four concentric rings at 20%, 40%, 60%, 80% of the radius, each a 1%–wide hard stop of `--st-border` sandwiched between transparent regions. No data dependency — pure reference grid, same role as the linear `@st-chart-grid`.
+
+---
+
+## 21. `@st-spider-spokes` / `@st-spider-spokes-n` — Radial Axes
+
+### From data array length
+
+```css
+@define st-spider-spokes(st:.st-spider-spokes, p){`
+  @use(st){
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.75;
+    mask: radial-gradient(circle, transparent 8%, #000 9%);
+
+    @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
+    background: conic-gradient(
+      from -90deg,
+      inline("{}
+        empty-@arr.@use(p)-idx[]{
+          $i: @arr.@use(p)-idx[];
+          transparent num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
+          var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
+          var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length + 0.9)deg,
+          transparent num(<$i - 1> * 360 / @arr.@use(p)!.length + 0.9)deg,
+        }
+      ")
+      transparent 360deg
+    );
+  }
+`}
+```
+
+### Explicit count
+
+```css
+@define st-spider-spokes-n(st:.st-spider-spokes, n:6){`
+  /* same structure, but @arr _spk[count(@use(n), 1)] and 360 / @use(n) */
+`}
+```
+
+- **`conic-gradient` from `-90deg`** aligns spoke 0 with the top (same convention as `@st-spider-points`).
+- Each spoke is a **thin color band** (~0.9°) of `--st-border`, bracketed by `transparent` stops so the rest of the disc stays clear. Without the trailing transparent stop after each band, the gradient would paint large filled wedges.
+- **`mask: radial-gradient(... transparent 8% ...)`** hollows out the center so spokes do not form a solid hub.
+- Prefer `@st-spider-spokes(p)` when spokes should always match the data length; use `@st-spider-spokes-n(n)` when the axis count is fixed independently of a particular series (e.g. shared grid under multi-series radars).
+
+---
+
+## 22. The One Rule That Ties It All Together
 
 Across every chart mixin in this file, the split is consistent:
+
+### Linear (Cartesian)
 
 | Concern | Who owns it | Depends on `--st-p*`? |
 |---|---|---|
@@ -415,15 +657,26 @@ Across every chart mixin in this file, the split is consistent:
 | Line/fill/dot **shape** | `@st-chart-fill` / `@st-chart-line` / `@st-chart-dots` | Reads, never writes |
 | Line/fill/dot **values** | `@st-chart-points(array)` | Writes, on whichever element calls it |
 
-Every renderer mixin needs the array purely to know *how many* points to loop over. The array's actual values only ever reach the page through `--st-p1`…`--st-p{n}`, and those variables are inherited down the DOM like any other custom property. That's the entire reason a multi-series chart requires `@st-chart-points(seriesN)` on each series' own element — skip it, and that element silently inherits whatever its nearest ancestor last set.
+### Spider / radar (polar)
+
+| Concern | Who owns it | Depends on `--st-sx*` / `--st-sy*`? |
+|---|---|---|
+| Angle step | Compile-time `360 / N` from array **length** | No |
+| Radius + trig | `@st-spider-points` → `sin`/`cos` in `calc()` | Writes both |
+| Polygon **shape** | `@st-spider-fill` / `@st-spider-line` / `@st-spider-dots` | Reads, never writes |
+| Spokes / rings | Independent of series values | No |
+
+Every renderer mixin needs the array purely to know *how many* points to loop over. The array’s actual values only ever reach the page through custom properties (`--st-pN` or `--st-sxN`/`--st-syN`), and those variables are inherited down the DOM like any other custom property. That’s why multi-series charts require `@st-chart-points(seriesN)` or `@st-spider-points(seriesN)` on **each series’ own host** — skip it, and that element silently inherits whatever its nearest ancestor last set.
+
+---
 
 ## Integrations
 
-Official samples … **[integration/](./integration/)**
+Official samples: **[integration/](./integration/)** · **[templates/](./templates/)**
 
 | Folder | Stack | Notes |
 |--------|--------|--------|
-| integration/html | HTML + JS | Runtime or compiled CSS |
-| integration/svelte | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` |
+| `integration/html` | HTML + JS | Linear multi-chart, spider dual-team, multi-series radar |
+| `integration/svelte` | Svelte / SvelteKit | Compiled CSS + reactive `--st-pN` / polar vars |
 
 **Add your stack:** See [integration/README.md](integration/README.md)
