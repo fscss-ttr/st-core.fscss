@@ -2,7 +2,7 @@
    spider-multi-v2.fscss — 5-series radar integration demo
    ============================================================ */
 
-@import((*) from "/st-core@v2.fscss")
+@import((*) from st-core@v2)
 
 @st-root()
 @st-spider-root()
