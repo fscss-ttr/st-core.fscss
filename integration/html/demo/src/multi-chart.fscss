@@ -11,7 +11,7 @@
 
   /* ── FSCSS import ── */
   @import(
-    (*) from "./st-core.fscss"
+    (*) from st-core
   )
 
   @st-root()
