@@ -139,7 +139,7 @@ In **v1**, charts were locked to 8 fixed points (`--st-p1` … `--st-p8`).
 ### CDN / Runtime Mode
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 ```
 
 ```css
@@ -440,7 +440,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 ### Minimal linear chart
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
 @st-root()
@@ -470,7 +470,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 ### Multi-line & multi-area chart (with opacity)
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
 @st-root()
@@ -526,7 +526,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
     @st-root()
@@ -579,7 +579,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
   <style>
     @import((*) from st-core@v2)
 
@@ -650,7 +650,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 ### Minimal spider chart
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
 @st-root()
@@ -691,7 +691,7 @@ updatePoints(document.querySelector('.chart'), [50, 20, 85, 40, 95]);
 ### Two teams + axis labels
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
 @st-root()
@@ -825,7 +825,7 @@ body {
 ### Multi-series radar example
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" async></script>
 <style>
 @import((*) from st-core@v2)
 @st-root()
