@@ -3,7 +3,7 @@
   "version": "2",
   "description": "Lightweight FSCSS - based UI library for statistical dashboard and components",
   "extension": "fscss",
-  "fscss_version": "^1.1.24",
+  "fscss_version": "^1.2.3",
   "blocked_methods": [],
   "repository": {
     "type": "git",
