@@ -18,13 +18,27 @@
       "helpers": [
         "st-root",
         "st-container",
+        "st-phone",
+        "st-chart",
         "st-chart-fill",
         "st-chart-line",
         "st-chart-dot",
-        "st-chart-dots", 
+        "st-chart-dots",
         "st-chart-points",
         "st-chart-line-width",
-        "st-stat-card"
+        "st-chart-grid",
+        "st-chart-axis-x",
+        "st-chart-axis-y",
+        "st-stat-card",
+        "st-cat-bar-fill",
+        "st-spider-root",
+        "st-spider-points",
+        "st-spider-fill",
+        "st-spider-line",
+        "st-spider-dots",
+        "st-spider-grid",
+        "st-spider-spokes",
+        "st-spider-spokes-n"
       ]
     },
     "modules": [
@@ -42,7 +56,9 @@
     "fscss-based",
     "dashboard-ui",
     "utility",
-    "statistics"
+    "statistics",
+    "spider-chart",
+    "radar-chart"
   ],
   "license": "MIT"
 }
