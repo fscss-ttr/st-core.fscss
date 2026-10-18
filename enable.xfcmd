@@ -1,0 +1,134 @@
+# xfcmds/enable.xfcmd
+# Runs when st-core is enabled in the FSCSS IDE: libck st-core, then yes (or libon st-core).
+# Docs: https://github.com/fscss-ttr/st-core.fscss
+say "Setting up {name}@{version} by {author}"
+say "Needs FSCSS {fscss}. Import line: @import((*) from {import})"
+add snippets for helpers
+add snippet st-data "st-core data array" as "@arr ${1:series}[${2:20, 35, 33, 30, 48, 35, 66, 37}]"
+add snippet st-chart-block "st-core chart container" as ".${1:chart}{\n  position: relative;\n  height: ${2:200px};\n  background: var(--st-surface);\n  border-radius: var(--st-radius-lg);\n  overflow: hidden;\n  @st-chart-points(${3:series})\n}"
+add snippet st-spider-block "st-core spider container" as ".${1:spider}{\n  position: relative;\n  width: ${2:260px};\n  height: ${2:260px};\n  background: var(--st-surface);\n  border-radius: var(--st-radius-lg);\n  @st-spider-points(${3:series})\n}"
+create file st-core-demo/chart.fscss with:
+  /* st-core line chart demo, created by xfcmd */
+  @import((*) from {import})
+
+  @st-root()
+  @st-container(body)
+  @st-stat-card(.stat-card)
+
+  @arr sales[20, 35, 33, 30, 48, 35, 66, 37]
+
+  @st-chart-fill(.chart-fill, sales)
+  @st-chart-line(.chart-line, sales)
+  @st-chart-dots(.chart-dot-, sales, 8px)
+  @st-chart-grid(.chart-grid, 8, 7)
+  @st-chart-axis-x(.x-axis)
+
+  .demo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .card {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chart {
+    position: relative;
+    height: 200px;
+    background: var(--st-surface);
+    border-radius: var(--st-radius-lg);
+    overflow: hidden;
+    @st-chart-points(sales)
+  }
+
+  .chart-line {
+    @st-chart-line-width(2px)
+  }
+end
+create file st-core-demo/spider.fscss with:
+  /* st-core spider (radar) demo, created by xfcmd */
+  @import((*) from {import})
+
+  @st-root()
+  @arr skills[80, 65, 90, 50, 70, 85]
+
+  @st-spider-grid(.spider-grid)
+  @st-spider-spokes(.spider-spokes, skills)
+  @st-spider-fill(.spider-fill, skills)
+  @st-spider-line(.spider-line, skills)
+  @st-spider-dots(.spider-dot-, skills, 10px)
+
+  .spider {
+    position: relative;
+    width: 260px;
+    height: 260px;
+    background: var(--st-surface);
+    border-radius: var(--st-radius-lg);
+    @st-spider-points(skills)
+  }
+end
+create file st-core-demo/index.html with:
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>st-core demo</title>
+    <link rel="stylesheet" href="chart.fscss">
+    <link rel="stylesheet" href="spider.fscss">
+  </head>
+  <body>
+    <div class="demo">
+      <div class="card">
+        <div class="stat-card">
+          <div class="st-stat-label">Weekly total</div>
+          <div class="st-stat-value">$1,326</div>
+          <div class="st-stat-delta up">+5.1% vs last week</div>
+        </div>
+        <div class="chart">
+          <div class="chart-fill"></div>
+          <div class="chart-line"></div>
+          <div class="chart-dot-1"></div>
+          <div class="chart-dot-2"></div>
+          <div class="chart-dot-3"></div>
+          <div class="chart-dot-4"></div>
+          <div class="chart-dot-5"></div>
+          <div class="chart-dot-6"></div>
+          <div class="chart-dot-7"></div>
+          <div class="chart-dot-8"></div>
+          <div class="chart-grid"></div>
+        </div>
+        <div class="x-axis">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+          <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+        </div>
+      </div>
+      <div class="spider">
+        <div class="spider-grid"></div>
+        <div class="spider-spokes"></div>
+        <div class="spider-fill"></div>
+        <div class="spider-line"></div>
+        <div class="spider-dot-1"></div>
+        <div class="spider-dot-2"></div>
+        <div class="spider-dot-3"></div>
+        <div class="spider-dot-4"></div>
+        <div class="spider-dot-5"></div>
+        <div class="spider-dot-6"></div>
+      </div>
+    </div>
+  </body>
+  </html>
+end
+open file st-core-demo/chart.fscss
+compile
+open file st-core-demo/spider.fscss
+compile
+open file st-core-demo/index.html
+show preview
+say "Done. Type a helper name such as st-chart-fill in an .fscss file to insert its snippet."
+say "If a compile error mentions st-core, check the import line and your FSCSS version."

@@ -1,0 +1,4 @@
+# xfcmds/disable.xfcmd
+# Runs when st-core is disabled in the FSCSS IDE: liboff st-core
+say "Disabled {name}. Its helper snippets were removed."
+say "The demo in st-core-demo/ was kept. Delete that folder if you do not need it."
