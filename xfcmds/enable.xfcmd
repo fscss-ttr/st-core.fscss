@@ -79,8 +79,8 @@ create file st-core-demo/index.html with:
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>st-core demo</title>
-    <link rel="stylesheet" href="chart.fscss">
-    <link rel="stylesheet" href="spider.fscss">
+    <link type="fscss" href="chart.fscss">
+    <link type="fscss" href="spider.fscss">
   </head>
   <body>
     <div class="demo">
