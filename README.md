@@ -1004,6 +1004,9 @@ Official samples: **[integration/](./integration/)** · **[templates/](./templat
 | `templates/admin-dashboard` | HTML dashboard | Revenue chart, stat cards, range tabs |
 | `templates/…` | Other demos | See repo `templates/` |
 
+- For quick demo in the [FSCSS BROWSER IDE](https://fscss.devtem.org/ide) run `xfcmd st-core-chart` in the terminal. 
+- For st-core snippets in the [FSCSS BROWSER IDE](https://fscss.devtem.org/ide) run `libon st-core` in the terminal. 
+
 **Add your stack:** [integration/README.md](integration/README.md)
 
 ---
