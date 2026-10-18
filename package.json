@@ -3,7 +3,7 @@
   "version": "2",
   "description": "Lightweight FSCSS - based UI library for statistical dashboard and components",
   "extension": "fscss",
-  "fscss_version": "^1.2.3",
+  "fscss_version": ">=1.2.3",
   "blocked_methods": [],
   "repository": {
     "type": "git",
@@ -16,35 +16,39 @@
     "usage": {
       "directive": "st-*",
       "helpers": [
-        "st-root",
-        "st-container",
-        "st-phone",
-        "st-chart",
-        "st-chart-fill",
-        "st-chart-line",
-        "st-chart-dot",
-        "st-chart-dots",
-        "st-chart-points",
-        "st-chart-line-width",
-        "st-chart-grid",
-        "st-chart-axis-x",
-        "st-chart-axis-y",
-        "st-stat-card",
-        "st-cat-bar-fill",
-        "st-spider-root",
-        "st-spider-points",
-        "st-spider-fill",
-        "st-spider-line",
-        "st-spider-dots",
-        "st-spider-grid",
-        "st-spider-spokes",
-        "st-spider-spokes-n"
+        "st-root(root:root)",
+        "st-container(st:body)",
+        "st-phone(st:.st-phone)",
+        "st-chart(p1:88, p2:59, p3:70, p4:35, p5:58, p6:22, p7:42, p8:55)",
+        "st-chart-points(p)",
+        "st-chart-fill(st:.st-chart-fill, p)",
+        "st-chart-line(st:.st-chart-line, p)",
+        "st-chart-line-width(st)",
+        "st-chart-dot(st:.st-chart-dot, x:0, y:0, size:12px)",
+        "st-chart-dots(st:.st-chart-dot-, p, size:8px)",
+        "st-chart-grid(st:.st-chart-grid, rows:10, cols:7)",
+        "st-chart-axis-x(st:.st-chart-axis-x)",
+        "st-chart-axis-y(st:.y-axis)",
+        "st-cat-bar-fill(st:.st-cat-bar-fill, range:0)",
+        "st-stat-card(st:.st-stat-card)",
+        "st-spider-root(root:root)",
+        "st-spider-points(p, rmax:42)",
+        "st-spider-fill(st:.st-spider-fill, p)",
+        "st-spider-line(st:.st-spider-line, p)",
+        "st-spider-dots(st:.st-spider-dot-, p, size:10px)",
+        "st-spider-grid(st:.st-spider-grid)",
+        "st-spider-spokes(st:.st-spider-spokes, p)",
+        "st-spider-spokes-n(st:.st-spider-spokes, n:6)"
       ]
     },
     "modules": [
       "./st-core@v2.fscss"
     ],
     "remote": "./st-core@v2.fscss"
+  },
+  "xfcmd": {
+    "enable": "./xfcmds/enable.xfcmd",
+    "disable": "./xfcmds/disable.xfcmd"
   },
   "author": {
     "name": "fscss-ttr"
@@ -56,9 +60,7 @@
     "fscss-based",
     "dashboard-ui",
     "utility",
-    "statistics",
-    "spider-chart",
-    "radar-chart"
+    "statistics"
   ],
   "license": "MIT"
 }
