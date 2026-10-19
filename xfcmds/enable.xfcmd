@@ -7,7 +7,7 @@ add snippets for helpers
 add snippet st-data "st-core data array" as "@arr ${1:series}[${2:20, 35, 33, 30, 48, 35, 66, 37}]"
 add snippet st-chart-block "st-core chart container" as ".${1:chart}{\n  position: relative;\n  height: ${2:200px};\n  background: var(--st-surface);\n  border-radius: var(--st-radius-lg);\n  overflow: hidden;\n  @st-chart-points(${3:series})\n}"
 add snippet st-spider-block "st-core spider container" as ".${1:spider}{\n  position: relative;\n  width: ${2:260px};\n  height: ${2:260px};\n  background: var(--st-surface);\n  border-radius: var(--st-radius-lg);\n  @st-spider-points(${3:series})\n}"
-create file st-core-demo/chart.fscss with:
+create file "st-core-demo/chart.css" with:
   /* st-core line chart demo, created by xfcmd */
   @import((*) from {import})
 
@@ -50,7 +50,7 @@ create file st-core-demo/chart.fscss with:
     @st-chart-line-width(2px)
   }
 end
-create file st-core-demo/spider.fscss with:
+create file "st-core-demo/Spider.fscss" with:
   /* st-core spider (radar) demo, created by xfcmd */
   @import((*) from {import})
 
@@ -72,7 +72,7 @@ create file st-core-demo/spider.fscss with:
     @st-spider-points(skills)
   }
 end
-create file st-core-demo/index.html with:
+create file "st-core-demo/index.html" with:
   <!DOCTYPE html>
   <html lang="en">
   <head>
