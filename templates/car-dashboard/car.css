@@ -1,3 +1,9 @@
+/* ============================================================
+st-core@v2.fscss
+Pure CSS charts + polar/radar (spider) for the FSCSS ecosystem
+Requires FSCSS ≥ 1.2.3
+============================================================ */
+
 /* ------------------------------------------------------------------
 Data
 Each range needs its own arrays: polygon stop counts are baked at
@@ -39,7 +45,7 @@ colour, background and font-family with it. See README.md.
 --st-radius-sm: 10px;
 /* spacing */
 --st-pad: 24px;
-/* chart points (Y values only) */
+/* chart points (Y values only) — defaults / safety net */
 --st-p1: 68%;
 --st-p2: 59%;
 --st-p3: 70%;
@@ -50,10 +56,11 @@ colour, background and font-family with it. See README.md.
 --st-p8: 55%;
 --st-peak-x: 71%;
 --st-peak-y: var(--st-p6);
-/* range */
 --st-cat-bar-fill-range: 0;
-/* line with */
 --st-chart-line-width: 1.5px;
+/* spider tokens */
+--st-spider-fill-opacity: 35%;
+--st-spider-stroke-scale: 0.97;
 }
 
 :root{
@@ -906,7 +913,6 @@ be called from inside a rule or its declarations have nowhere to land.
 .speed-fill-7d{
 position: absolute;
 inset: 0;
-/* Build index array from the same data array that was passed to st-chart-points */
 
 clip-path: polygon(
 0% var(--st-p1),
@@ -931,7 +937,6 @@ position: absolute;
 inset: 0;
 
 clip-path: polygon(
-/* top edge (the visible stroke) */
 0% var(--st-p1),
 16.666666666666668% var(--st-p2),
 33.333333333333336% var(--st-p3),
@@ -995,7 +1000,6 @@ opacity:.2;
 .speed-fill-30d{
 position: absolute;
 inset: 0;
-/* Build index array from the same data array that was passed to st-chart-points */
 
 clip-path: polygon(
 0% var(--st-p1),
@@ -1023,7 +1027,6 @@ position: absolute;
 inset: 0;
 
 clip-path: polygon(
-/* top edge (the visible stroke) */
 0% var(--st-p1),
 11.11111111111111% var(--st-p2),
 22.22222222222222% var(--st-p3),
@@ -1098,7 +1101,6 @@ opacity:.2;
 .speed-fill-90d{
 position: absolute;
 inset: 0;
-/* Build index array from the same data array that was passed to st-chart-points */
 
 clip-path: polygon(
 0% var(--st-p1),
@@ -1128,7 +1130,6 @@ position: absolute;
 inset: 0;
 
 clip-path: polygon(
-/* top edge (the visible stroke) */
 0% var(--st-p1),
 9.090909090909092% var(--st-p2),
 18.181818181818183% var(--st-p3),
@@ -1208,11 +1209,7 @@ So: call it bare, and do not terminate it. */
 height: 100%;
 width: var(--st-cat-bar-fill-range);
 border-radius: 999px;
-background: linear-gradient(
-90deg,
-var(--st-accent),
-var(--st-accent-2)
-);
+background: linear-gradient(90deg, var(--st-accent), var(--st-accent-2));
 transform-origin: left;
 }
 
@@ -1221,11 +1218,7 @@ transform-origin: left;
 height: 100%;
 width: var(--st-cat-bar-fill-range);
 border-radius: 999px;
-background: linear-gradient(
-90deg,
-var(--st-accent),
-var(--st-accent-2)
-);
+background: linear-gradient(90deg, var(--st-accent), var(--st-accent-2));
 transform-origin: left;
 }
 
@@ -1234,10 +1227,6 @@ transform-origin: left;
 height: 100%;
 width: var(--st-cat-bar-fill-range);
 border-radius: 999px;
-background: linear-gradient(
-90deg,
-var(--st-accent),
-var(--st-accent-2)
-);
+background: linear-gradient(90deg, var(--st-accent), var(--st-accent-2));
 transform-origin: left;
 }

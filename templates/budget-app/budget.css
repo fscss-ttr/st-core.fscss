@@ -1,3 +1,9 @@
+/* ============================================================
+st-core@v2.fscss
+Pure CSS charts + polar/radar (spider) for the FSCSS ecosystem
+Requires FSCSS ≥ 1.2.3
+============================================================ */
+
 /* ── Design tokens ── */
 
 :root{
@@ -20,7 +26,7 @@
 --st-radius-sm: 10px;
 /* spacing */
 --st-pad: 24px;
-/* chart points (Y values only) */
+/* chart points (Y values only) — defaults / safety net */
 --st-p1: 68%;
 --st-p2: 59%;
 --st-p3: 70%;
@@ -31,10 +37,11 @@
 --st-p8: 55%;
 --st-peak-x: 71%;
 --st-peak-y: var(--st-p6);
-/* range */
 --st-cat-bar-fill-range: 0;
-/* line with */
 --st-chart-line-width: 1.5px;
+/* spider tokens */
+--st-spider-fill-opacity: 35%;
+--st-spider-stroke-scale: 0.97;
 }
 
 :root {
@@ -189,7 +196,17 @@ mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fi
 mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' /%3E%3C/svg%3E");
 }
 
- body{ min-height: 100vh; background: var(--st-bg); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; color: var(--st-text); padding: var(--st-pad); } 
+body{
+min-height: 100vh;
+background: var(--st-bg);
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: 'Syne', system-ui, sans-serif;
+color: var(--st-text);
+padding: var(--st-pad);
+}
+
 body {
 font-family: 'Inter', system-ui, sans-serif;
 background: #e8eaf0;
@@ -503,7 +520,6 @@ color: var(--st-muted);
 .chart-fill{
 position: absolute;
 inset: 0;
-/* Build index array from the same data array that was passed to st-chart-points */
 
 clip-path: polygon(
 0% var(--st-p1),
@@ -528,7 +544,6 @@ position: absolute;
 inset: 0;
 
 clip-path: polygon(
-/* top edge (the visible stroke) */
 0% var(--st-p1),
 16.666666666666668% var(--st-p2),
 33.333333333333336% var(--st-p3),

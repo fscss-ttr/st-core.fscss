@@ -1,4 +1,9 @@
 /* dashboard style */
+/* ============================================================
+st-core@v2.fscss
+Pure CSS charts + polar/radar (spider) for the FSCSS ecosystem
+Requires FSCSS ≥ 1.2.3
+============================================================ */
 
 /* ========== TOKENS ========== */
 
@@ -22,7 +27,7 @@
 --st-radius-sm: 10px;
 /* spacing */
 --st-pad: 24px;
-/* chart points (Y values only) */
+/* chart points (Y values only) — defaults / safety net */
 --st-p1: 68%;
 --st-p2: 59%;
 --st-p3: 70%;
@@ -33,10 +38,11 @@
 --st-p8: 55%;
 --st-peak-x: 71%;
 --st-peak-y: var(--st-p6);
-/* range */
 --st-cat-bar-fill-range: 0;
-/* line with */
 --st-chart-line-width: 1.5px;
+/* spider tokens */
+--st-spider-fill-opacity: 35%;
+--st-spider-stroke-scale: 0.97;
 }
 
 :root {
@@ -442,7 +448,6 @@ text-overflow: ellipsis;
 .rev-fill{
 position: absolute;
 inset: 0;
-/* Build index array from the same data array that was passed to st-chart-points */
 
 clip-path: polygon(
 0% var(--st-p1),
@@ -467,7 +472,6 @@ position: absolute;
 inset: 0;
 
 clip-path: polygon(
-/* top edge (the visible stroke) */
 0% var(--st-p1),
 16.666666666666668% var(--st-p2),
 33.333333333333336% var(--st-p3),
