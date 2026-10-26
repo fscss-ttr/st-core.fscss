@@ -29,7 +29,7 @@ jobs:
           node-version: '20'
 
       - name: Install FSCSS CLI
-        run: npm install -g fscss@1.2.5
+        run: npm install -g fscss@1.2.6
 
       - name: Compile admin-dashboard
         working-directory: templates/admin-dashboard
