@@ -430,12 +430,12 @@ empty-@arr.@use(p)-idx[]{
     opacity: 0.75;
     mask: radial-gradient(circle, transparent 8%, #000 9%);
 
-    @arr _spk[count(@use(n), 1)]
+    @arr _spk@use(n)[count(@use(n), 1)]
     background: conic-gradient(
       from -90deg,
       inline("{}
-        empty-@arr._spk[]{
-          $i: @arr._spk[];
+        empty-@arr._spk@use(n)[]{
+          $i: @arr._spk@use(n)[];
           transparent num(<$i - 1> * 360 / @use(n))deg,
           var(--st-border) num(<$i - 1> * 360 / @use(n))deg,
           var(--st-border) num(<$i - 1> * 360 / @use(n) + 0.9)deg,
