@@ -104,7 +104,7 @@ This document walks through every `@define` in the source, in the order they app
 inline("
 @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
 
-empty-@arr.@use(p)-idx[]{
+@arr.@use(p)-idx[]{
   $idx: @arr.@use(p)-idx[];
   --st-p$idx: num(100 - @arr.@use(p)[$idx])%;
 }")
@@ -114,7 +114,7 @@ empty-@arr.@use(p)-idx[]{
 Charts render top-down in CSS (`0%` is the top of the box), but data conceptually grows bottom-up. This mixin bridges that gap.
 
 - **`@arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]`** builds a throwaway index array the same length as your data array — effectively `[1, 2, 3, ..., N]`. `count(length, 1)` counts up from 1 to the array's length.
-- **`empty-@arr.@use(p)-idx[]{ ... }`** is an FSCSS loop construct: it iterates that index array, binding each index to `$idx`.
+- **`@arr.@use(p)-idx[]{ ... }`** is an FSCSS loop construct: it iterates that index array, binding each index to `$idx`.
 - Inside the loop, `--st-p$idx: num(100 - @arr.@use(p)[$idx])%;` does two things per iteration:
   1. Looks up the raw value at that index in your original array (`@arr.@use(p)[$idx]`).
   2. Inverts it (`100 - value`) and writes it to the correspondingly-numbered CSS variable (`--st-p1`, `--st-p2`, ...).
@@ -176,7 +176,7 @@ A fixed-width (`360px`) card frame meant to mimic a phone-sized dashboard surfac
   @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
   clip-path: polygon(
     inline("{}
-      empty-@arr.@use(p)-idx[] {
+      @arr.@use(p)-idx[] {
         $i: @arr.@use(p)-idx[];
         num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
       }
@@ -227,13 +227,13 @@ The simplest mixin in the file: one parameter, one variable write. Call it on a 
 
   clip-path: polygon(
     inline("{}
-      empty-@arr.@use(p)-idx[] {
+      @arr.@use(p)-idx[] {
         $i: @arr.@use(p)-idx[];
         num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
       }
     ")
     inline("{}
-      empty-@arr.@use(p)-reversed-idx[] reverse {
+      @arr.@use(p)-reversed-idx[] {
         $i: @arr.@use(p)-reversed-idx[];
         num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)%
           calc(var(--st-p$i) + var(--st-chart-line-width)),
@@ -447,7 +447,7 @@ inline("
 @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
 
 empty{ /* preserve */ }
-empty-@arr.@use(p)-idx[]{
+@arr.@use(p)-idx[]{
   $idx: @arr.@use(p)-idx[];
   --st-sx$idx: calc(50% + (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * sin(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
   --st-sy$idx: calc(50% - (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * cos(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
@@ -478,7 +478,7 @@ This is the **polar equivalent of `@st-chart-points`**. Instead of inverted Y pe
     @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
     clip-path: polygon(
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           var(--st-sx$i) var(--st-sy$i),
         }
@@ -516,7 +516,7 @@ This is the **polar equivalent of `@st-chart-points`**. Instead of inverted Y pe
 
     clip-path: polygon(
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           var(--st-sx$i) var(--st-sy$i),
         }
@@ -615,7 +615,7 @@ Four concentric rings at 20%, 40%, 60%, 80% of the radius, each a 1%–wide hard
     background: conic-gradient(
       from -90deg,
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           transparent num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
           var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
