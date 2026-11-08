@@ -98,7 +98,7 @@ inline("
 @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
 
 empty{ /* preserve */}
-empty-@arr.@use(p)-idx[]{
+@arr.@use(p)-idx[]{
   $idx: @arr.@use(p)-idx[];
   --st-p$idx: num(100 -@arr.@use(p)[$idx])%;
 }")
@@ -112,7 +112,7 @@ empty-@arr.@use(p)-idx[]{
   @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
   clip-path: polygon(
 inline("{}
-    empty-@arr.@use(p)-idx[] {
+    @arr.@use(p)-idx[] {
       $i: @arr.@use(p)-idx[];
       num( < $i! -1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
     }
@@ -142,13 +142,13 @@ inline("{}
 
   clip-path: polygon(
     inline("{}
-      empty-@arr.@use(p)-idx[] {
+      @arr.@use(p)-idx[] {
         $i: @arr.@use(p)-idx[];
         num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% var(--st-p$i),
       }
     ")
     inline("{}
-      empty-@arr.@use(p)-reversed-idx[] reverse {
+      @arr.@use(p)-reversed-idx[] reverse {
         $i: @arr.@use(p)-reversed-idx[];
         $isLast: equal($i, 1);
 
@@ -299,7 +299,7 @@ inline("
 @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
 
 empty{ /* preserve */ }
-empty-@arr.@use(p)-idx[]{
+@arr.@use(p)-idx[]{
   $idx: @arr.@use(p)-idx[];
   --st-sx$idx: calc(50% + (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * sin(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
   --st-sy$idx: calc(50% - (num(@arr.@use(p)[$idx] / 100 * @use(rmax)) * 1%) * cos(num(<$idx - 1> * 360 / @arr.@use(p)!.length) * 1deg));
@@ -315,7 +315,7 @@ empty-@arr.@use(p)-idx[]{
     @arr @use(p)-idx[count(@arr.@use(p)!.length, 1)]
     clip-path: polygon(
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           var(--st-sx$i) var(--st-sy$i),
         }
@@ -342,13 +342,13 @@ empty-@arr.@use(p)-idx[]{
 
     clip-path: polygon(
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           var(--st-sx$i) var(--st-sy$i),
         }
       ")
       inline("{}
-        empty-@arr.@use(p)-rev[]{
+        @arr.@use(p)-rev[]{
           $i: @arr.@use(p)-rev[];
           calc(50% + (var(--st-sx$i) - 50%) * var(--st-spider-stroke-scale, 0.97))
           calc(50% + (var(--st-sy$i) - 50%) * var(--st-spider-stroke-scale, 0.97)),
@@ -408,7 +408,7 @@ empty-@arr.@use(p)-idx[]{
     background: conic-gradient(
       from -90deg,
       inline("{}
-        empty-@arr.@use(p)-idx[]{
+        @arr.@use(p)-idx[]{
           $i: @arr.@use(p)-idx[];
           transparent num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
           var(--st-border) num(<$i - 1> * 360 / @arr.@use(p)!.length)deg,
@@ -434,7 +434,7 @@ empty-@arr.@use(p)-idx[]{
     background: conic-gradient(
       from -90deg,
       inline("{}
-        empty-@arr._spk@use(n)[]{
+        @arr._spk@use(n)[]{
           $i: @arr._spk@use(n)[];
           transparent num(<$i - 1> * 360 / @use(n))deg,
           var(--st-border) num(<$i - 1> * 360 / @use(n))deg,
