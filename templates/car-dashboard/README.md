@@ -33,7 +33,7 @@ Serve the folder (paths need a local server):
 
 ```bash
 npx serve .
-# open index.html — uses fscss@1.2.4 runtime + link type="text/fscss"
+# open index.html — uses fscss@1.2.6 runtime + link type="text/fscss"
 ```
 
 ---
@@ -41,7 +41,7 @@ npx serve .
 ## Production (compiled CSS)
 
 ```bash
-npm install -g fscss@1.2.4
+npm install -g fscss@1.2.6
 fscss car.fscss car.css
 ```
 
