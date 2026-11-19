@@ -35,7 +35,7 @@ npx serve .
 ## Compile (production)
 
 ```bash
-npm install -g fscss@1.2.4
+npm install -g fscss@1.2.6
 fscss budget.fscss budget.css
 ```
 
