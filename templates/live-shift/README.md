@@ -7,7 +7,7 @@ Phone-shell portfolio UI with **st-core@v2** pure-CSS chart (fill + line), stat 
 Compile FSCSS, then open `index.html`:
 
 ```bash
-npx fscss@1.2.5 dashboard.fscss dashboard.css
+npx fscss@1.2.6 dashboard.fscss dashboard.css
 ```
 
 Hub preview: [https://hub.devtem.org/st-core.fscss/templates/live-shift/](https://hub.devtem.org/st-core.fscss/templates/live-shift/)
@@ -26,7 +26,7 @@ Hub preview: [https://hub.devtem.org/st-core.fscss/templates/live-shift/](https:
 ## Runtime alternative
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.5/runtime.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/fscss@1.2.6/runtime.min.js" defer></script>
 <style>
   /* paste dashboard.fscss */
 </style>
