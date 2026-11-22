@@ -32,6 +32,7 @@ jobs:
         env:
           PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
           INPUT_LANGUAGES_TYPE: "radar"
+          INPUT_OVERVIEW_TYPE: "area"
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
