@@ -28,7 +28,7 @@ jobs:
         with:
           api-key: ${{ secrets.PROVCHART_API_KEY }}
           overview-type: bar
-          languages-type: hbar
+          languages-type: radar
         env:
           PROVCHART_API_KEY: ${{ secrets.PROVCHART_API_KEY }}
 
