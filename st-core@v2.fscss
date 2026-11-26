@@ -164,6 +164,7 @@ inline("{}
 
 @define st-chart-dot(st:.st-chart-dot, x:0, y:0, size: 12px){`
 @use(st){
+  position: absolute;
   left: @use(x)%;
 
   top: num(-<@use(y)> +100)%;
