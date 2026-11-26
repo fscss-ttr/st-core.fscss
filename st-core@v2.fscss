@@ -185,8 +185,9 @@ empty{
   @use(st)@arr.@use(p)-idx[] {
     $i: @arr.@use(p)-idx[];
   position: absolute;
-  left: calc( num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)% - 6px);
-  top: calc(var(--st-p$i) - 6px);
+  left: num( <$i - 1> * 100 / <@arr.@use(p)!.length - 1>)%;
+  top: var(--st-p$i);
+  transform: translate(-50%, -50%);
   %2(width, height[: @use(size);]) border-radius: 50%; background: #fff; border: 2.5px solid var(--st-accent);
   }
 `}
